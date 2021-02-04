@@ -1,0 +1,23 @@
+body{
+    margin-left: 5%;
+    margin-right: 5%;
+    font-family: sans-serif;
+}
+
+#navbar{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(137, 137, 221);
+    padding: 10px;
+}
+
+#navbar ul > li{
+    display: inline;
+    padding: 8px;
+    margin-left: 20px;
+}
+
+a{
+    text-decoration: none;
+    font-size: large;
+}
