@@ -32,4 +32,40 @@ li a{
 
 li a:hover{
     background-color: rgb(32, 32, 32);
+} 
+
+.item1 { 
+
+    grid-area: trm;
+} 
+
+.item2 { 
+
+    grid-area: nr; 
+} 
+
+.item3 { 
+
+    grid-area: fM;  
+}
+
+.main { 
+
+    display: grid; 
+    grid-template-areas: 
+        'trm trm trm nr nr nr' 
+        'trm trm trm nr nr nr' 
+        'trm trm trm nr nr nr'
+        'fM fM fM fM fM fM' 
+        'fM fM fM fM fM fM'; 
+    grid-gap: 10px; 
+    background-color: rgb(32, 32, 32); 
+    padding: 20px;
+
+}
+.main > div {   
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;  
+    padding: 20px 0; 
+    font-size: medium;
 }
