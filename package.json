@@ -16,5 +16,7 @@
     "url": "https://github.com/Aranesh22/Movie_Database_Project/issues"
   },
   "homepage": "https://github.com/Aranesh22/Movie_Database_Project#readme",
-  "dependencies": {}
+  "dependencies": {
+    "pug": "^3.0.0"
+  }
 }
