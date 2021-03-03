@@ -9,8 +9,15 @@ const server = http.createServer(function(request, response){
             response.statusCode = 200;
             response.end(data);
             return;
+        } 
+        else if(request.url === "/profile"){
+            let data = pug.renderFile("Pages/profile.pug");
+            response.statusCode = 200;
+            response.end(data);
+            return;
         }
-    }
+    } 
+
 });
 
 server.listen(3000);
