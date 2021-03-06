@@ -53,7 +53,7 @@ function queryParser(req, res, next){
 		}
 		params.push(param + "=" + req.query[param]);
 	}
-	req.qstring = params.join("&");
+	req.qstring = params.join("&"); //TODO DO NOT FORGET
 
 	next();
 }
@@ -80,8 +80,8 @@ function loadUsers(req, res, next){
 
     let count = 0;
     for(let i = 0; i < users.length; i++){
-        if(checkName(ele, req.query)){
-            results.push(users);
+        if(checkName(users[i], req.query)){
+            results.push(users[i]);
             count++;
         }
         if(count == req.limit){
