@@ -79,7 +79,7 @@ function loadUsers(req, res, next){
     }]
 
     let count = 0;
-    users.forEach(ele => {
+    for(let i = 0; i < users.length; i++){
         if(checkName(ele, req.query)){
             results.push(users);
             count++;
@@ -87,7 +87,7 @@ function loadUsers(req, res, next){
         if(count == req.limit){
             break;
         }
-    });
+    }
     res.users = results;
     next();
 }
