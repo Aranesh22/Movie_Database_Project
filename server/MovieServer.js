@@ -33,9 +33,19 @@ app.set("views", "../Pages");
 
 app.get("/", (req, res, next) => {res.render("index.pug");});
 
+//users
 let usersRouter = require("./routers/users-router");
 app.set("/users", usersRouter);
 
+//movies
+let movierouter = require("./routers/movies-router");
+app.set("/movies", movierouter);
+
+//people
+let peopleRouter = require("./routers/people-router");
+app.set("/people", peopleRouter);
+
+//profile
 app.get("/profile", (req, res, next) =>{
     let profile = {
         "id":1, 
