@@ -17,8 +17,8 @@ function queryParser(req, res, next){
     else{
         try{
             req.query.limit = Number(req.query.limit);
-            if(req.query.limit > MAX_USERS){
-                req.query.limit = MAX_USERS;
+            if(req.query.limit > MAX_PEOPLE){
+                req.query.limit = MAX_PEOPLE;
             }
             else if(req.query.limit < 1){
                 req.query.limit = 1;
