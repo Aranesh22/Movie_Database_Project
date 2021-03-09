@@ -59,7 +59,7 @@ function queryParser(req, res, next){
 }
 
 function checkName(user, query){
-    return !query.username || user.username.toLowerCase().includes(query.username.toLowerCase())
+    return !query.username || user.username.toLowerCase().includes(query.username.toLowerCase());
 }
 
 function loadUsers(req, res, next){
