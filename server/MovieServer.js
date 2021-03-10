@@ -63,5 +63,18 @@ app.get("/profile", (req, res, next) =>{
     res.status(200).render("profile.pug", {profile: profile});
 });
 
+//add function
+app.get("/addMovie", (req, res, next) => {
+    res.status(200).render("addMovie.pug");
+});
+
+app.get("/addPerson", (req, res, next) => {
+    res.status(200).render("addPerson.pug");
+});
+
+app.get("/createAccount", (req, res, next) => {
+    res.status(200).render("createAccount.pug");
+});
+
 app.listen(3000);
 console.log("Server listening at http://localhost:3000");
