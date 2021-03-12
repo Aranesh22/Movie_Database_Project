@@ -122,20 +122,20 @@ function sendPeople(req, res, next){
 }
 
 function getPerson(req, res, next){
-    let person = {
-        "name":"Neil Breen",
-        "acted":["Example movie"],
-        "written":["Example movie"],
-        "directed":["Example movie"],
-        "followers":["Example user"]
-    }
+    let person = {  
+        Name: "Hey Its Me",  
+        freqCollaborators: { freqCollo: ["Jeff","Jiimy", "Todd"]}, 
+        Directed: {dir: ["Billy","Sam"]},  
+        Acted: {act: ["Clown","Tooth Fairy"]}, 
+        Written: {write: ["Hey","By","Welcome"]}
+    }  
     res.person = person;
     next();
 }
 
 function sendPerson(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("person.pug", {person:res.person})},
+        "text/html": () => {res.status(200).render("people.pug", {person:res.person})},
         "application/json": () => {res.status(200).json(res.person)}
     });
     next();
