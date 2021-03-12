@@ -59,7 +59,7 @@ function queryParser(req, res, next){
 }
 
 function checkName(user, query){
-    return !query.username || user.username.toLowerCase().includes(query.username.toLowerCase())
+    return !query.username || user.username.toLowerCase().includes(query.username.toLowerCase());
 }
 
 function loadUsers(req, res, next){
@@ -120,7 +120,7 @@ function getUser(req, res, next){
 
 function sendUser(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("user.pug", {users:res.user})},
+        "text/html": () => {res.status(200).render("profile.pug", {users:res.user})},
         "application/json": () => {res.status(200).json(res.user)}
     });
     next();

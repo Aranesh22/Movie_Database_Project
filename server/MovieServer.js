@@ -33,9 +33,19 @@ app.set("views", "../Pages");
 
 app.get("/", (req, res, next) => {res.render("index.pug");});
 
+//users
 let usersRouter = require("./routers/users-router");
 app.set("/users", usersRouter);
 
+//movies
+let movierouter = require("./routers/movies-router");
+app.set("/movies", movierouter);
+
+//people
+let peopleRouter = require("./routers/people-router");
+app.set("/people", peopleRouter);
+
+//profile
 app.get("/profile", (req, res, next) =>{
     let profile = {
         "id":1, 
@@ -51,6 +61,19 @@ app.get("/profile", (req, res, next) =>{
         "userReviews":[]
     }
     res.status(200).render("profile.pug", {profile: profile});
+});
+
+//add function
+app.get("/addMovie", (req, res, next) => {
+    res.status(200).render("addMovie.pug");
+});
+
+app.get("/addPerson", (req, res, next) => {
+    res.status(200).render("addPerson.pug");
+});
+
+app.get("/createAccount", (req, res, next) => {
+    res.status(200).render("createAccount.pug");
 });
 
 app.listen(3000);
