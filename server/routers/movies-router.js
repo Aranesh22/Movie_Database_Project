@@ -93,8 +93,27 @@ function sendMovies(req, res, next){
 }
 
 function getMovie(req, res, next){
-    let movies = require("../../Json/movie-data-10.json");
-    let movie = movies[0];
+    let movie = { 
+        id: 1,
+        title: "Yogi Bear", 
+        Year: "5000", 
+        Rated: "Anyone", 
+        Released: "5000 11 24", 
+        Runtime: "120", 
+        Genre: "Comedy", 
+        Director: "Kevin The man", 
+        Writer: { writersArr: ["Some Guy On Mars","Jeff Bommy", "Look up"]}, 
+        Actor: { actorArr: ["Kevin One","Kevin Two", "Kevin Three"]}, 
+        Plot: "Yogi Bear becaame a bear", 
+        Awards: "Its an award ", 
+        Poster: "Insert Image",  
+        Reviews: {reviewsArr: ["Good Movie But could be better","Yes","No"]},  
+        similarMovies: [
+                        {title: "Jack and Jill", id:"678"}, 
+                        {title: "Power Rangers", id:"020"}, 
+                        {title: "Super Kevin", id:"999"}
+                        ]
+    } ;
     res.movie = movie;
     next();
 }
