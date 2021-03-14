@@ -17,7 +17,7 @@ html
             p Following People: 
                 each val in user.followingPeople.followingPpl      
                     ul
-                        a(href='/person/'+val) #{val} 
+                        a(href='/people/'+val) #{val} 
                         button(type="button",id=val) FOLLOW    
             p Following Users: 
                 each val in user.followingUsers.followingUser  
