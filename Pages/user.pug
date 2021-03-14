@@ -1,0 +1,33 @@
+html
+    head
+         
+        title User  
+        
+        script(src="../static/profile.js")  
+        
+        
+    body 
+
+        //include navbar  
+        
+        div.User    
+        
+            p #{user.username}
+
+            p Following: 
+                each val in user.followingPeople.following 
+                     
+                    ul
+                        a(href='/people/'+val) #{val} 
+                        button(type="button",id=val) FOLLOW    
+            
+            p Movies Watched: 
+                each val in user.watchList.watchL 
+                    ul
+                        a(href='/movies/'+val) #{val} 
+                    
+            p Reviews: 
+                each val in user.userReviews.uReviews 
+                    ul= val
+
+        
