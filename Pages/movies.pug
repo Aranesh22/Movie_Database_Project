@@ -12,7 +12,7 @@ html
             input(type="text" placeholder="Genre")
             button(id="search") Search
 
-        div.movies
+        div.results
             each movie in movies 
                 a(href="/movies/" + movie.id) #{movie.title}
         div.pagination
