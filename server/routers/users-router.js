@@ -66,16 +66,16 @@ function loadUsers(req, res, next){
     let results = [];
     let users = [{
         "id":1, 
-        "username":"bumbleboy", 
-        "password":"scoopme", 
-        "contributingAccount":false, 
-        "followingPeople":[], 
-        "followingUsers":[], 
-        "followers":[],
-        "watchList":[],
-        "viewRecMovies":[],
-        "userNotifications":[],
-        "userReviews":[]
+        username:"bumbleboy", 
+        password:"scoopme", 
+        contributingAccount:false, 
+        followingPeople:[], 
+        followingUsers:[], 
+        followers:[],
+        watchList:[],
+        viewRecMovies:[],
+        userNotifications:[],
+        userReviews:[]
     }]
 
     let count = 0;
@@ -102,17 +102,17 @@ function sendUsers(req, res, next){
 
 function getUser(req, res, next){
     let user = {
-        "id":req.params.uid, 
-        "username":"bumbleboy", 
-        "password":"scoopme", 
-        "contributingAccount":false, 
-        "followingPeople":[], 
-        "followingUsers":[], 
-        "followers":[],
-        "watchList":[],
-        "viewRecMovies":[],
-        "userNotifications":[],
-        "userReviews":[]
+        "id":1, 
+        username:"bumbleboy", 
+        password:"scoopme", 
+        contributingAccount:false, 
+        followingPeople: {following:["Jack","Todd","Benny","Link"]}, 
+        followingUsers:[], 
+        followers:[],
+        watchList:{ watchL:["Hello","its Me","Welcome"]},
+        viewRecMovies:[],
+        userNotifications:[],
+        userReviews:{uReviews:["Hello Was A Good Movie","Its me movie could be better"]}
     }
     res.user = user
     next();
@@ -120,8 +120,11 @@ function getUser(req, res, next){
 
 function sendUser(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("profile.pug", {users:res.user})},
-        "application/json": () => {res.status(200).json(res.user)}
-    });
+        "text/html": () => {res.status(200).render("user.pug", {user:res.user})},
+        "application/json": () => {res.status(200).json(res.user)}, 
+    }); 
+   
     next();
-}
+} 
+
+module.exports = router;
