@@ -1,0 +1,40 @@
+html 
+    head
+        style 
+            //include ../styles/homeStyles.css
+            
+        title Movies
+    body
+        include navbar  
+        
+        div.Contnet 
+
+            h4 #{mData.title} 
+            p Runtime: #{mData.Runtime} 
+            p Genre: #{mData.Genre} 
+            p Similar Movies: 
+            each val in mData.similarMovies   
+                ul  
+                    a(href='/movies/'+val.id) #{val.title} 
+                    
+            P Director:  
+                a(href='/people/'+mData.Director) #{mData.Director} 
+            
+            p Writers: 
+            each val in mData.Writer.writersArr  
+                ul
+                    a(href='/people/'+val) #{val} 
+
+            p Reviews: 
+            each val in mData.Reviews.reviewsArr 
+                ul= val 
+
+            p Add A review:  
+            p Review Score 
+            input#score(type="text" placeholder="") 
+            p Review Text: 
+            input#rText(type="text" placeholder="")
+            p Review Summary: 
+            input#rSummary(type="text" placeholder="")   
+            button#submitB(type=button) submit
+               
