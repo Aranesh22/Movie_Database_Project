@@ -115,7 +115,7 @@ function loadPeople(req, res, next){
 
 function sendPeople(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("people.pug", {pData:res.people, qstring:res.qstring, current:res.query.page})},
+        "text/html": () => {res.status(200).render("people.pug", {pData:res.people, qstring:req.qstring, current:req.query.page})},
         "application/json": () => {res.status(200).json(res.people)}
     });
     next();
