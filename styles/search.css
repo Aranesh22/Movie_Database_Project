@@ -1,0 +1,37 @@
+.search > input{
+    margin: 50px 2px 2px 2px;
+}
+
+.results{
+    margin: 10px;
+}
+
+.results > .link{
+    margin-top: 20px;
+}
+
+.results > .link > a{
+    text-decoration: none;
+    background-color: grey;
+    padding: 10px 500px 10px 10px;
+    color: white;
+}
+
+.results > .link > a:hover{
+    background-color: rgb(95, 95, 95);
+}
+
+.pagination{
+    margin: 100px 10px 10px 10px;
+}
+
+.pagination > a{
+    text-decoration: none;
+    background-color: rgb(83, 83, 83);
+    padding: 10px;
+    color: white;
+}
+
+.pagination > a:hover{
+    background-color: rgb(65, 64, 64);
+}
