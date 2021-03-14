@@ -17,10 +17,10 @@ html
                 a(href="/movies/" + movie.id) #{movie.title}
         div.pagination
             if current > 1
-                - let url = "http://localhost:3000/products?page=" + (current-1)
+                - let url = "http://localhost:3000/movies?page=" + (current-1)
                 - if(qstring.length > 0){ url += "&" + qstring; }
                 a(href=url) Previous
                 | 
-            - url = "http://localhost:3000/products?page=" + (current+1)
+            - url = "http://localhost:3000/movies?page=" + (current+1)
             - if(qstring.length > 0){ url += "&" + qstring; }
             a(href=url) Next
