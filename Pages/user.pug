@@ -2,13 +2,15 @@ html
     head
          
         title User  
-        
-        script(src="../static/profile.js")  
+    style 
+        include ../styles/homeStyles.css 
+
+    script(src="../static/profile.js")  
         
         
     body 
 
-        //include navbar  
+        include navbar  
         
         div.User    
         
@@ -22,12 +24,12 @@ html
             p Following Users: 
                 each val in user.followingUsers.followingUser  
                     ul 
-                        a(href='/user/'+val) #{val} 
+                        a(href='/users/'+user.id) #{val} 
                         button(type="button",id=val) FOLLOW   
             p Followers: 
                 each val in user.followers.followers 
                     ul   
-                        a(href='/user/'+val) #{val} 
+                        a(href='/users/'+user.id) #{val} 
                         button(type="button",id=val) FOLLOW    
             
             p Watched Movies: 
