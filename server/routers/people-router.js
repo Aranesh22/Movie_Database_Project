@@ -135,7 +135,7 @@ function getPerson(req, res, next){
 
 function sendPerson(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("people.pug", {pData:res.person})},
+        "text/html": () => {res.status(200).render("person.pug", {pData:res.person})},
         "application/json": () => {res.status(200).json(res.person)}
     });
     next();
