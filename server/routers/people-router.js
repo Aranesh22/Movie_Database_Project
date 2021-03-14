@@ -115,7 +115,7 @@ function loadPeople(req, res, next){
 
 function sendPeople(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("people.pug", {people:res.people, qstring:res.qstring, current:res.query.page})},
+        "text/html": () => {res.status(200).render("people.pug", {pData:res.people, qstring:res.qstring, current:res.query.page})},
         "application/json": () => {res.status(200).json(res.people)}
     });
     next();
@@ -135,8 +135,10 @@ function getPerson(req, res, next){
 
 function sendPerson(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("people.pug", {person:res.person})},
+        "text/html": () => {res.status(200).render("people.pug", {pData:res.person})},
         "application/json": () => {res.status(200).json(res.person)}
     });
     next();
-}
+} 
+
+module.exports = router;
