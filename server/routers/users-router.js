@@ -6,7 +6,6 @@ router.get("/", loadUsers);
 router.get("/", sendUsers);
 
 router.get("/:uid", getUser, sendUser);
-
 function queryParser(req, res, next){
     const MAX_USERS = 50;
 
@@ -94,7 +93,7 @@ function loadUsers(req, res, next){
 
 function sendUsers(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("users.pug", {users:res.users, qstring:res.qstring, current:res.query.page})},
+        "text/html": () => {res.status(200).render("users.pug", {users:res.users, qstring:req.qstring, current:req.query.page})},
         "application/json": () => {res.status(200).json(res.users)}
     });
     next();
@@ -106,13 +105,21 @@ function getUser(req, res, next){
         username:"bumbleboy", 
         password:"scoopme", 
         contributingAccount:false, 
-        followingPeople: {following:["Jack","Todd","Benny","Link"]}, 
-        followingUsers:[], 
-        followers:[],
-        watchList:{ watchL:["Hello","its Me","Welcome"]},
-        viewRecMovies:[],
-        userNotifications:[],
-        userReviews:{uReviews:["Hello Was A Good Movie","Its me movie could be better"]}
+        followingPeople: {followingPpl:["JackEvans","Todd","Benny","Link"]}, 
+        followingUsers:{followingUser:["Jimmy","Tony Stark","Bat Man"]}, 
+        followers:{ followers:["Brad","Steve","Ogeyyy"]},
+        viewRecMovies: [
+            {title: "Jack and Jill", id:"678"}, 
+            {title: "Power Rangers", id:"020"}, 
+            {title: "Super Kevin", id:"999"}
+            ],
+        watchList: [
+            {title: "Jack and Jill", id:"678"}, 
+            {title: "Power Rangers", id:"020"}, 
+            {title: "Super Kevin", id:"999"}
+            ],
+        userNotifications:{ userNot:["Jack Upploaded Movie","Tod is acting a new film"]},
+        userReviews:{uReviews:["Hello Was A Good Movie","Its me movie could be better"]},
     }
     res.user = user
     next();
