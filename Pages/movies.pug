@@ -1,0 +1,25 @@
+html 
+    head 
+        title Movies 
+    body 
+
+        include navbar
+        div.search
+            input(type="text" placeholder="Title")
+            input(type="text" placeholder="Actor")
+            input(type="text" placeholder="Writer")
+            input(type="text" placeholder="Director")
+            input(type="text" placeholder="Genre")
+
+        div.movies
+            each movie in movies 
+                a(href="/movies/" + movie.id) #{movie.title}
+        div.pagination
+            if current > 1
+                - let url = "http://localhost:3000/products?page=" + (current-1)
+                - if(qstring.length > 0){ url += "&" + qstring; }
+                a(href=url) Previous
+                | 
+            - url = "http://localhost:3000/products?page=" + (current+1)
+            - if(qstring.length > 0){ url += "&" + qstring; }
+            a(href=url) Next
