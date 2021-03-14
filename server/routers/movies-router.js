@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express");
 let router = express.Router();
 
@@ -6,7 +5,7 @@ router.get("/", queryParser);
 router.get("/", loadMovies);
 router.get("/", sendMovies);
 
-router.get("/mid", getMovie, sendMovie);
+router.get("/:mid", getMovie, sendMovie);
 
 function queryParser(req, res, next){
     const MAX_MOVIES = 50;
@@ -114,14 +113,17 @@ function getMovie(req, res, next){
                         {title: "Super Kevin", id:"999"}
                         ]
     } ;
-    res.movie = movie;
+ 
     next();
 }
 
-function sendMovie(req, res, next){
+function sendMovie(req, res, next){ 
     res.format({
-        "text/html": () => {res.status(200).render("movie.pug", {movie:res.movie})},
+        "text/html": () => {res.status(200).render("movie.pug", {mData:res.movie})},
         "application/json": () => {res.status(200).json(res.movie)}
-    });
+    }); 
     next();
-}
+}  
+
+
+module.exports = router;
