@@ -58,18 +58,27 @@ function queryParser(req, res, next){
 }
 
 function loadMovies(req, res, next){
-    let results = [];
-    let movies = require("../../Json/movie-data-10.json");
-    let count = 0;
-    for(let i = 0; i < movies.length; i++){
-        if(checkQuery(movies[i], req.query)){
-            results.push(movies[i]);
-            count++;
-        }
-        if(count == req.limit){
-            break;
-        }
-    }
+    let results = [{ 
+        id: 1,
+        title: "Yogi Bear", 
+        Year: "5000", 
+        Rated: "Anyone", 
+        Released: "5000 11 24", 
+        Runtime: "120", 
+        Genre: "Comedy", 
+        Director: "Kevin The man", 
+        Writer: { writersArr: ["Some Guy On Mars","Jeff Bommy", "Look up"]}, 
+        Actor: { actorArr: ["Kevin One","Kevin Two", "Kevin Three"]}, 
+        Plot: "Yogi Bear becaame a bear", 
+        Awards: "Its an award ", 
+        Poster: "Insert Image",  
+        Reviews: {reviewsArr: ["Good Movie But could be better","Yes","No"]},  
+        similarMovies: [
+                        {title: "Jack and Jill", id:"678"}, 
+                        {title: "Power Rangers", id:"020"}, 
+                        {title: "Super Kevin", id:"999"}
+                        ]
+    }];
     res.movies = results;
     next();
 }
@@ -85,7 +94,7 @@ function checkQuery(query, movie){
 
 function sendMovies(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("movies.pug", {movies:res.movies, qstring:res.qstring, current:res.query.page})},
+        "text/html": () => {res.status(200).render("movies.pug", {movies:res.movies, qstring:req.qstring, current:req.query.page})},
         "application/json": () => {res.status(200).json(res.movies)}
     });
     next();
