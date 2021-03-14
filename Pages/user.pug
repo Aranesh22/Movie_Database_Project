@@ -12,22 +12,44 @@ html
         
         div.User    
         
-            p #{user.username}
+            p User Name #{user.username}
 
-            p Following: 
-                each val in user.followingPeople.following 
-                     
+            p Following People: 
+                each val in user.followingPeople.followingPpl      
                     ul
-                        a(href='/people/'+val) #{val} 
+                        a(href='/person/'+val) #{val} 
+                        button(type="button",id=val) FOLLOW    
+            p Following Users: 
+                each val in user.followingUsers.followingUser  
+                    ul 
+                        a(href='/user/'+val) #{val} 
+                        button(type="button",id=val) FOLLOW   
+            p Followers: 
+                each val in user.followers.followers 
+                    ul   
+                        a(href='/user/'+val) #{val} 
                         button(type="button",id=val) FOLLOW    
             
-            p Movies Watched: 
-                each val in user.watchList.watchL 
-                    ul
-                        a(href='/movies/'+val) #{val} 
-                    
+            p Watched Movies: 
+                each val in user.watchList 
+                    ul 
+                        a(href='/movies/'+val.id) #{val.title}  
+
+            p Reccomended Movies: 
+                each val in user.viewRecMovies 
+                    ul  
+                        a(href = '/movies/'+val.id) #{val.title}
+
+            p Notififications: 
+                each val in user.userNotifications.userNot 
+                    ul= val
             p Reviews: 
                 each val in user.userReviews.uReviews 
-                    ul= val
+                    ul= val  
+            
+            
+            
+
+
 
         
