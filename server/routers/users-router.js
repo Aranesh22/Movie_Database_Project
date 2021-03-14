@@ -101,7 +101,7 @@ function sendUsers(req, res, next){
 
 function getUser(req, res, next){
     let user = {
-        "id":1, 
+        id:1, 
         username:"bumbleboy", 
         password:"scoopme", 
         contributingAccount:false, 
