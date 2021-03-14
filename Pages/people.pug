@@ -9,7 +9,7 @@ html
             input(type="text" placeholder="Movie")
             button(id="search") Search
 
-        div.movies
+        div.people
             each person in pData 
                 a(href="/people/" + person.id) #{person.name}
         div.pagination
