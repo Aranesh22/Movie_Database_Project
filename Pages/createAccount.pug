@@ -4,15 +4,18 @@ html
         title Create Account 
     style 
         include ../styles/homeStyles.css
+        include ../styles/createAccount.css
         
     body   
 
         include navbar 
 
-        div.logIn
-            p Insert UserName   
-            input(type="text" placeholder="Insert Username")
+        div#create
+            h Create your account
+            p Username:   
+                input(type="text" placeholder="Username")
                 
-            p Insert Password   
-            input(type="text" placeholder="Insert Password")
+            p Create Password   
+                input(type="text" placeholder="Password")
+            br
             button#createB(type="button") create
