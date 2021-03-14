@@ -1,6 +1,9 @@
 html 
     head 
         title People 
+        style 
+            include ../styles/homeStyles.css
+            include ../styles/search.css
     body 
 
         include navbar
@@ -11,13 +14,14 @@ html
 
         div.results
             each person in pData 
-                a(href="/people/" + person.id) #{person.name}
+                div.link
+                    a(href="/people/" + person.id) #{person.name}
         div.pagination
             if current > 1
                 - let url = "http://localhost:3000/people?page=" + (current-1)
                 - if(qstring.length > 0){ url += "&" + qstring; }
-                a(href=url) Previous
+                a#prev(href=url style="margin-right: 439px") Previous
                 | 
             - url = "http://localhost:3000/people?page=" + (current+1)
             - if(qstring.length > 0){ url += "&" + qstring; }
-            a(href=url) Next
+            a#next(href=url) Next
