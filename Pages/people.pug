@@ -1,0 +1,23 @@
+html 
+    head 
+        title People 
+    body 
+
+        include navbar
+        div.search
+            input(type="text" placeholder="Name")
+            input(type="text" placeholder="Movie")
+            button(id="search") Search
+
+        div.movies
+            each person in pData 
+                a(href="/people/" + person.id) #{person.name}
+        div.pagination
+            if current > 1
+                - let url = "http://localhost:3000/people?page=" + (current-1)
+                - if(qstring.length > 0){ url += "&" + qstring; }
+                a(href=url) Previous
+                | 
+            - url = "http://localhost:3000/people?page=" + (current+1)
+            - if(qstring.length > 0){ url += "&" + qstring; }
+            a(href=url) Next
