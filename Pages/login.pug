@@ -4,17 +4,19 @@ html
         title Create Account 
     style 
         include ../styles/homeStyles.css
+        include ../styles/login.css
         
     body   
 
         include navbar  
-
-        p Enter UserName:  
-            input(type="text" placeholder="Insert Enter UserName")
-       
-        p Enter PassWord: 
-            input(type="text" placeholder="Insert Password")
-        button#LoginB(type="button") Log In
+        div#info
+            h Sign In
+            p Enter Username:  
+                input(type="text" placeholder="Username")
+        
+            p Enter Password: 
+                input(type="text" placeholder="Password")
+            button#LoginB(type="button") Log In
     
 
 
