@@ -113,7 +113,8 @@ function getMovie(req, res, next){
                         {title: "Super Kevin", id:"999"}
                         ]
     } ;
- 
+
+    res.movie = movie;
     next();
 }
 
