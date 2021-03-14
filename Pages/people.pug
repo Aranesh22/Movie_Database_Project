@@ -1,0 +1,33 @@
+html
+    head
+         
+        title people  
+        
+        script(src="../static/profile.js")  
+        
+        
+    body 
+
+        //include navbar  
+        
+        div.people    
+        
+            p #{pData.Name}
+
+            p Writer: 
+                each val in pData.freqCollaborators.freqCollo 
+                     
+                    ul
+                        a(href='/people/'+val) #{val}  
+            
+            p Director: 
+                each val in pData.Directed.dir 
+                    ul
+                        a(href='/people/'+val) #{val} 
+                    
+            p Actor: 
+                each val in pData.Acted.act 
+                    ul
+                        a(href='/people/'+val) #{val}
+
+        
