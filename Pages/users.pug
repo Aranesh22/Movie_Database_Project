@@ -8,9 +8,9 @@ html
             input(type="text" placeholder="Name")
             button(id="search") Search
 
-        div.users
+        div.results
             each user in users 
-                a(href="/users/" + user.id) #{user.title}
+                a(href="/users/" + user.id) #{user.username}
         div.pagination
             if current > 1
                 - let url = "http://localhost:3000/users?page=" + (current-1)
