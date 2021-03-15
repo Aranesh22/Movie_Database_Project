@@ -30,6 +30,7 @@ const app = express();
 
 app.set("View engine", "pug");
 app.set("views", "../Pages"); 
+app.set(express.static("../styles"));
 
 app.get("/", (req, res, next) => {res.render("index.pug");});
 
