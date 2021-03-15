@@ -10,27 +10,49 @@ html
         include navbar
 
         p Add Actor/Actress:  
-            input(type="text" placeholder="Insert Actor/Actress") 
-        p Add Director:  
-            input(type="text" placeholder="Insert Director")
-        p Add Writer:   
-            input(type="text" placeholder="Insert Writer")
+            input(type="text" placeholder="Insert Actor/Actress")   
+            button(type="button") Add 
+        
+        div.addActorActress   
+            p Added Actors/Actress
 
-        button#addPplB(type="button") Add People 
+        p Add Director:  
+            input(type="text" placeholder="Insert Director") 
+            button(type="button") Add 
+            div.addDirectors  
+                p Added Directors 
+
+        p Add Writer:   
+            input(type="text" placeholder="Insert Writer") 
+            button(type="button") Add 
+            div.addWriters
+                p Added Writers
 
         p Movie Name:   
-            input(type="text" placeholder="Insert Movie Name")
-        p Add Plot:   
-            input(type="text" placeholder="Insert Plot")
-        p Add Release Date:  
-            input(type="text" placeholder="Insert Release Date")
-        p Add Rating: 
-            input(type="text" placeholder="Insert Rating") 
-        P Add Genre: 
-            input(type="text" placeholder="Insert Genre") 
-        p Add Runtime:  
-            input(type="text" placeholder="Insert Runtime")
-        p Add Awards: 
-            input(type="text" placeholder="Insert Awards")
+            input(type="text" placeholder="Insert Movie Name") 
 
-        button#addMovie(type="button") Add Movie
+        p Add Plot:   
+            input(type="text" placeholder="Insert Plot") 
+
+        p Add Release Date:  
+            input(type="text" placeholder="Insert Release Date") 
+
+        p Add Rating: 
+            input(type="text" placeholder="Insert Rating")  
+
+        P Add Genre: 
+            input(type="text" placeholder="Insert Genre")  
+            button(type="button") Add 
+            div.addGenres
+                p Added Genres 
+
+        p Add Runtime:  
+            input(type="text" placeholder="Insert Runtime") 
+            
+        p Add Awards: 
+            input(type="text" placeholder="Insert Awards") 
+            button(type="button") Add 
+            div.addAwards
+                p Added Awards
+
+        button#addMovie(type="button") SUBMIT
