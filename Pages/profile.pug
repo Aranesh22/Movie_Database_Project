@@ -1,49 +1,56 @@
 html 
     head 
         style
-            include ../styles/homeStyles.css  
+            include ../styles/homeStyles.css   
+            include ../styles/pageStyles.css
             
         title Profile  
         
     body
-        //include navbar   
-        div#main
+        include navbar   
+        div#main 
 
-            div.AccountType 
-                h2 Account Type   
-                button(type="button" id="Contributor") Contributor  
-                button(type="button" id="Regular") Regular 
- 
-            p1 People You Follow 
-                ul 
-                    each val, index in ['Kevin','Kevin 2','Kevin 3']  
-                        ul
-                            a(href='/people/'+val id=val) #{val} 
-                            button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
-                                    
-                   
+            div.profile
 
-            p1 Users You Follow   
-                ul 
-                    each val, index in ['Jack', 'Jill', 'Joe'] 
+                div.AccountType 
+                    h2 Account Type   
+                    button(type="button" id="Contributor") Contributor  
+                    button(type="button" id="Regular") Regular  
+
+                div.PplFll
+                    p1 People You Follow 
                         ul 
-                            a(href='/users/'+val id=val) #{val} 
-                            button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
-                            
+                            each val, index in ['Kevin','Kevin 2','Kevin 3']  
+                                ul
+                                    a(href='/people/'+val id=val) #{val} 
+                                    button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
+                                            
+                        
+                div.UserFll
+                    p1 Users You Follow   
+                        ul 
+                            each val, index in ['Jack', 'Jill', 'Joe'] 
+                                ul 
+                                    a(href='/users/'+val id=val) #{val} 
+                                    button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
+                                    
+                div.MovieWatch
+                    p1 Movies You Watched  
+                        ul 
+                            each val, index in ['Scooby Dooby Do','Big Foot','Little Foot']  
+                                a(href='/movies/'+val id=val) #{val} 
+                                ul= val
 
-            p1 Movies You Watched  
-                ul 
-                    each val, index in ['Scooby Dooby Do','Big Foot','Little Foot'] 
-                        ul= val
+                div.ReccMovies
+                    p1 Recomended Movies 
+                        ul 
+                            each val, index in ['Petter Piper','Jack And Jill','Medium Foot'] 
+                                ul= val  
 
-            p1 Recomended Movies 
-                ul 
-                    each val, index in ['Petter Piper','Jack And Jill','Medium Foot'] 
-                        ul= val  
-            
-            p1 Notfication 
-                ul 
-                    each val, index in ["Bill Joe Added a Review","Chris Evans is a new movie"] 
-                        ul= val
+                div.Noti   
+                    p1 Notfication 
+                        ul 
+                            each val, index in ["Bill Joe Added a Review","Chris Evans is a new movie"] 
+                                ul= val
         script(src="../static/profile.js")
 
