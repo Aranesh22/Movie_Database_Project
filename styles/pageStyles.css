@@ -1,0 +1,182 @@
+.profile {  
+
+    display: grid; 
+    grid-template-areas:  
+        'aTyp Typ ' 
+        'pplFll uFl'
+        'rM nO' 
+        'mV mV'; 
+    grid-gap: 0px; 
+    padding: 0px;
+
+} 
+
+.profile > div  {   
+
+    padding: 0px 0px; 
+    font-size: medium;
+
+}
+.AccountType {  
+
+    grid-area: aTyp;
+
+
+} 
+
+.PplFll { 
+
+    grid-area: pplFll;
+
+} 
+
+.UserFll { 
+
+    grid-area: uFl;
+
+} 
+
+.MovieWatch { 
+
+    grid-area: mV;
+
+} 
+
+.ReccMovies { 
+
+    grid-area: rM;
+
+} 
+
+.Noti {  
+    grid-area: nO;
+
+} 
+
+.Wri { 
+
+    grid-area: wRi;
+} 
+
+.Dir { 
+
+    grid-area: dir;
+} 
+
+.Act { 
+
+    grid-area: aCt;
+} 
+
+
+.Content { 
+
+    display: grid; 
+    grid-template-areas:  
+        'iFo iFo dir dir' 
+        'smL smL writ writ '
+        'rev rev rev rev'; 
+    grid-gap: 0px; 
+    padding: 0px;
+}
+
+.Content > div  {   
+
+    padding: 0px 0px; 
+    font-size: medium;
+
+}
+.info {  
+
+    grid-area: iFo;
+
+
+}  
+
+.smlMovies { 
+
+    grid-area: smL;
+}
+
+.Dir {  
+
+    grid-area: dir;
+
+
+}  
+
+.Writ {  
+
+    grid-area: writ;
+
+
+} 
+
+.Rev { 
+
+    grid-area: rev;
+} 
+
+.UserName {  
+
+    grid-area: uN;
+} 
+
+.FollowingPpl  { 
+    
+    grid-area: fppl;
+} 
+
+.FollowingUser { 
+    
+    grid-area: flu;
+
+} 
+
+.Follower {     
+  
+    grid-area: fll;
+
+} 
+
+.WatchMovies { 
+    
+    grid-area: wM;
+} 
+
+.RecMovies { 
+    
+    grid-area: rM;
+} 
+
+.Notifi { 
+  
+    grid-area: nO;
+}  
+
+.EmptyBox {  
+    grid-area: epty;
+} 
+
+.Reviews { 
+    grid-area: rev
+
+}  
+.User {  
+    
+    display: grid; 
+    grid-template-areas:   
+        'uN uN uN uN uN uN'
+        'fppl fppl flu flu fll fll' 
+        'wM wM rM rM nO nO' 
+        'rev rev rev rev rev rev'; 
+    grid-gap: 0px; 
+    padding: 0px;
+
+} 
+.User > div { 
+  
+    padding: 0px 0px; 
+    font-size: medium;
+
+} 
