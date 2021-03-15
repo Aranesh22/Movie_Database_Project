@@ -123,11 +123,21 @@ function sendPeople(req, res, next){
 
 function getPerson(req, res, next){
     let person = {  
-        Name: "Hey Its Me",  
+        Name: "Yogi Bear",  
         freqCollaborators: { freqCollo: ["Jeff","Jiimy", "Todd"]}, 
-        Directed: {dir: ["Billy","Sam"]},  
-        Acted: {act: ["Clown","Tooth Fairy"]}, 
-        Written: {write: ["Hey","By","Welcome"]}
+        Directed: [
+            {title: "Yogi", id:"678"}, 
+            {title: "Flash", id:"020"}, 
+            {title: "Big Foot", id:"999"}
+            ],
+        Written: [  
+            {title: "Bat Man", id:"678"}, 
+            {title: "Super Man", id:"020"}, 
+        ],
+        Acted: [
+            {title: "Clown", id:"678"}, 
+            {title: "Tooth Fairy", id:"020"}
+            ]
     }  
     res.person = person;
     next();
