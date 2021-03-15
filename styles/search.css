@@ -1,5 +1,14 @@
+.search{
+    margin-top: 50px;
+}
+
 .search > input{
-    margin: 50px 2px 2px 2px;
+    margin: 2px 2px 2px 0px;
+}
+
+.search > h{
+    font-size: large;
+    font-weight: 900;
 }
 
 .results{
