@@ -1,33 +1,36 @@
 html
     head
          
-        title people  
-        
-        script(src="../static/profile.js")  
-        
+        title people    
+        style
+            include ../styles/homeStyles.css 
         
     body 
 
-        //include navbar  
+        include navbar  
         
         div.people    
         
-            p #{pData.Name}
+            p #{pData.Name} 
 
-            p Writer: 
-                each val in pData.freqCollaborators.freqCollo 
-                     
-                    ul
-                        a(href='/person/'+val) #{val}  
+            div.Wri
+
+                p Writer: 
+                    each val in pData.Written
+                            
+                        ul
+                            a(href='/movies/'+val.id) #{val.title}  
             
-            p Director: 
-                each val in pData.Directed.dir 
-                    ul
-                        a(href='/person/'+val) #{val} 
-                    
-            p Actor: 
-                each val in pData.Acted.act 
-                    ul
-                        a(href='/person/'+val) #{val}
+            div.Dir
+                p Director: 
+                    each val in pData.Directed
+                        ul
+                            a(href='/movies/'+val.id) #{val.title} 
+            
+            div.Act
+                p Actor: 
+                    each val in pData.Acted
+                        ul
+                            a(href='/movies/'+val.id) #{val.title}
 
         
