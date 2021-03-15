@@ -108,7 +108,7 @@ function getMovie(req, res, next){
         Rated: "Anyone", 
         Released: "5000 11 24", 
         Runtime: "120", 
-        Genre: "Comedy", 
+        Genre: {gen: ["Comedy","Romantic"]},
         Director: "Kevin The man", 
         Writer: { writersArr: ["Some Guy On Mars","Jeff Bommy", "Look up"]}, 
         Actor: { actorArr: ["Kevin One","Kevin Two", "Kevin Three"]}, 
