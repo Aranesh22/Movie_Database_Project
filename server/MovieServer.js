@@ -64,15 +64,15 @@ app.get("/profile", (req, res, next) =>{
 });
 
 //add function
-app.get("/addMovie", (req, res, next) => {
+app.get("/newMovie", (req, res, next) => {
     res.status(200).render("addMovie.pug");
 });
 
-app.get("/addPerson", (req, res, next) => {
+app.get("/newPerson", (req, res, next) => {
     res.status(200).render("addPerson.pug");
 });
 
-app.get("/createAccount", (req, res, next) => {
+app.get("/newAccount", (req, res, next) => {
     res.status(200).render("createAccount.pug");
 }); 
 
