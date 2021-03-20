@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+const session = require("express-session");
+app.use(session({secret: "choco-chip"}));
+
 app.set("View engine", "pug");
 app.set("views", "../Pages"); 
 app.set(express.static("../styles"));
