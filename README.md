@@ -1,4 +1,4 @@
-Program Author ~ Kevin Zhang 101147715, Aranesh Athava 101152794 
+Program Author ~ Kevin Zhang 101147715, Aranesh Athavan 101152794 
 
 How to run the program 
     npm install  
