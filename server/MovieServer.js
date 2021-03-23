@@ -4,6 +4,91 @@ const app = express();
 const session = require("express-session");
 app.use(session({secret: "choco-chip"}));
 
+let nextMid = 0;
+let nextPid = 0;
+
+//init database
+let movies = require("../Json/movie-data-10.json");
+let people = {};
+let movieData = [];
+let peopleData = [];
+
+movies.forEach((movie) => {
+    let temp = {};
+    temp.id = nextMid++;
+    temp.title = movie.Title;
+    temp.year = movie.Year;
+    temp.rating = movie.Rated;
+    temp.released = movie.Released;
+    temp.runtime = movie.Runtime;
+    temp.genre = movie.Genre;
+    temp.director = [];
+    temp.writer = [];
+    temp.actors = [];
+    temp.plot = movie.Plot;
+    temp.awards = movie.Awards;
+    temp.poster = movie.Poster;
+    temp.reviews = [];
+    temp.similarMovies = [];
+    
+    movie.Director.forEach((dir) => {
+        if(!people.hasOwnProperty(dir)){
+            people[dir] = {
+                "id":nextPid,
+                "name":dir,
+                "directed":[],
+                "acted":[],
+                "written":[],
+                "freqCollab":[],
+                "followers":[]
+            };
+        }
+        people[dir].directed.push(temp);
+        temp.director.push(people[dir]);
+        ++nextPid;
+    })
+    movie.Writer.forEach((write) => {
+        if(!people.hasOwnProperty(write)){
+            people[write] = {
+                "id":nextPid,
+                "name":write,
+                "directed":[],
+                "acted":[],
+                "written":[],
+                "freqCollab":[],
+                "followers":[]
+            };
+        }
+        people[write].written.push(temp);
+        temp.writer.push(people[write]);
+        ++nextPid;
+    })
+    movie.Actors.forEach((act) => {
+        if(!people.hasOwnProperty(act)){
+            people[act] = {
+                "id":nextPid,
+                "name":act,
+                "directed":[],
+                "acted":[],
+                "written":[],
+                "freqCollab":[],
+                "followers":[]
+            };
+        }
+        people[act].acted.push(temp);
+        temp.actors.push(people[act]);
+        ++nextPid;
+    })
+    movieData.push(temp);
+});
+
+for(let prop in people){
+    peopleData.push(people[prop]);
+}
+
+console.log(movieData);
+console.log(peopleData);
+
 app.set("View engine", "pug");
 app.set("views", "../Pages"); 
 app.set(express.static("../styles"));
