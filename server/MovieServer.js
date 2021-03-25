@@ -8,7 +8,7 @@ let nextMid = 0;
 let nextPid = 0;
 
 //init database
-let movies = require("../Json/movie-data-10.json");
+let movies = require("../Json/movie-data-100.json");
 let people = {};
 let movieData = [];
 let peopleData = [];
@@ -34,7 +34,7 @@ movies.forEach((movie) => {
     movie.Director.forEach((dir) => {
         if(!people.hasOwnProperty(dir)){
             people[dir] = {
-                "id":nextPid,
+                "id":nextPid++,
                 "name":dir,
                 "directed":[],
                 "acted":[],
@@ -43,14 +43,13 @@ movies.forEach((movie) => {
                 "followers":[]
             };
         }
-        people[dir].directed.push(temp);
-        temp.director.push(people[dir]);
-        ++nextPid;
+        people[dir].directed.push(nextMid);
+        temp.director.push(nextPid);
     })
     movie.Writer.forEach((write) => {
         if(!people.hasOwnProperty(write)){
             people[write] = {
-                "id":nextPid,
+                "id":nextPid++,
                 "name":write,
                 "directed":[],
                 "acted":[],
@@ -59,14 +58,13 @@ movies.forEach((movie) => {
                 "followers":[]
             };
         }
-        people[write].written.push(temp);
-        temp.writer.push(people[write]);
-        ++nextPid;
+        people[write].written.push(nextMid);
+        temp.writer.push(nextPid);
     })
     movie.Actors.forEach((act) => {
         if(!people.hasOwnProperty(act)){
             people[act] = {
-                "id":nextPid,
+                "id":nextPid++,
                 "name":act,
                 "directed":[],
                 "acted":[],
@@ -75,9 +73,8 @@ movies.forEach((movie) => {
                 "followers":[]
             };
         }
-        people[act].acted.push(temp);
-        temp.actors.push(people[act]);
-        ++nextPid;
+        people[act].acted.push(nextMid);
+        temp.actors.push(nextPid);
     })
     movieData.push(temp);
 });
