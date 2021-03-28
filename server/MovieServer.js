@@ -3,6 +3,10 @@ const app = express();
 
 const session = require("express-session");
 app.use(session({secret: "choco-chip"}));
+app.use(function(req, res, next){
+    console.log(req.session);
+    next();
+});
 
 let nextMid = 0;
 let nextPid = 0;
@@ -83,12 +87,9 @@ for(let prop in people){
     peopleData.push(people[prop]);
 }
 
-console.log(movieData);
-console.log(peopleData);
-
 app.set("View engine", "pug");
-app.set("views", "../Pages"); 
-app.set(express.static("../styles"));
+app.set("views", "public"); 
+app.set(express.static("public"));
 
 app.get("/", (req, res, next) => {res.render("index.pug");});
 
