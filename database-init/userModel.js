@@ -5,13 +5,13 @@ let userSchema = Schema({
     username: {type: String, required: true},
     password: {type: String, required: true},
     contributingAccount: {type: Boolean, required: true},
-    followingPeople: [Schema.Types.ObjectId],
-    followingUsers: [Schema.Types.ObjectId],
-    followers: [Schema.Types.ObjectId],
-    watchList: [Schema.Types.ObjectId],
-    viewRecMovies: [Schema.Types.ObjectId],
-    userNotifications: [Schema.Types.ObjectId],
-    userReviews: [Schema.Types.ObjectId]
+    followingPeople: {type: [Schema.Types.ObjectId], ref: "People"},
+    followingUsers: {type: [Schema.Types.ObjectId], ref: "User"},
+    followers: {type: [Schema.Types.ObjectId], ref: "User"},
+    watchList: {type: [Schema.Types.ObjectId], ref: "Movie"},
+    viewRecMovies: {type: [Schema.Types.ObjectId], ref: "Movie"},
+    userNotifications: String,
+    userReviews: {type: [Schema.Types.ObjectId], ref: "Review"}
 });
 
 module.exports = mongoose.model("Movie", userSchema);
