@@ -1,0 +1,16 @@
+#info{
+    width: auto;
+    margin: 10px 300px 10px 300px;
+    text-align: center;
+    background-color: grey;
+    padding: 30px;
+}
+
+#info > h{
+    font-size: 30px;
+    font-weight: 450;
+}
+
+#info >button{
+    width: 300px;
+}
