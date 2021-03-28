@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let peopleSchema = Schema({
-    name: {type: String, required: true},
-    directed: {type: [Schema.Types.ObjectId], required: true},
-    written: {type: [Schema.Types.ObjectId], required: true},
-    acted: {type: [Schema.Types.ObjectId], required: true},
-    freqCollaborators: [Schema.Types.ObjectId],
+    name: String,
+    directed: {type: [Schema.Types.ObjectId], ref: "Movie"},
+    written: {type: [Schema.Types.ObjectId], ref: "Movie"},
+    acted: {type: [Schema.Types.ObjectId], ref: "Movie"},
+    freqCollaborators: {type: [Schema.Types.ObjectId], ref: "People"},
     followers: [Schema.Types.ObjectId]
 });
 
