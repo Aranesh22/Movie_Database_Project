@@ -10,4 +10,4 @@ let peopleSchema = Schema({
     followers: [Schema.Types.ObjectId]
 });
 
-module.exports = mongoose.model("Movie", peopleSchema);
+module.exports = mongoose.model("People", peopleSchema);
