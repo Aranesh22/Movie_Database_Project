@@ -14,4 +14,4 @@ let userSchema = Schema({
     userReviews: {type: [Schema.Types.ObjectId], ref: "Review"}
 });
 
-module.exports = mongoose.model("Movie", userSchema);
+module.exports = mongoose.model("User", userSchema);
