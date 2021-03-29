@@ -7,7 +7,7 @@ let movieSchema = Schema({
     rating: String,
     released: String,
     runtime: String,
-    genre: String,
+    genre: [String],
     director: {type: [Schema.Types.ObjectId], ref: "People"},
     writer: {type: [Schema.Types.ObjectId], ref: "People"},
     actors: {type: [Schema.Types.ObjectId], ref: "People"},
