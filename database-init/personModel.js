@@ -10,4 +10,8 @@ let personSchema = Schema({
     followers: {type: [Schema.Types.ObjectId], ref: "User"}
 });
 
+personSchema.query.byName = function(name){
+    return this.where({name: new RegExp(name, "i")});
+}
+
 module.exports = mongoose.model("Person", personSchema);
