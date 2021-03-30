@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 const Movie = require("./movieModel");
-const People = require("./peopleModel");
+const Person = require("./personModel");
 
 mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true});
 let db = mongoose.connection;
+
+let allMovies = []
+let people = {};
+let allPeople = [];
 
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function(){
@@ -15,85 +19,57 @@ db.once("open", function(){
         }
         console.log("Dropped final database");
 
-        let people = []; //prevent duplicates
-        let p; //p model
-
         //init movies and people
         let movies = require("../Json/movie-data-100.json");
 
         movies.forEach((movie) => {
 
             //add movies to db
-            let tempMovie = {};
-            tempMovie.title = movie.Title;
-            tempMovie.year = movie.Year;
-            tempMovie.rating = movie.Rated;
-            tempMovie.released = movie.Released;
-            tempMovie.runtime = movie.Runtime;
-            tempMovie.genre = movie.Genre;
-            tempMovie.director = [];
-            tempMovie.writer = [];
-            tempMovie.actors = [];
-            tempMovie.plot = movie.Plot;
-            tempMovie.awards = movie.Awards;
-            tempMovie.poster = movie.Poster;
-            tempMovie.reviews = [];
-            tempMovie.similarMovies = [];
-            let m = new Movie(tempMovie);
-            m.save(function(err, callback){
-                if(err) console.log(err.message);
-            });
+            let m = new Movie();
+            m._id = mongoose.Types.ObjectId();
+            m.title = movie.Title;
+            m.year = movie.Year;
+            m.rating = movie.Rated;
+            m.released = movie.Released;
+            m.runtime = movie.Runtime;
+            m.genre = movie.Genre;
+            m.plot = movie.Plot;
+            m.awards = movie.Awards;
+            m.poster = movie.Poster;
 
             //add people to db
             movie.Director.forEach((dir) => {
-                if(!people.includes(dir)){
-                    p = new People({
-                        "name":dir,
-                        "directed":[],
-                        "acted":[],
-                        "written":[],
-                        "freqCollab":[],
-                        "followers":[]
-                    });
-                    p.save(function(err, callback){
-                        if (err) console.log(err.message);
-                    });
-                    people.push(dir);
-                }
+                addPersonToMovie(dir, m, "directed");
             });
             movie.Writer.forEach((write) => {
-                if(!people.includes(write)){
-                    p = new People({
-                        "name":write,
-                        "directed":[],
-                        "acted":[],
-                        "written":[],
-                        "freqCollab":[],
-                        "followers":[]
-                    });
-                    p.save(function(err, callback){
-                        if (err) console.log(err.message);
-                    });
-                    people.push(write);
-                }
+                addPersonToMovie(write, m, "written");
             });
             movie.Actors.forEach((act) => {
-                if(!people.includes(act)){
-                    p = new People({
-                        "name":act,
-                        "directed":[],
-                        "acted":[],
-                        "written":[],
-                        "freqCollab":[],
-                        "followers":[]
-                    });
-                    p.save(function(err, callback){
-                        if (err) console.log(err.message);
-                    });
-                    people.push(act);
-                }
+                addPersonToMovie(act, m, "acted");
             });
-            
+
+            allMovies.push(m);
         });
+
+        Movie.insertMany(allMovies, function(err){
+            if(err) console.log(err.message);
+        });
+        Person.insertMany(allPeople, function(err){
+            if(err) console.log(err.message);
+        });
+
     });
 });
+
+function addPersonToMovie(name, movie, role){
+    if(!people.hasOwnProperty(name)){
+        let p = new Person();
+        p._id = mongoose.Types.ObjectId();
+        p.name = name;
+        people[p.name] = p;
+        allPeople.push(p);
+    }
+    people[name][role].push(movie._id);
+    movie[translate[role]].push(people[name]._id);
+}
+let translate = {"directed": "director", "written": "writer", "acted": "actors"};
