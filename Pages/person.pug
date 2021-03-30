@@ -11,26 +11,26 @@ html
         
         div.people    
         
-            p #{pData.Name} 
+            p #{pData.name} 
 
             div.Wri
 
                 p Writer: 
-                    each val in pData.Written
+                    each val in pData.written
                             
                         ul
-                            a(href='/movies/'+val.id) #{val.title}  
+                            a(href='/movies/'+val) #{val}  
             
             div.Dir
                 p Director: 
-                    each val in pData.Directed
+                    each val in pData.directed
                         ul
-                            a(href='/movies/'+val.id) #{val.title} 
+                            a(href='/movies/'+val) #{val} 
             
             div.Act
                 p Actor: 
-                    each val in pData.Acted
+                    each val in pData.acted
                         ul
-                            a(href='/movies/'+val.id) #{val.title}
+                            a(href='/movies/'+val) #{val}
 
         
