@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const Person = require("../database-init/personModel");
 let router = express.Router();
 
+mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true});
+let db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "connection error"));
+
 router.get("/", queryParser);
 router.get("/", loadPeople);
 router.get("/", sendPeople);
@@ -70,11 +75,13 @@ function loadPeople(req, res, next){
             return;
         }
         res.people = result;
+        next();
+        return;
     });
-    next();
 }
 
 function sendPeople(req, res, next){
+    console.log(res.people);
     res.format({
         "text/html": () => {res.status(200).render("people.pug", {pData:res.people, qstring:req.qstring, current:req.query.page})},
         "application/json": () => {res.status(200).json(res.people)}
@@ -84,7 +91,7 @@ function sendPeople(req, res, next){
 
 function getPerson(req, res, next){
     let id = req.params.pID;
-    Product.findId(id, function(err, result){
+    Person.findById(id, function(err, result){
         if(err){
             console.log(err);
             res.status(500).send("Database error");
@@ -92,9 +99,10 @@ function getPerson(req, res, next){
         if(!result){
             res.status(404).send("Person not found");
         }
+        console.log(result);
         res.person = result;
+        next();
     });
-    next();
 }
 
 function sendPerson(req, res, next){
