@@ -1,11 +1,13 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const Person = require("../database-init/personModel");
 let router = express.Router();
 
 router.get("/", queryParser);
 router.get("/", loadPeople);
 router.get("/", sendPeople);
 
-router.get("/:name", getPerson, sendPerson);
+router.get("/:pID", getPerson, sendPerson);
 
 function queryParser(req, res, next){
     const MAX_PEOPLE = 50;
@@ -54,62 +56,21 @@ function queryParser(req, res, next){
 		params.push(param + "=" + req.query[param]);
 	}
 	req.qstring = params.join("&"); //TODO DO NOT FORGET
-
-    //parse booleans
-    try{
-        req.query.acted = Boolean(req.query.acted);
-    }
-    catch{
-        req.query.acted = false;
-    }
-    try{
-        req.query.directed = Boolean(req.query.acted);
-    }
-    catch{
-        req.query.directed = false;
-    }
-    try{
-        req.query.wrote = Boolean(req.query.acted);
-    }
-    catch{
-        req.query.wrote = false;
-    }
-
 	next();
 }
 
-function filterPeople(person, query){
-    let name = !query.name || person.name.toLowerCase().includes(query.name.toLowerCase());
-    let acted = !query.acted || person.acted.length != 0;
-    let wrote = !query.wrote || person.written.length != 0;
-    let directed = !query.directed || person.directed.length != 0;
-    let movie = !query.movie || 
-    person.acted.includes(query.movie) || 
-    person.directed.includes(query.movie) || 
-    person.directed.includes(query.movie);
-    return name && acted && wrote && directed && movie;
-}
-
 function loadPeople(req, res, next){
-    let results = [];
-    let people = [{
-        "name":"Neil Breen",
-        "acted":["Example movie"],
-        "written":["Example movie"],
-        "directed":["Example movie"],
-        "followers":["Example user"]
-    }]
-    let count = 0;
-    for(let i = 0; i < people.length; i++){
-        if(filterPeople(people[i], req.query)){
-            results.push(people[i]);
-            count++;
+    let startIndex = (req.query.page - 1) * req.query.limit;
+    let amount = req.query.limit;
+
+    Person.find().byName(req.name).limit(amount).skip(startIndex).exec(function(err, result){
+        if(err){
+            res.status(500).send("Database error");
+            console.log(err);
+            return;
         }
-        if(count == req.limit){
-            break;
-        }
-    }
-    res.people = results;
+        res.people = result;
+    });
     next();
 }
 
@@ -122,24 +83,17 @@ function sendPeople(req, res, next){
 }
 
 function getPerson(req, res, next){
-    let person = {  
-        Name: "Yogi Bear",  
-        freqCollaborators: { freqCollo: ["Jeff","Jiimy", "Todd"]}, 
-        Directed: [
-            {title: "Yogi", id:"678"}, 
-            {title: "Flash", id:"020"}, 
-            {title: "Big Foot", id:"999"}
-            ],
-        Written: [  
-            {title: "Bat Man", id:"678"}, 
-            {title: "Super Man", id:"020"}, 
-        ],
-        Acted: [
-            {title: "Clown", id:"678"}, 
-            {title: "Tooth Fairy", id:"020"}
-            ]
-    }  
-    res.person = person;
+    let id = req.params.pID;
+    Product.findId(id, function(err, result){
+        if(err){
+            console.log(err);
+            res.status(500).send("Database error");
+        }
+        if(!result){
+            res.status(404).send("Person not found");
+        }
+        res.person = result;
+    });
     next();
 }
 
