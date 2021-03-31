@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Person = require("../database-init/personModel");
+const Movie = require("../database-init/movieModel");
+const User = require("../database-init/userModel");
+const session = require("express-session");
 let router = express.Router();
 
 mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true});
@@ -8,11 +11,11 @@ let db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error"));
 
-router.get("/", queryParser);
-router.get("/", loadPeople);
-router.get("/", sendPeople);
-
+router.get("/", queryParser, loadPeople, sendPeople);
+router.post("/", express.json(), createPerson);
 router.get("/:pID", getPerson, sendPerson);
+router.put("/:pID/follow", addFollower);
+router.put("/:pID/unfollow", removeFollower);
 
 function queryParser(req, res, next){
     const MAX_PEOPLE = 50;
@@ -91,26 +94,167 @@ function sendPeople(req, res, next){
 
 function getPerson(req, res, next){
     let id = req.params.pID;
-    Person.findById(id, function(err, result){
+    Person.findById(id, function(err, person){
         if(err){
             console.log(err);
             res.status(500).send("Database error");
+            return;
         }
-        if(!result){
+        if(!person){
             res.status(404).send("Person not found");
         }
-        console.log(result);
-        res.person = result;
-        next();
+        Movie.find({_id: {$in: person.directed}}, function(err, directed){
+            if(err){
+                console.log(err);
+                res.status(500).send("Database error");
+                return;
+            }
+            Movie.find({_id: {$in: person.written}}, function(err, written){
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                Movie.find({_id: {$in: person.acted}}, function(err, acted){
+                    if(err){
+                        console.log(err);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                    res.person = person;
+                    res.directed = directed;
+                    res.written = written;
+                    res.acted = acted;
+                    next();
+                });
+            });
+        });
     });
 }
 
 function sendPerson(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("person.pug", {pData:res.person})},
+        "text/html": () => {res.status(200).render("person.pug", {
+            person:res.person, 
+            directed: res.directed,
+            written: res.written,
+            acted: res.acted
+        })},
         "application/json": () => {res.status(200).json(res.person)}
     });
     next();
 } 
+
+function createPerson(req, res, next){
+    let p = new Person();
+    p.name = req.body.name;
+    p.save(function(err, result){
+        if(err){
+            console.log(err.message);
+            return;
+        }
+        res.status(201).send(JSON.stringify(p));
+    });
+    next()
+}
+
+function addFollower(req, res, next){
+    if(!req.session.user){
+        res.status(403).send("Not logged in");
+        return;
+    }
+    let id = req.params.pID;
+    Person.findById(id, function(err, person){
+        if(err){
+            console.log(err);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!person){
+            res.status(400).send("Followee does not exist");
+            return;
+        }
+        User.findById(req.session.user._id, function(err, user){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            person.followers.push(user._id);
+            user.followingPeople.push(person._id);
+            person.save(function(err){
+                if(err){
+                    console.log(err.message);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                user.save(function(err){
+                    if(err){
+                        console.log(err.message);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                });
+            });
+            res.status(204).send("Followed successfully");
+            next();
+        });
+    });
+}
+
+function removeFollower(req, res, next){
+    if(!req.session.user){
+        res.status(403).send("Not logged in");
+        return;
+    }
+    let id = req.params.pID;
+    Person.findById(id, function(err, person){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!person){
+            res.status(400).send("Followee does not exist");
+            return;
+        }
+        User.findById(req.session.user._id, function(err, user){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            for(let i = 0; i < person.followers.length; ++i){
+                if(person.followers[i] == user._id){
+                    person.followers.splice(i, 1);
+                    break;
+                }
+            }
+            for(let i = 0; i < person.followers.length; ++i){
+                if(person.followers[i] == user._id){
+                    person.followers.splice(i, 1);
+                    break;
+                }
+            }
+            user.followingPeople.push(person._id);
+            person.save(function(err){
+                if(err){
+                    console.log(err.message);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                user.save(function(err){
+                    if(err){
+                        console.log(err.message);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                });
+            });
+            res.status(204).send("Followed successfully");
+            next();
+        });
+    });
+}
 
 module.exports = router;
