@@ -9,14 +9,19 @@ nav#navbar
                 a(href="/people") PEOPLE
             li#users
                 a(href="/users") USERS  
-            
-            li#addMovie 
-                a(href="/newMovie") ADD MOVIE
+
+            if loggedin
+                li#addMovie 
+                    a(href="/newMovie") ADD MOVIE
+                li#addPerson 
+                    a(href="/newMovie") ADD PERSON
     div#accountManagement
         ul 
-            li#login
-                a(href="/login") Sign In 
-            li#createaccount
-                a(href="/newAccount") Create Account
-            li#profile
-                a(href="/profile") Profile
+            if !loggedin
+                li#login
+                    a(href="/login") Sign In 
+                li#createaccount
+                    a(href="/newAccount") Create Account
+            else
+                li#profile
+                    a(href="/profile") Profile
