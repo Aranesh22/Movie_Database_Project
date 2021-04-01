@@ -6,11 +6,6 @@ const User = require("../database-init/userModel");
 const session = require("express-session");
 let router = express.Router();
 
-mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true});
-let db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error"));
-
 router.get("/", queryParser, loadPeople, sendPeople);
 router.post("/", express.json(), createPerson);
 router.get("/:pID", getPerson, sendPerson);
