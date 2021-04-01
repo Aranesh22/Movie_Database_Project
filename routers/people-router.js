@@ -251,7 +251,7 @@ function removeFollower(req, res, next){
                     }
                 });
             });
-            res.status(204).send("Followed successfully");
+            res.status(204).send("Unfollowed successfully");
             next();
         });
     });
