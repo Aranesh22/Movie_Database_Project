@@ -12,25 +12,25 @@ html
         div.people    
         
             p #{person.name} 
+            button(id="follow") Follow
+            if written.length > 0
+                div.Wri
 
-            div.Wri
+                    p Writer: 
+                        each val in written
+                                
+                            ul
+                                a(href='/movies/'+val*_id) #{val.title}  
+            if directed.length > 0
+                div.Dir
+                    p Director: 
+                        each val in directed
+                            ul
+                                a(href='/movies/'+val._id) #{val.title}     
+            if acted.length > 0
+                div.Act
+                    p Actor: 
+                        each val in acted
+                            ul
+                                a(href='/movies/'+val._id) #{val.title}
 
-                p Writer: 
-                    each val in written
-                            
-                        ul
-                            a(href='/movies/'+val*_id) #{val.title}  
-            
-            div.Dir
-                p Director: 
-                    each val in directed
-                        ul
-                            a(href='/movies/'+val._id) #{val.title} 
-            
-            div.Act
-                p Actor: 
-                    each val in acted
-                        ul
-                            a(href='/movies/'+val._id) #{val.title}
-
-        
