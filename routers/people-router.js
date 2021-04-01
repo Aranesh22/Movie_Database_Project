@@ -70,8 +70,8 @@ function queryParser(req, res, next){
 function loadPeople(req, res, next){
     let startIndex = (req.query.page - 1) * req.query.limit;
     let amount = req.query.limit;
-
-    Person.find().byName(req.name).limit(amount).skip(startIndex).exec(function(err, result){
+    
+    Person.find().byName(req.query.name).limit(amount).skip(startIndex).exec(function(err, result){
         if(err){
             res.status(500).send("Database error");
             console.log(err);
@@ -86,7 +86,11 @@ function loadPeople(req, res, next){
 function sendPeople(req, res, next){
     console.log(res.people);
     res.format({
-        "text/html": () => {res.status(200).render("people.pug", {pData:res.people, qstring:req.qstring, current:req.query.page})},
+        "text/html": () => {res.status(200).render("people.pug", {
+            pData:res.people, 
+            qstring:req.qstring, 
+            current:req.query.page
+        })},
         "application/json": () => {res.status(200).json(res.people)}
     });
     next();
@@ -182,6 +186,8 @@ function addFollower(req, res, next){
             }
             person.followers.push(user._id);
             user.followingPeople.push(person._id);
+            console.log(person);
+            console.log(user);
             person.save(function(err){
                 if(err){
                     console.log(err.message);
@@ -237,6 +243,8 @@ function removeFollower(req, res, next){
                 }
             }
             user.followingPeople.push(person._id);
+            console.log(person);
+            console.log(user);
             person.save(function(err){
                 if(err){
                     console.log(err.message);
