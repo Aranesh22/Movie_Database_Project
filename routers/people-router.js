@@ -158,8 +158,8 @@ function createPerson(req, res, next){
 }
 
 function addFollower(req, res, next){
-    if(!req.session.user){
-        res.status(403).send("Not logged in");
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
         return;
     }
     let id = req.params.pID;
@@ -204,8 +204,8 @@ function addFollower(req, res, next){
 }
 
 function removeFollower(req, res, next){
-    if(!req.session.user){
-        res.status(403).send("Not logged in");
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
         return;
     }
     let id = req.params.pID;
