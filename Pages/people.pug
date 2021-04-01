@@ -8,9 +8,9 @@ html
 
         include navbar
         div.search
-            h Search for Users...
+            h Search for People...
             br
-            input(type="text" placeholder="Name")
+            input#name(type="text" placeholder="Name")
             button(id="search") Search
 
         div.results
@@ -26,3 +26,4 @@ html
             - url = "http://localhost:3000/people?page=" + (current+1)
             - if(qstring.length > 0){ url += "&" + qstring; }
             a#next(href=url) Next
+    script(src="./js/people.js") 
