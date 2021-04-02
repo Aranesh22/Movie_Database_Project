@@ -173,7 +173,7 @@ function addFollower(req, res, next){
             res.status(400).send("Followee does not exist");
             return;
         }
-        User.findById(req.session.user._id, function(err, user){
+        User.findById(req.session._id, function(err, user){
             if(err){
                 console.log(err.message);
                 res.status(500).send("Database error");
@@ -219,7 +219,7 @@ function removeFollower(req, res, next){
             res.status(400).send("Followee does not exist");
             return;
         }
-        User.findById(req.session.user._id, function(err, user){
+        User.findById(req.session._id, function(err, user){
             if(err){
                 console.log(err.message);
                 res.status(500).send("Database error");
@@ -231,13 +231,12 @@ function removeFollower(req, res, next){
                     break;
                 }
             }
-            for(let i = 0; i < person.followers.length; ++i){
-                if(person.followers[i] == user._id){
-                    person.followers.splice(i, 1);
+            for(let i = 0; i < user.followingPeople.length; ++i){
+                if(user.followingPeople[i] == person._id){
+                    user.followingPeople.splice(i, 1);
                     break;
                 }
             }
-            user.followingPeople.push(person._id);
             console.log(person);
             console.log(user);
             person.save(function(err){
