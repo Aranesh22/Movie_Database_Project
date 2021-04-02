@@ -9,12 +9,10 @@ nav#navbar
                 a(href="/people") PEOPLE
             li#users
                 a(href="/users") USERS  
-
-            if loggedin
-                li#addMovie 
-                    a(href="/newMovie") ADD MOVIE
-                li#addPerson 
-                    a(href="/newMovie") ADD PERSON
+            li#addMovie 
+                a(href="/newMovie") ADD MOVIE
+            li#addPerson 
+                a(href="/newMovie") ADD PERSON
     div#accountManagement
         ul 
             if !loggedin
