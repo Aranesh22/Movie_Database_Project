@@ -18,16 +18,7 @@ app.use(express.static("public"));
 app.set("View engine", "pug");
 app.set("views", "Pages"); 
 
-app.get("/", (req, res) => {
-    let loggedin;
-    if(!req.session.loggedin){
-        loggedin = false;
-    }
-    else{
-        loggedin = true;
-    }
-    res.render("index.pug", {loggedin: loggedin});
-});
+app.get("/", (req, res) => {res.render("index.pug");});
 
 //users
 let usersRouter = require("./routers/users-router");
