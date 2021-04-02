@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 const session = require("express-session");
-app.use(session({secret: "choco-chip", cookie: {maxAge: 60000}}));
+app.use(session({secret: "choco-chip"}));
 app.use(function(req, res, next){
     console.log(req.session);
     next();
