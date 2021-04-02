@@ -19,4 +19,8 @@ let userSchema = Schema({
     }]
 });
 
+userSchema.query.byName = function(username){
+    return this.where({username: new RegExp(username, "i")});
+}
+
 module.exports = mongoose.model("User", userSchema);
