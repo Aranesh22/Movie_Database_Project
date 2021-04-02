@@ -17,51 +17,25 @@ html
 
             div.UserName 
                 p User Name #{user.username}
+                button(id="follow") Follow
 
             div.EmptyBox 
                 
-            div.FollowingPpl
+            div.people
                 p Following People: 
                     each val in user.followingPeople.followingPpl      
                         ul
                             a(href='/people/'+val) #{val} 
-                            button(type="button",id=val) FOLLOW   
-            
-            div.FollowingUser
-                p Following Users: 
-                    each val in user.followingUsers.followingUser  
-                        ul 
-                            a(href='/users/'+user.id) #{val} 
-                            button(type="button",id=val) FOLLOW  
-
-            div.Follower
-                p Followers: 
-                    each val in user.followers.followers 
-                        ul   
-                            a(href='/users/'+user.id) #{val} 
-                            button(type="button",id=val) FOLLOW    
-            
+                            button(type="button",id=val) FOLLOW                 
             div.WatchMovies
                 p Watched Movies: 
                     each val in user.watchList 
                         ul 
-                            a(href='/movies/'+val.id) #{val.title}  
-
-            div.RecMovies
-                p Recommended Movies: 
-                    each val in user.viewRecMovies 
-                        ul  
-                            a(href = '/movies/'+val.id) #{val.title}
-
-            div.Notifi
-                p Notififications: 
-                    each val in user.userNotifications.userNot 
-                        ul= val 
-            
+                            a(href='/movies/'+val.id) #{val.title}         
             div.Reviews
                 p Reviews: 
-                    each val in user.userReviews.uReviews 
-                        ul= val   
+                    each val in user.userReviews 
+                        h #{val.rating + " " + val.reviewSummary + " " + val.reviewText}  
                 
             
             
