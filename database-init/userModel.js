@@ -11,7 +11,12 @@ let userSchema = Schema({
     watchList: {type: [Schema.Types.ObjectId], ref: "Movie"},
     viewRecMovies: {type: [Schema.Types.ObjectId], ref: "Movie"},
     userNotifications: String,
-    userReviews: {type: [Schema.Types.ObjectId], ref: "Review"}
+    userReviews: [{
+        "username": String, 
+        "rating": Number, 
+        "reviewSummary": String,
+        "reviewText": String
+    }]
 });
 
 module.exports = mongoose.model("User", userSchema);
