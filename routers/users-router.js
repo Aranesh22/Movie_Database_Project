@@ -5,8 +5,11 @@ const People = require("../database-init/personModel");
 const User = require("../database-init/userModel");
 
 router.get("/", queryParser, loadUsers, sendUsers);
-
+router.post("/", express.json(), createUser);
 router.get("/:uID", getUser, sendUser);
+router.put("/:uID/follow", follow);
+router.put("/:uID/unfollow", unfollow);
+router.put("/accountType", toggle);
 
 function queryParser(req, res, next){
     const MAX_USERS = 50;
@@ -130,5 +133,151 @@ function sendUser(req, res, next){
    
     next();
 } 
+
+function createUser(req, res, next){
+    let u = new User();
+    u.username = req.body.username;
+    u.password = req.body.password;
+    u.contributingAccount = false;
+    p.save(function(err, result){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        res.status(201).send(JSON.stringify(p));
+    });
+    next()
+}
+
+function follow(req, res, next){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    let id = req.params.uID;
+    User.findById(id, function(err, followee){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!followee){
+            res.status(400).send("Followee does not exist");
+            return;
+        }
+        User.findById(req.session._id, function(err, follower){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            followee.followers.push(follower._id);
+            follower.followingUsers.push(follower._id);
+            console.log(followee);
+            console.log(follower);
+            followee.save(function(err){
+                if(err){
+                    console.log(err.message);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                follower.save(function(err){
+                    if(err){
+                        console.log(err.message);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                });
+            });
+            res.status(204).send("Followed successfully");
+            next();        
+        });
+    });
+}
+
+function unfollow(req, res, next){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    let id = req.params.uID;
+    User.findById(id, function(err, followee){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!followee){
+            res.status(400).send("Followee does not exist");
+            return;
+        }
+        User.findById(req.session._id, function(err, follower){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            for(let i = 0; i < followee.followers.length; ++i){
+                if(followee.followers[i] == follower._id){
+                    followee.followers.splice(i, 1);
+                    break;
+                }
+            }
+            for(let i = 0; i < follower.followingUsers.length; ++i){
+                if(follower.followingUsers[i] == followee._id){
+                    follower.followingUsers.splice(i, 1);
+                    break;
+                }
+            }
+            console.log(followee);
+            console.log(follower);
+            followee.save(function(err){
+                if(err){
+                    console.log(err.message);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                follower.save(function(err){
+                    if(err){
+                        console.log(err.message);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                });
+            });
+            res.status(204).send("Unfollowed successfully");
+            next();
+        });
+    });
+}
+
+function toggle(req, res, next){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    User.findById(req.session._id, function(err, result){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return; 
+        }
+        if(result.contributingAccount){
+            result.contributingAccount = false;
+        }
+        else{
+            result.contributingAccount = true;
+        }
+        result.save(function(err){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return; 
+            }
+            next();
+        });
+    });
+}
 
 module.exports = router;
