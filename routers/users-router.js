@@ -10,6 +10,11 @@ router.get("/:uID", getUser, sendUser);
 router.put("/:uID/follow", follow);
 router.put("/:uID/unfollow", unfollow);
 router.put("/accountType", toggle);
+router.get("/profile", getProfile, sendProfile);
+router.get("/:uID/userFollowing", getUserFollowers, sendUserFollowers);
+router.get("/:uID/peopleFollowing", getPeopleFollowers, sendPeopleFollowers);
+router.put("/login", login);
+router.put("/logout", logout);
 
 function queryParser(req, res, next){
     const MAX_USERS = 50;
@@ -66,7 +71,12 @@ function loadUsers(req, res, next){
     let startIndex = (req.query.page - 1) * req.query.limit;
     let amount = req.query.limit;
     
-    User.find().byName(req.query.username).limit(amount).skip(startIndex).exec(function(err, result){
+    let query = {} //does not include logged in user
+    if(req.session.loggedin){
+        query._id = {$ne: req.session._id};
+    }
+
+    User.find(query).byName(req.query.username).limit(amount).skip(startIndex).exec(function(err, result){
         if(err){
             res.status(500).send("Database error");
             console.log(err.message);
@@ -99,13 +109,17 @@ function getUser(req, res, next){
             console.log(err.message);
             return;
         }
+        if(!user){
+            res.status(404).send("User not found");
+            return;
+        }
         People.find({_id: {$in: user.followingPeople}}, function(err, people){ //find people user follows
             if(err){            
                 res.status(500).send("Database error");
                 console.log(err.message);
                 return;
             }
-            Movie.find({_id: {$in: user.watchedList}}, function(err, movies){ //find movies in users watched list
+            Movie.find({_id: {$in: user.watchList}}, function(err, movies){ //find movies in users watched list
                 if(err){            
                     res.status(500).send("Database error");
                     console.log(err.message);
@@ -118,7 +132,6 @@ function getUser(req, res, next){
             });
         });
     });
-    next();
 }
 
 function sendUser(req, res, next){
@@ -128,7 +141,7 @@ function sendUser(req, res, next){
             people: res.people,
             watchedMovies: res.movies,
         })},
-        "application/json": () => {res.status(200).json(res.user)}, 
+        "application/json": () => {res.status(200).json(res.user)}
     }); 
    
     next();
@@ -147,7 +160,7 @@ function createUser(req, res, next){
         }
         res.status(201).send(JSON.stringify(p));
     });
-    next()
+    next();
 }
 
 function follow(req, res, next){
@@ -277,6 +290,166 @@ function toggle(req, res, next){
             }
             next();
         });
+    });
+}
+
+function getProfile(req, res, next){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    User.findById(req.session._id, function(err, user){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!user){
+            res.status(404).send('User not found');
+            return;
+        }
+        People.find({_id: {$in: user.followingPeople}}, function(err, people){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            User.find({_id: {$in: user.followingUsers}}, function(err, users){
+                if(err){
+                    console.log(err.message);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                Movie.find({_id: {$in: user.watchList}}, function(err, watchedMovies){
+                    if(err){
+                        console.log(err.message);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                    Movies.find({_id: {$in: user.recMovies}}, function(err, recMovies){
+                        if(err){
+                            console.log(err.message);
+                            res.status(500).send("Database error");
+                            return;
+                        }
+                        res.user = user;
+                        res.people = people;
+                        res.users = users;
+                        res.watchedMovies = watchedMovies;
+                        res.recMovies = recMovies;
+                        next();
+                    });
+                });
+            });
+        });
+    });
+}
+
+function sendProfile(req, res, next){
+    res.format({
+        "text/html" : () => {
+            res.status(200).render("profile.pug", {
+                user: res.user,
+                people: res.people,
+                users: res.users,
+                watchedMovies: res.watchedMovies,
+                recMovies: res.recMovies
+            });
+        },
+        "application/json": () => {
+            let profile = {};
+            profile.user = res.user;
+            profile.people = res.people;
+            profile.users = res.users;
+            profile.watchedMovies = res.watchedMovies;
+            profile.recMovies = res.recMovies;
+            res.status(200).send(profile);
+        }
+    });
+    next();
+}
+
+function getUserFollowers(req, res, next){
+    let id = req.params.uID;
+    User.findById(id, function(err, user){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!user){
+            res.status(404).send(null);
+        }
+        User.find({_id: {$in: user.followingUsers}}, function(err, users){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            res.users = users;
+            next();
+        });
+    });
+}
+
+function sendUserFollowers(req, res, next){
+    res.status(200).send(res.users);
+    next();
+}
+
+function getPeopleFollowers(req, res, next){
+    let id = req.params.uID;
+    User.findById(id, function(err, user){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!user){
+            res.status(404).send(null);
+        }
+        People.find({_id: {$in: user.followingPeople}}, function(err, people){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            res.people = people;
+            next();
+        });
+    });
+}
+
+function sendPeopleFollowers(req, res, next){
+    res.status(200).send(res.people);
+    next();
+}
+
+function login(req, res, next){
+    if(req.session.loggedin){
+        res.status(401).send("Already logged in");
+    }
+    User.find({username: req.body.username}, function(err, result){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!result){
+            res.status(401).send("Unsuccessful login");
+            return;
+        }
+        if(result.password == req.body.password){
+            req.session.loggedin = true;
+            req.session.username = result.username;
+            req.session._id = result._id;
+            req.session.contributingAccount = result.contributingAccount;
+            res.status(204).send("Successful login");
+            res.redirect("/");
+        }
+        else{
+            res.status(401).send("Unsuccessful login");
+        }
     });
 }
 
