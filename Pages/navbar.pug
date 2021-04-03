@@ -15,12 +15,11 @@ nav#navbar
                 a(href="/newMovie") ADD PERSON
     div#accountManagement
         ul 
-            if !loggedin
-                li#login
-                    a(href="/login") Sign In 
-                li#createaccount
-                    a(href="/newAccount") Create Account
-            else
-                li#profile
-                    a(href="/profile") Profile
-                    a(href="/logout") Log Out
+            li#login
+                a(href="/") Sign In 
+            li#createaccount
+                a(href="/") Create Account
+            li#profile
+                a(href="/") Profile
+                a(href="/") Log Out
+    script(src="./js/navbar.js") 
