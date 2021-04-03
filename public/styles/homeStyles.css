@@ -23,6 +23,14 @@ body{
     padding: 0;
 }
 
+#accountManagement > ul > #login, #accountManagement > ul > #createaccount{
+    visibility: hidden;
+}
+
+#accountManagement > ul > #profile{
+    visibility: hidden;
+}
+
 li a{
     text-decoration: none;
     font-size: medium;
