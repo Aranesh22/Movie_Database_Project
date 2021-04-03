@@ -445,12 +445,27 @@ function login(req, res, next){
             req.session._id = result._id;
             req.session.contributingAccount = result.contributingAccount;
             res.status(204).send("Successful login");
-            res.redirect("/");
+            res.redirect("http://localhost:3000");
         }
         else{
             res.status(401).send("Unsuccessful login");
         }
+        next();
     });
+}
+
+function logout(req, res, next){
+    if(req.session.loggedin){
+        req.session.loggedin = false;
+        req.session.username = undefined;
+        req.session._id = undefined;
+        req.session.contributingAccount = false;
+    }
+    else{
+        res.status(401).send("Unsucsessful logout");
+    }
+    res.status(204).send("Successful logout");
+    res.redirect("http://localhost:3000");
 }
 
 module.exports = router;
