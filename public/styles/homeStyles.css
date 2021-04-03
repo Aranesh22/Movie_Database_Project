@@ -24,11 +24,11 @@ body{
 }
 
 #accountManagement > ul > #login, #accountManagement > ul > #createaccount{
-    visibility: hidden;
+    display: none;
 }
 
 #accountManagement > ul > #profile{
-    visibility: hidden;
+    display: none;
 }
 
 li a{
