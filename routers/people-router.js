@@ -225,18 +225,9 @@ function removeFollower(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
-            for(let i = 0; i < person.followers.length; ++i){
-                if(person.followers[i] == user._id){
-                    person.followers.splice(i, 1);
-                    break;
-                }
-            }
-            for(let i = 0; i < user.followingPeople.length; ++i){
-                if(user.followingPeople[i] == person._id){
-                    user.followingPeople.splice(i, 1);
-                    break;
-                }
-            }
+            Person.updateOne({_id: person._id}, {$pullAll: {followers: [user._id]}});
+            User.updateOne({_id: user._id}, {$pullAll: {followingPeople: [person._id]}});
+
             console.log(person);
             console.log(user);
             person.save(function(err){
