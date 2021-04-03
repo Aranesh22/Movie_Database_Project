@@ -32,39 +32,10 @@ app.use("/movies", movierouter);
 let peopleRouter = require("./routers/people-router");
 app.use("/people", peopleRouter);
 
-//profile
-app.get("/profile", (req, res, next) =>{
-    let profile = {
-        "id":1, 
-        username:"bumbleboy", 
-        password:"scoopme", 
-        contributingAccount:false, 
-        followingPeople:[], 
-        followingUsers:[], 
-        followers:[],
-        watchList:[],
-        viewRecMovies:[],
-        userNotifications:[],
-        userReviews:[]
-    }
-    res.status(200).render("profile.pug", {profile: profile}); 
-});
-
-//add function
-app.get("/newMovie", (req, res, next) => {
-    res.status(200).render("addMovie.pug");
-});
-
-app.get("/newPerson", (req, res, next) => {
-    res.status(200).render("addPerson.pug");
-});
-
-app.get("/newAccount", (req, res, next) => {
-    res.status(200).render("createAccount.pug");
-}); 
-
-app.get("/login", (req, res, next) => {
-    res.status(200).render("login.pug");
+//getCookie
+app.get("/session", (req, res) => {
+    console.log(req.session);
+    res.status(200).send(req.session);
 });
 
 app.listen(3000);
