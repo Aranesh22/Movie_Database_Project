@@ -9,8 +9,8 @@ let userSchema = Schema({
     followingUsers: {type: [Schema.Types.ObjectId], ref: "User"},
     followers: {type: [Schema.Types.ObjectId], ref: "User"},
     watchList: {type: [Schema.Types.ObjectId], ref: "Movie"},
-    viewRecMovies: {type: [Schema.Types.ObjectId], ref: "Movie"},
-    userNotifications: String,
+    recMovies: {type: [Schema.Types.ObjectId], ref: "Movie"},
+    userNotifications: [String],
     userReviews: [{
         "username": String, 
         "rating": Number, 
