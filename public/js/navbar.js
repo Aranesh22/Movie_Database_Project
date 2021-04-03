@@ -8,11 +8,11 @@ function updateNavbar(){
             let cookie = JSON.parse(this.responseText);
             console.log(!cookie.loggedin);
             if(!cookie.loggedin){
-                document.getElementById("profile").style.visibility = "visible";
+                document.getElementById("login").style.display = "inline";
+                document.getElementById("createaccount").style.display = "inline";
             }
             else{
-                document.getElementById("login").style.visibility = "visible";
-                document.getElementById("createaccount").style.visibility = "visible";
+                document.getElementById("profile").style.display = "inline";
             }
         }
     }
