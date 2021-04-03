@@ -148,19 +148,30 @@ function sendUser(req, res, next){
 } 
 
 function createUser(req, res, next){
-    let u = new User();
-    u.username = req.body.username;
-    u.password = req.body.password;
-    u.contributingAccount = false;
-    p.save(function(err, result){
+    User.find({username: req.body.username}, function(err, result){
         if(err){
             console.log(err.message);
             res.status(500).send("Database error");
             return;
         }
-        res.status(201).send(JSON.stringify(p));
+        if(result){
+            res.status(403).send(null);
+            return;
+        }
+        let u = new User();
+        u.username = req.body.username;
+        u.password = req.body.password;
+        u.contributingAccount = false;
+        p.save(function(err, result){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            res.status(201).send(result);
+        });
+        next();
     });
-    next();
 }
 
 function follow(req, res, next){
@@ -231,18 +242,9 @@ function unfollow(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
-            for(let i = 0; i < followee.followers.length; ++i){
-                if(followee.followers[i] == follower._id){
-                    followee.followers.splice(i, 1);
-                    break;
-                }
-            }
-            for(let i = 0; i < follower.followingUsers.length; ++i){
-                if(follower.followingUsers[i] == followee._id){
-                    follower.followingUsers.splice(i, 1);
-                    break;
-                }
-            }
+            User.updateOne({_id: followee._id}, {$pullAll: {followers: [follower._id]}});
+            User.updateOne({_id: follower._id}, {$pullAll: {followingUsers: [followee._id]}});
+
             console.log(followee);
             console.log(follower);
             followee.save(function(err){
@@ -445,7 +447,6 @@ function login(req, res, next){
             req.session._id = result._id;
             req.session.contributingAccount = result.contributingAccount;
             res.status(204).send("Successful login");
-            res.redirect("http://localhost:3000");
         }
         else{
             res.status(401).send("Unsuccessful login");
@@ -462,10 +463,9 @@ function logout(req, res, next){
         req.session.contributingAccount = false;
     }
     else{
-        res.status(401).send("Unsucsessful logout");
+        res.status(401).send("Unsuccessful logout");
     }
     res.status(204).send("Successful logout");
-    res.redirect("http://localhost:3000");
 }
 
 module.exports = router;
