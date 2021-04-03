@@ -20,7 +20,7 @@ html
                 div.PplFll
                     p1 People You Follow 
                         ul 
-                            each val, index in ['Kevin','Kevin 2','Kevin 3']  
+                            each person in people
                                 ul
                                     a(href='/people/'+val id=val) #{val} 
                                     button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
@@ -29,7 +29,7 @@ html
                 div.UserFll
                     p1 Users You Follow   
                         ul 
-                            each val, index in ['Jack', 'Jill', 'Joe'] 
+                            each user in users
                                 ul 
                                     a(href='/users/'+val id=val) #{val} 
                                     button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
@@ -37,19 +37,19 @@ html
                 div.MovieWatch
                     p1 Movies You Watched  
                         ul 
-                            each val, index in ['Scooby Dooby Do','Big Foot','Little Foot']  
+                            each movie in watchedMovies
                                 a(href='/movies/'+val id=val) #{val} 
                                 ul= val
 
-                div.ReccMovies
+                div.RecMovies
                     p1 Recomended Movies 
                         ul 
-                            each val, index in ['Petter Piper','Jack And Jill','Medium Foot'] 
+                            each movie in recMovies 
                                 ul= val  
 
                 div.Noti   
                     p1 Notfication 
                         ul 
-                            each val, index in ["Bill Joe Added a Review","Chris Evans is a new movie"] 
+                            each notification in user.userNotifications 
                                 ul= val
 
