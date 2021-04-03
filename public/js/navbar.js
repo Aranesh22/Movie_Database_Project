@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", updateNavbar);
+window.onload = updateNavbar;
 
 function updateNavbar(){
     let req = new XMLHttpRequest();
