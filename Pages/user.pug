@@ -16,20 +16,20 @@ html
 
 
             div.UserName 
-                p User Name #{user.username}
+                p Username: #{user.username}
                 button(id="follow") Follow
 
             div.EmptyBox 
                 
             div.people
                 p Following People: 
-                    each val in user.followingPeople.followingPpl      
+                    each val in people      
                         ul
                             a(href='/people/'+val) #{val} 
                             button(type="button",id=val) FOLLOW                 
             div.WatchMovies
                 p Watched Movies: 
-                    each val in user.watchList 
+                    each val in watchedMovies 
                         ul 
                             a(href='/movies/'+val.id) #{val.title}         
             div.Reviews
