@@ -16,6 +16,9 @@ function login(){
             console.log(this.responseText);
             window.location.replace("http://localhost:3000");
         }
+        if(this.readyState == 4 && this.status == 401){
+            alert("Username/password is incorrect");
+        }
     }
     req.open("PUT", "http://localhost:3000/account/login");
     req.setRequestHeader("Content-Type", "application/json");
