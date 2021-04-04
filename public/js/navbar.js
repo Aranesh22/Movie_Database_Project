@@ -1,4 +1,5 @@
 window.onload = updateNavbar;
+document.getElementById("logout").onclick = logout;
 
 function updateNavbar(){
     let req = new XMLHttpRequest();
@@ -18,4 +19,15 @@ function updateNavbar(){
     }
     req.open("GET", "http://localhost:3000/session");
     req.send();
+}
+
+function logout(){
+    let req = new XMLHttpRequest();
+    req.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 204){
+            console.log(this.responseText);
+        }
+    }
+    req.open("PUT", "http://localhost:3000/account/logout");
+    req.send(); 
 }
