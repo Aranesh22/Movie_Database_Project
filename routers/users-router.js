@@ -14,7 +14,6 @@ router.get("/profile", getProfile, sendProfile);
 router.get("/:uID/userFollowing", getUserFollowers, sendUserFollowers);
 router.get("/:uID/peopleFollowing", getPeopleFollowers, sendPeopleFollowers);
 router.put("/login", login);
-router.get("/login", loginPage)
 router.put("/logout", logout);
 
 function queryParser(req, res, next){
@@ -455,10 +454,6 @@ function login(req, res, next){
         }
         next();
     });
-}
-
-function loginPage(req, res){
-    res.status(200).render("login.pug");
 }
 
 function logout(req, res, next){
