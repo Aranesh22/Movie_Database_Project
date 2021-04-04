@@ -1,7 +1,7 @@
 html
     head
          
-        title Create Account 
+        title Login 
     style 
         include ../public/styles/homeStyles.css
         include ../public/styles/login.css
@@ -12,11 +12,11 @@ html
         div#info
             h Sign In
             p Enter Username:  
-                input(type="text" placeholder="Username")
+                input#username(type="text" placeholder="Username")
         
             p Enter Password: 
-                input(type="text" placeholder="Password")
+                input#password(type="text" placeholder="Password")
             button#LoginB(type="button") Log In
-    
+    script(src="./js/login.js") 
 
 
