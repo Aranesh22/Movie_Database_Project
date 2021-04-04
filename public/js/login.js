@@ -7,7 +7,7 @@ function login(){
     let loginInfo = {};
     loginInfo.username = username;
     loginInfo.password = password;
-    
+
     console.log("connected");
 
     let req = new XMLHttpRequest();
@@ -17,7 +17,7 @@ function login(){
             window.location.replace("http://localhost:3000");
         }
     }
-    req.open("PUT", "http://localhost:3000/users/login");
+    req.open("PUT", "http://localhost:3000/account/login");
     req.setRequestHeader("Content-Type", "application/json");
     req.send(JSON.stringify(loginInfo));
 }
