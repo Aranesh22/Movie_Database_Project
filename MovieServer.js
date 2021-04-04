@@ -42,5 +42,9 @@ app.get("/createAccount", (req, res) => {
     res.render("createAccount.pug");
 });
 
+app.get("/login", (req, res) => {
+    res.render("login.pug");
+});
+
 app.listen(3000);
 console.log("Server listening at http://localhost:3000");
