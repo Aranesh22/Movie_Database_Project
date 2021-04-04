@@ -14,6 +14,7 @@ router.get("/profile", getProfile, sendProfile);
 router.get("/:uID/userFollowing", getUserFollowers, sendUserFollowers);
 router.get("/:uID/peopleFollowing", getPeopleFollowers, sendPeopleFollowers);
 router.put("/login", login);
+router.get("/login", loginPage)
 router.put("/logout", logout);
 
 function queryParser(req, res, next){
@@ -148,13 +149,14 @@ function sendUser(req, res, next){
 } 
 
 function createUser(req, res, next){
-    User.find({username: req.body.username}, function(err, result){
+    console.log(req.body);
+    User.findOne({username: req.body.username}, function(err, result){
         if(err){
             console.log(err.message);
             res.status(500).send("Database error");
             return;
         }
-        if(result){
+        if(result || req.body.username == "" || req.body.password == ""){
             res.status(403).send(null);
             return;
         }
@@ -162,15 +164,15 @@ function createUser(req, res, next){
         u.username = req.body.username;
         u.password = req.body.password;
         u.contributingAccount = false;
-        p.save(function(err, result){
+        u.save(function(err, result){
             if(err){
                 console.log(err.message);
                 res.status(500).send("Database error");
                 return;
             }
-            res.status(201).send(result);
+            res.status(201).json(result);
+            next();
         });
-        next();
     });
 }
 
@@ -365,7 +367,7 @@ function sendProfile(req, res, next){
             profile.users = res.users;
             profile.watchedMovies = res.watchedMovies;
             profile.recMovies = res.recMovies;
-            res.status(200).send(profile);
+            res.status(200).json(profile);
         }
     });
     next();
@@ -453,6 +455,10 @@ function login(req, res, next){
         }
         next();
     });
+}
+
+function loginPage(req, res){
+    res.status(200).render("login.pug");
 }
 
 function logout(req, res, next){
