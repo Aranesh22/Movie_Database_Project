@@ -32,6 +32,10 @@ app.use("/movies", movierouter);
 let peopleRouter = require("./routers/people-router");
 app.use("/people", peopleRouter);
 
+//account
+let accountRouter = require("./routers/account-router");
+app.use("/account", accountRouter);
+
 //getCookie
 app.get("/session", (req, res) => {
     console.log(req.session);
