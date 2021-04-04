@@ -13,7 +13,7 @@ router.put("/accountType", toggle);
 router.get("/profile", getProfile, sendProfile);
 router.get("/:uID/userFollowing", getUserFollowers, sendUserFollowers);
 router.get("/:uID/peopleFollowing", getPeopleFollowers, sendPeopleFollowers);
-router.put("/login", login);
+router.put("/login", express.json(), login);
 router.put("/logout", logout);
 
 function queryParser(req, res, next){
@@ -432,17 +432,21 @@ function login(req, res, next){
     if(req.session.loggedin){
         res.status(401).send("Already logged in");
     }
-    User.find({username: req.body.username}, function(err, result){
+    User.findOne({username: req.body.username}, function(err, result){
         if(err){
             console.log(err.message);
             res.status(500).send("Database error");
             return;
         }
         if(!result){
-            res.status(401).send("Unsuccessful login");
+            console.log("No user");
+            res.status(401).send("User does not exist");
             return;
         }
+        console.log(result);
+        console.log(result.password + " " + req.body.password);
         if(result.password == req.body.password){
+            console.log("loggedin");
             req.session.loggedin = true;
             req.session.username = result.username;
             req.session._id = result._id;
@@ -450,7 +454,8 @@ function login(req, res, next){
             res.status(204).send("Successful login");
         }
         else{
-            res.status(401).send("Unsuccessful login");
+            console.log("incorrect password");
+            res.status(401).send("Incorrect password");
         }
         next();
     });
@@ -464,7 +469,7 @@ function logout(req, res, next){
         req.session.contributingAccount = false;
     }
     else{
-        res.status(401).send("Unsuccessful logout");
+        res.status(401).send("Not loggedin");
     }
     res.status(204).send("Successful logout");
 }
