@@ -14,7 +14,7 @@ let db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error"));
 
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.set("View engine", "pug");
 app.set("views", "Pages"); 
 
@@ -40,14 +40,6 @@ app.use("/account", accountRouter);
 app.get("/session", (req, res) => {
     console.log(req.session);
     res.status(200).send(req.session);
-});
-
-app.get("/createAccount", (req, res) => {
-    res.render("createAccount.pug");
-});
-
-app.get("/login", (req, res) => {
-    res.render("login.pug");
 });
 
 app.listen(3000);
