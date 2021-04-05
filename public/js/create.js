@@ -14,7 +14,7 @@ function createAccount(){
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 201){
             console.log(this.responseText);
-            window.location.replace("http://localhost:3000/login");
+            window.location.replace("http://localhost:3000/account/login");
         }
         if(this.readyState == 4 && this.status == 403){
             alert("Username unavailable");
