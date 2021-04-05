@@ -119,7 +119,7 @@ function login(req, res, next){
     if(req.session.loggedin){
         res.status(401).send("Already logged in");
     }
-    User.findOne({username: req.body.username}, function(err, result){
+    User.findOne().byName(req.body.username).exec(function(err, result){
         if(err){
             console.log(err.message);
             res.status(500).send("Database error");
