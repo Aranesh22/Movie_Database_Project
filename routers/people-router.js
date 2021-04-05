@@ -1,9 +1,7 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const Person = require("../database-init/personModel");
 const Movie = require("../database-init/movieModel");
 const User = require("../database-init/userModel");
-const session = require("express-session");
 let router = express.Router();
 
 router.get("/", queryParser, loadPeople, sendPeople);
