@@ -145,7 +145,7 @@ function sendUser(req, res, next){
 
 function createUser(req, res, next){
     console.log(req.body);
-    User.findOne({username: req.body.username}, function(err, result){
+    User.findOne().byName(req.body.username).exec(function(err, result){
         if(err){
             console.log(err.message);
             res.status(500).send("Database error");
