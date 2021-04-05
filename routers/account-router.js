@@ -8,6 +8,8 @@ router.put("/accountType", toggle);
 router.get("/profile", getProfile, sendProfile);
 router.put("/login", express.json(), login);
 router.put("/logout", logout);
+router.get("/login", loginPage);
+router.get("/createAccount", createAccount);
 
 function toggle(req, res, next){
     if(!req.session.loggedin){
@@ -159,5 +161,13 @@ function logout(req, res, next){
     res.status(204).send("Successful logout");
     next();
 }
+
+function createAccount(req, res){
+    res.render("createAccount.pug");
+};
+
+function loginPage(req, res){
+    res.render("login.pug");
+};
 
 module.exports = router;
