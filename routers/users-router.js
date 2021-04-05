@@ -1,7 +1,7 @@
 const express = require("express");
 let router = express.Router();
 const Movie = require("../database-init/movieModel");
-const People = require("../database-init/personModel");
+const Person = require("../database-init/personModel");
 const User = require("../database-init/userModel");
 
 router.get("/", queryParser, loadUsers, sendUsers);
@@ -109,7 +109,7 @@ function getUser(req, res, next){
             res.status(404).send("User not found");
             return;
         }
-        People.find({_id: {$in: user.followingPeople}}, function(err, people){ //find people user follows
+        Person.find({_id: {$in: user.followingPeople}}, function(err, people){ //find people user follows
             if(err){            
                 res.status(500).send("Database error");
                 console.log(err.message);
@@ -303,7 +303,7 @@ function getPeopleFollowers(req, res, next){
         if(!user){
             res.status(404).send(null);
         }
-        People.find({_id: {$in: user.followingPeople}}, function(err, people){
+        Person.find({_id: {$in: user.followingPeople}}, function(err, people){
             if(err){
                 console.log(err.message);
                 res.status(500).send("Database error");
