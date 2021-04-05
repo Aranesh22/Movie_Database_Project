@@ -4,6 +4,11 @@ function login(){
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
+    if(username == "" || password == ""){
+        alert("Both fields must be filled");
+        return;
+    }
+
     let loginInfo = {};
     loginInfo.username = username;
     loginInfo.password = password;
@@ -17,7 +22,7 @@ function login(){
             window.location.replace("http://localhost:3000");
         }
         if(this.readyState == 4 && this.status == 401){
-            alert("Username/password is incorrect");
+            alert(this.responseText);
         }
     }
     req.open("PUT", "http://localhost:3000/account/login");
