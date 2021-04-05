@@ -6,6 +6,7 @@ let router = express.Router();
 
 router.get("/", queryParser, loadPeople, sendPeople);
 router.post("/", express.json(), createPerson);
+router.get("/addPerson", addPersonPage);
 router.get("/:pID", getPerson, sendPerson);
 router.put("/:pID/follow", addFollower);
 router.put("/:pID/unfollow", removeFollower);
@@ -143,16 +144,30 @@ function sendPerson(req, res, next){
 } 
 
 function createPerson(req, res, next){
-    let p = new Person();
-    p.name = req.body.name;
-    p.save(function(err, result){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    Person.findOne({name: req.body.name}, function(err, result){
         if(err){
             console.log(err.message);
+            res.status(500).send("Data base error");
+        }
+        if(result){
+            res.status(409).send("Person already exists");
             return;
         }
-        res.status(201).send(JSON.stringify(p));
+        let p = new Person();
+        p.name = req.body.name;
+        p.save(function(err){
+            if(err){
+                console.log(err.message);
+                return;
+            }
+            res.status(201).send(req.body.name + " was added");
+        });
+        next()
     });
-    next()
 }
 
 function addFollower(req, res, next){
@@ -246,6 +261,12 @@ function removeFollower(req, res, next){
             next();
         });
     });
+}
+
+function addPersonPage(req, res){
+    if(!req.session.loggedin) res.redirect("http://localhost:3000/account/login");
+    else if(!req.session.contributingAccount) res.redirect("http://localhost:3000/account/profile");
+    else res.status(200).render("addPerson.pug");
 }
 
 module.exports = router;
