@@ -148,7 +148,7 @@ function createPerson(req, res, next){
         res.status(401).send("Not logged in");
         return;
     }
-    Person.findOne({name: req.body.name}, function(err, result){
+    Person.findOne().byName(req.body.name).exec(function(err, result){
         if(err){
             console.log(err.message);
             res.status(500).send("Data base error");
