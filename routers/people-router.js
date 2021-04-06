@@ -265,7 +265,7 @@ function removeFollower(req, res, next){
 
 function addPersonPage(req, res){
     if(!req.session.loggedin) res.redirect("http://localhost:3000/account/login");
-    else if(!req.session.contributingAccount) res.redirect("http://localhost:3000/account/profile");
+    else if(!req.session.contributingAccount)res.redirect("http://localhost:3000/account/profile");
     else res.status(200).render("addPerson.pug");
 }
 
