@@ -28,14 +28,18 @@ function toggle(req, res, next){
         else{
             result.contributingAccount = true;
         }
+        req.session.contributingAccount = result.contributingAccount;
+        console.log("Contributing?");
+        console.log(req.session.contributingAccount);
         result.save(function(err){
             if(err){
                 console.log(err.message);
                 res.status(500).send("Database error");
                 return; 
             }
-            next();
         });
+        res.status(204).send("Successfully toggled account to " + result.contributingAccount);
+        next();
     });
 }
 
