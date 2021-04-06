@@ -14,8 +14,10 @@ html
 
                 div.AccountType 
                     h2 Account Type   
-                    button(type="button" id="Contributor") Contributor  
-                    button(type="button" id="Regular") Regular  
+                    if user.contributingAccount
+                        button(type="button" id="toggle") Regular  
+                    else 
+                        button(type="button" id="toggle") Contributor  
 
                 div.PplFll
                     p1 People You Follow 
@@ -52,4 +54,4 @@ html
                         ul 
                             each notification in user.userNotifications 
                                 ul= val
-
+    script(src="/js/profile.js") 
