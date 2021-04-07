@@ -24,7 +24,7 @@ html
                         ul 
                             each person in people
                                 ul
-                                    a(href='/people/'+val id=val) #{val} 
+                                    a(href='/people/'+ person._id) #{person.name} 
                                     button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
                                             
                         
