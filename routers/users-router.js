@@ -87,11 +87,17 @@ function loadUsers(req, res, next){
 function sendUsers(req, res, next){
     console.log(res.users);
     res.format({
-        "text/html": () => {res.status(200).render("users.pug", {
-            users:res.users, 
-            qstring:req.qstring, 
-            current:req.query.page
-        })},
+        "text/html": () => {
+            if(!req.session.loggedin){
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            }
+            res.status(200).render("users.pug", {
+                users:res.users, 
+                qstring:req.qstring, 
+                current:req.query.page
+            }
+        )},
         "application/json": () => {res.status(200).json(res.users)}
     });
     next();
@@ -132,11 +138,17 @@ function getUser(req, res, next){
 
 function sendUser(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("user.pug", {
-            user:res.user,
-            people: res.people,
-            watchedMovies: res.movies,
-        })},
+        "text/html": () => {
+            if(!req.session.loggedin){
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            }
+            res.status(200).render("user.pug", {
+                user:res.user,
+                people: res.people,
+                watchedMovies: res.movies,
+            }
+        )},
         "application/json": () => {res.status(200).json(res.user)}
     }); 
    
@@ -193,8 +205,15 @@ function follow(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
+
+            if(follower.followingUsers.includes(followee._id)){
+                res.status(403).send("Already following user");
+                return;
+            }
+            
             followee.followers.push(follower._id);
             follower.followingUsers.push(follower._id);
+
             console.log(followee);
             console.log(follower);
             followee.save(function(err){
@@ -239,8 +258,14 @@ function unfollow(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
-            User.updateOne({_id: followee._id}, {$pullAll: {followers: [follower._id]}});
-            User.updateOne({_id: follower._id}, {$pullAll: {followingUsers: [followee._id]}});
+
+            if(!follower.followingUsers.includes(followee._id)){
+                res.status(403).send("Not following user");
+                return;
+            }
+
+            followee.followers.pull(follower._id);
+            follower.followingUsers.pull(followee._id);
 
             console.log(followee);
             console.log(follower);
