@@ -80,11 +80,17 @@ function loadPeople(req, res, next){
 function sendPeople(req, res, next){
     console.log(res.people);
     res.format({
-        "text/html": () => {res.status(200).render("people.pug", {
-            pData:res.people, 
-            qstring:req.qstring, 
-            current:req.query.page
-        })},
+        "text/html": () => {
+            if(!req.session.loggedin){
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            }
+            res.status(200).render("people.pug", {
+                pData:res.people, 
+                qstring:req.qstring, 
+                current:req.query.page
+            }
+        )},
         "application/json": () => {res.status(200).json(res.people)}
     });
     next();
@@ -119,11 +125,24 @@ function getPerson(req, res, next){
                         res.status(500).send("Database error");
                         return;
                     }
-                    res.person = person;
-                    res.directed = directed;
-                    res.written = written;
-                    res.acted = acted;
-                    next();
+                    User.findById(req.session._id, function(err, user){
+                        if(err){
+                            console.log(err);
+                            res.status(500).send("Database error");
+                            return;
+                        }
+                        if(user.followingPeople.includes(id)){
+                            res.following = true;
+                        }
+                        else{
+                            res.following = false;
+                        }
+                        res.person = person;
+                        res.directed = directed;
+                        res.written = written;
+                        res.acted = acted;
+                        next();
+                    });
                 });
             });
         });
@@ -132,12 +151,19 @@ function getPerson(req, res, next){
 
 function sendPerson(req, res, next){
     res.format({
-        "text/html": () => {res.status(200).render("person.pug", {
-            person:res.person, 
-            directed: res.directed,
-            written: res.written,
-            acted: res.acted
-        })},
+        "text/html": () => {
+            if(!req.session.loggedin){
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            }
+            res.status(200).render("person.pug", {
+                person:res.person, 
+                directed: res.directed,
+                written: res.written,
+                acted: res.acted,
+                following: res.following
+            }
+        )},
         "application/json": () => {res.status(200).json(res.person)}
     });
     next();
@@ -192,10 +218,18 @@ function addFollower(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
+
+            if(user.followingPeople.includes(person._id)){
+                res.status(403).send("Already following person");
+                return;
+            }
+
             person.followers.push(user._id);
             user.followingPeople.push(person._id);
+
             console.log(person);
             console.log(user);
+
             person.save(function(err){
                 if(err){
                     console.log(err.message);
@@ -238,8 +272,14 @@ function removeFollower(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
-            Person.updateOne({_id: person._id}, {$pullAll: {followers: [user._id]}});
-            User.updateOne({_id: user._id}, {$pullAll: {followingPeople: [person._id]}});
+
+            if(!user.followingPeople.includes(person._id)){
+                res.status(403).send("Not following person");
+                return;
+            }
+
+            person.followers.pull(user._id);
+            user.followingPeople.pull(person._id);
 
             console.log(person);
             console.log(user);
@@ -264,8 +304,8 @@ function removeFollower(req, res, next){
 }
 
 function addPersonPage(req, res){
-    if(!req.session.loggedin) res.redirect("http://localhost:3000/account/login");
-    else if(!req.session.contributingAccount)res.redirect("http://localhost:3000/account/profile");
+    if(!req.session.loggedin) res.status(401).redirect("http://localhost:3000/account/login");
+    else if(!req.session.contributingAccount)res.status(401).redirect("http://localhost:3000/account/profile");
     else res.status(200).render("addPerson.pug");
 }
 
