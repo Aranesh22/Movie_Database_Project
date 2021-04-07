@@ -5,7 +5,7 @@ function toggleAccount(){
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 204){
             console.log(this.responseText);
-            window.location.replace("http://localhost:3000/account/profile");
+            location.reload();
         }
     }
     req.open("PUT", "http://localhost:3000/account/accountType");
