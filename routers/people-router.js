@@ -178,6 +178,7 @@ function createPerson(req, res, next){
         if(err){
             console.log(err.message);
             res.status(500).send("Data base error");
+            return;
         }
         if(result){
             res.status(409).send("Person already exists");
@@ -185,14 +186,14 @@ function createPerson(req, res, next){
         }
         let p = new Person();
         p.name = req.body.name;
-        p.save(function(err){
+        p.save(function(err, result){
             if(err){
                 console.log(err.message);
                 return;
             }
-            res.status(201).send(req.body.name + " was added");
+            res.status(201).send(result);
+            next()
         });
-        next()
     });
 }
 
