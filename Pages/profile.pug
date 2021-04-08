@@ -33,7 +33,7 @@ html
                         ul 
                             each user in users
                                 ul 
-                                    a(href='/users/'+val id=val) #{val} 
+                                    a(href='/users/'+ user._id) #{user.username} 
                                     button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
                                     
                 div.MovieWatch
