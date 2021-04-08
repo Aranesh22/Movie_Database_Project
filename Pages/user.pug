@@ -17,7 +17,10 @@ html
 
             div.UserName 
                 p Username: #{user.username}
-                button(id="follow") Follow
+                if !following
+                    button(id="follow") Follow
+                else
+                    button(id="unfollow") Unfollow
 
             div.EmptyBox 
                 
@@ -36,6 +39,7 @@ html
                 p Reviews: 
                     each val in user.userReviews 
                         h #{val.rating + " " + val.reviewSummary + " " + val.reviewText}  
+    script(src="/js/user.js") 
                 
             
             
