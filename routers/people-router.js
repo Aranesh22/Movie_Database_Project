@@ -125,48 +125,47 @@ function getPerson(req, res, next){
                         res.status(500).send("Database error");
                         return;
                     }
-                    User.findById(req.session._id, function(err, user){
-                        if(err){
-                            console.log(err);
-                            res.status(500).send("Database error");
-                            return;
-                        }
-                        if(user.followingPeople.includes(id)){
-                            res.following = true;
-                        }
-                        else{
-                            res.following = false;
-                        }
-                        res.person = person;
-                        res.directed = directed;
-                        res.written = written;
-                        res.acted = acted;
-                        next();
-                    });
+                    res.person = person;
+                    res.directed = directed;
+                    res.written = written;
+                    res.acted = acted;
+                    next();
                 });
             });
         });
     });
 }
 
-function sendPerson(req, res, next){
+function sendPerson(req, res){
     res.format({
         "text/html": () => {
             if(!req.session.loggedin){
                 res.status(401).redirect("http://localhost:3000/account/login");
                 return;
             }
-            res.status(200).render("person.pug", {
-                person:res.person, 
-                directed: res.directed,
-                written: res.written,
-                acted: res.acted,
-                following: res.following
-            }
-        )},
+            User.findById(req.session._id, function(err, user){
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                if(user.followingPeople.includes(res.person._id)){
+                    res.following = true;
+                }
+                else{
+                    res.following = false;
+                }
+                res.status(200).render("person.pug", {
+                    person: res.person, 
+                    directed: res.directed,
+                    written: res.written,
+                    acted: res.acted,
+                    following: res.following
+                })
+            });
+        },
         "application/json": () => {res.status(200).json(res.person)}
     });
-    next();
 } 
 
 function createPerson(req, res, next){
