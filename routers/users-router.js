@@ -130,29 +130,40 @@ function getUser(req, res, next){
                 res.user = user;
                 res.people = people;
                 res.movies = movies;
-                next()
+                next();
             });
         });
     });
 }
 
-function sendUser(req, res, next){
+function sendUser(req, res){
     res.format({
         "text/html": () => {
             if(!req.session.loggedin){
                 res.status(401).redirect("http://localhost:3000/account/login");
                 return;
             }
-            res.status(200).render("user.pug", {
-                user:res.user,
-                people: res.people,
-                watchedMovies: res.movies,
-            }
-        )},
+            User.findById(req.session._id, function(err, curUser){
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Database error");
+                }
+                if(curUser.followingUsers.includes(res.user._id)){
+                    res.following = true;
+                }
+                else{
+                    res.following = false;
+                }
+                res.status(200).render("user.pug", {
+                    user: res.user,
+                    people: res.people,
+                    watchedMovies: res.movies,
+                    following: res.following
+                })
+            });
+        },
         "application/json": () => {res.status(200).json(res.user)}
     }); 
-   
-    next();
 } 
 
 function createUser(req, res, next){
@@ -212,10 +223,11 @@ function follow(req, res, next){
             }
             
             followee.followers.push(follower._id);
-            follower.followingUsers.push(follower._id);
+            follower.followingUsers.push(followee._id);
 
             console.log(followee);
             console.log(follower);
+            
             followee.save(function(err){
                 if(err){
                     console.log(err.message);
