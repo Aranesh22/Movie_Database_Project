@@ -98,6 +98,10 @@ function getProfile(req, res, next){
 function sendProfile(req, res, next){
     res.format({
         "text/html" : () => {
+            if(!req.session.loggedin){
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            }
             res.status(200).render("profile.pug", {
                 user: res.user,
                 people: res.people,
@@ -168,10 +172,10 @@ function logout(req, res, next){
 
 function createAccount(req, res){
     res.render("createAccount.pug");
-};
+}
 
 function loginPage(req, res){
     res.render("login.pug");
-};
+}
 
 module.exports = router;
