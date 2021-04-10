@@ -25,7 +25,6 @@ html
                             each person in people
                                 ul
                                     a(href='/people/'+ person._id) #{person.name} 
-                                    button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
                                             
                         
                 div.UserFll
@@ -34,7 +33,6 @@ html
                             each user in users
                                 ul 
                                     a(href='/users/'+ user._id) #{user.username} 
-                                    button(type="button",id=val,onclick='removeFunc()') UNFOLLOW  
                                     
                 div.MovieWatch
                     p1 Movies You Watched  
@@ -53,5 +51,5 @@ html
                     p1 Notfication 
                         ul 
                             each notification in user.userNotifications 
-                                ul= val
+                                ul= notification 
     script(src="/js/profile.js") 
