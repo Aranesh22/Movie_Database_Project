@@ -2,12 +2,13 @@ const express = require("express");
 const Person = require("../database-init/personModel");
 const Movie = require("../database-init/movieModel");
 const User = require("../database-init/userModel");
+const mongoose = require("mongoose");
 let router = express.Router();
 
 router.get("/", queryParser, loadPeople, sendPeople);
 router.post("/", express.json(), createPerson);
 router.get("/addPerson", addPersonPage);
-router.get("/:pID", getPerson, sendPerson);
+router.get("/:pID", getPerson, findFreqCollab, sendPerson);
 router.put("/:pID/follow", addFollower);
 router.put("/:pID/unfollow", removeFollower);
 
@@ -136,6 +137,78 @@ function getPerson(req, res, next){
     });
 }
 
+function findFreqCollab(req, res, next){
+    let id = req.params.pID;
+    Movie.find({$or: [{director: id}, {writer: id}, {actors: id}]}, function(err, result){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        console.log(result);
+        let collab = {};
+        result.forEach(movie => {
+            let checked = [];
+            movie.director.forEach(dir => {
+                if(!contains(checked, dir)){
+                    addCollab(collab, dir);
+                    checked.push(dir);
+                }
+            });
+            movie.writer.forEach(write => {
+                if(!contains(checked, write)){
+                    addCollab(collab, write);
+                    checked.push(write);
+                }            
+            });
+            movie.actors.forEach(act => {
+                if(!contains(checked, act)){
+                    addCollab(collab, act);
+                    checked.push(act);
+                }            
+            });
+        });
+        let sortable = []
+        for(let key in collab){
+            if(key !== id) sortable.push([key, collab[key]]);
+        }
+        sortable.sort((a, b) => {
+            return b[1] - a[1];
+        });
+        let freqCollab = [];
+        for(let i = 0; i < 5; ++i){
+            freqCollab[i] = sortable[i][0];
+        }
+        Person.find({_id: {$in: freqCollab}}, function(err, result){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            console.log(result);
+            res.freqCollab = result;
+            next();
+        });
+    });
+}
+
+function contains(checked, id){
+    for(let i = 0; i < checked.length; ++i){
+        if(checked[i].toString() === id.toString()){
+            return true;
+        }
+    }
+    return false;
+}
+
+function addCollab(collab, person){
+    if(!collab.hasOwnProperty(person)){
+        collab[person] = 1;
+        return;
+    }
+    collab[person] += 1;
+}
+
 function sendPerson(req, res){
     res.format({
         "text/html": () => {
@@ -160,7 +233,8 @@ function sendPerson(req, res){
                     directed: res.directed,
                     written: res.written,
                     acted: res.acted,
-                    following: res.following
+                    following: res.following,
+                    freqCollab: res.freqCollab
                 })
             });
         },
