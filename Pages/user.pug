@@ -26,15 +26,14 @@ html
                 
             div.people
                 p Following People: 
-                    each val in people      
+                    each person in people      
                         ul
-                            a(href='/people/'+val) #{val} 
-                            button(type="button",id=val) FOLLOW                 
+                            a(href='/people/'+person._id) #{person.name} 
             div.WatchMovies
                 p Watched Movies: 
-                    each val in watchedMovies 
+                    each movie in watchedMovies 
                         ul 
-                            a(href='/movies/'+val.id) #{val.title}         
+                            a(href='/movies/'+val_id) #{val.title}         
             div.Reviews
                 p Reviews: 
                     each val in user.userReviews 
