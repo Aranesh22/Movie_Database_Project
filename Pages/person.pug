@@ -36,5 +36,12 @@ html
                         each val in acted
                             ul
                                 a(href='/movies/'+val._id) #{val.title}
+            if freqCollab.length > 0
+                div.freqCollab
+                    p Frequent Collaborators: 
+                        each collab in freqCollab
+                            ul
+                                a(href='/people/'+collab._id) #{collab.name}
+
 
     script(src="/js/person.js") 
