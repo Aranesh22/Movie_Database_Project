@@ -72,6 +72,14 @@ function loadPeople(req, res, next){
             console.log(err);
             return;
         }
+
+        res.lastPage = false;
+        if(result.length < amount){
+            res.lastPage = true;
+        }
+        
+        console.log(result.length);
+        console.log(res.lastPage);
         res.people = result;
         next();
         return;
@@ -79,7 +87,6 @@ function loadPeople(req, res, next){
 }
 
 function sendPeople(req, res, next){
-    console.log(res.people);
     res.format({
         "text/html": () => {
             if(!req.session.loggedin){
@@ -89,10 +96,17 @@ function sendPeople(req, res, next){
             res.status(200).render("people.pug", {
                 pData:res.people, 
                 qstring:req.qstring, 
-                current:req.query.page
+                current:req.query.page,
+                lastPage: res.lastPage
             }
         )},
-        "application/json": () => {res.status(200).json(res.people)}
+        "application/json": () => {
+            if(!req.session.loggedin){
+                res.status(401).send(null);
+                return;
+            }
+            res.status(200).json(res.people)
+        }
     });
     next();
 }
@@ -238,7 +252,13 @@ function sendPerson(req, res){
                 })
             });
         },
-        "application/json": () => {res.status(200).json(res.person)}
+        "application/json": () => {
+            if(!req.session.loggedin){
+                res.status(401).send(null);
+                return;
+            }
+            res.status(200).json(res.person)
+        }
     });
 } 
 
