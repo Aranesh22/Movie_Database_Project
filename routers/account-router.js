@@ -44,10 +44,6 @@ function toggle(req, res, next){
 }
 
 function getProfile(req, res, next){
-    if(!req.session.loggedin){
-        res.status(401).send("Not logged in");
-        return;
-    }
     User.findById(req.session._id, function(err, user){
         if(err){
             console.log(err.message);
@@ -111,6 +107,10 @@ function sendProfile(req, res, next){
             });
         },
         "application/json": () => {
+            if(!req.session.loggedin){
+                res.status(401).send("Not logged in");
+                return;
+            }
             let profile = {};
             profile.user = res.user;
             profile.people = res.people;
