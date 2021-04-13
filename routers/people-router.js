@@ -73,13 +73,6 @@ function loadPeople(req, res, next){
             return;
         }
 
-        res.lastPage = false;
-        if(result.length < amount){
-            res.lastPage = true;
-        }
-        
-        console.log(result.length);
-        console.log(res.lastPage);
         res.people = result;
         next();
         return;
@@ -97,7 +90,6 @@ function sendPeople(req, res, next){
                 pData:res.people, 
                 qstring:req.qstring, 
                 current:req.query.page,
-                lastPage: res.lastPage
             }
         )},
         "application/json": () => {
