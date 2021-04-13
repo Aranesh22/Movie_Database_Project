@@ -58,7 +58,7 @@ function queryParser(req, res, next){
 		}
 		params.push(param + "=" + req.query[param]);
 	}
-	req.qstring = params.join("&"); //TODO DO NOT FORGET
+	req.qstring = params.join("&");
 
 	next();
 }
@@ -79,11 +79,6 @@ function loadUsers(req, res, next){
             return;
         }
 
-        res.lastPage = false;
-        if(result.length < amount){
-            res.lastPage = true;
-        }
-
         res.users = result;
         next();
         return;
@@ -101,7 +96,7 @@ function sendUsers(req, res, next){
             res.status(200).render("users.pug", {
                 users:res.users, 
                 qstring:req.qstring, 
-                current:req.query.page
+                current:req.query.page,
             }
         )},
         "application/json": () => {res.status(200).json(res.users)}
