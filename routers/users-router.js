@@ -78,6 +78,12 @@ function loadUsers(req, res, next){
             console.log(err.message);
             return;
         }
+
+        res.lastPage = false;
+        if(result.length < amount){
+            res.lastPage = true;
+        }
+
         res.users = result;
         next();
         return;
