@@ -1,0 +1,5 @@
+html 
+
+    each movie in movies 
+        div.link
+            a(href="/movies/" + movie._id) #{movie.title} 
