@@ -10,7 +10,7 @@ html
         div.search
             h Search for Users...
             br
-            input(type="text" placeholder="Username")
+            input#username(type="text" placeholder="Username")
             button(id="search") Search
 
         div.results
@@ -26,3 +26,4 @@ html
             - url = "http://localhost:3000/users?page=" + (current+1)
             - if(qstring.length > 0){ url += "&" + qstring; }
             a#next(href=url) Next
+    script(src="./js/users.js") 
