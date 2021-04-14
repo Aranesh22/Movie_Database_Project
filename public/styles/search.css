@@ -13,21 +13,24 @@
 
 .results{
     margin: 10px;
+    width: 100%;
 }
 
 .results > .link{
-    margin-top: 20px;
+    margin-top: 1px;
 }
 
 .results > .link > a{
     text-decoration: none;
-    background-color: grey;
+    background-color: rgba(66, 66, 66, 0.514);
     padding: 10px 500px 10px 10px;
+    display: block;
+    width: 15%;
     color: white;
 }
 
 .results > .link > a:hover{
-    background-color: rgb(95, 95, 95);
+    background-color: rgba(56, 56, 56, 0.671);
 }
 
 .pagination{
