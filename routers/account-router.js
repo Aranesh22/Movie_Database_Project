@@ -10,6 +10,7 @@ router.put("/login", express.json(), login);
 router.put("/logout", logout);
 router.get("/login", loginPage);
 router.get("/createAccount", createAccount);
+router.put("/clearNotifications", clear);
 
 function toggle(req, res, next){
     if(!req.session.loggedin){
@@ -180,6 +181,33 @@ function createAccount(req, res){
 
 function loginPage(req, res){
     res.render("login.pug");
+}
+
+function clear(req, res){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    User.findById(req.session._id, function(err, user){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!user){
+            res.status(404).send('User not found');
+            return;
+        }
+        user.userNotifications = [];
+        user.save(function(err){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+            res.status(204).send("Removed all notifications");
+        });
+    });
 }
 
 module.exports = router;
