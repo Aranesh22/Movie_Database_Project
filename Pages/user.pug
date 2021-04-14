@@ -4,9 +4,7 @@ html
         title User  
     style 
         include ../public/styles/homeStyles.css 
-
-    script(src="../static/profile.js")  
-        
+        include ../public/styles/user.css         
         
     body 
 
@@ -16,28 +14,29 @@ html
 
 
             div.UserName 
-                p Username: #{user.username}
+                h1 #{user.username}
                 if !following
                     button(id="follow") Follow
                 else
                     button(id="unfollow") Unfollow
-
-            div.EmptyBox 
-                
-            div.people
-                p Following People: 
-                    each person in people      
-                        ul
-                            a(href='/people/'+person._id) #{person.name} 
-            div.WatchMovies
-                p Watched Movies: 
-                    each movie in watchedMovies 
-                        ul 
-                            a(href='/movies/'+val_id) #{val.title}         
-            div.Reviews
-                p Reviews: 
-                    each val in user.userReviews 
-                        h #{val.rating + " " + val.reviewSummary + " " + val.reviewText}  
+            div.grid
+                div.info
+                    div.section
+                        h3 Following People: 
+                            ul
+                                each person in people     
+                                    li 
+                                        a(href='/people/'+person._id) #{person.name} 
+                    div.section
+                        h3 Watched Movies: 
+                            ul
+                                each movie in watchedMovies  
+                                    li
+                                        a(href='/movies/'+movie._id) #{movie.title}         
+                div.section
+                    h3 Reviews: 
+                        each val in user.userReviews 
+                            h #{val.title + "\n" + val.rating + "\n" + val.reviewSummary + "\n" + val.reviewText}  
     script(src="/js/user.js") 
                 
             
