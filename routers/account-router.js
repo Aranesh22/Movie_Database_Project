@@ -4,6 +4,7 @@ const Movie = require("../database-init/movieModel");
 const Person = require("../database-init/personModel");
 const User = require("../database-init/userModel");
 
+router.get("/session", getCookie);
 router.put("/accountType", toggle);
 router.get("/profile", getProfile, sendProfile);
 router.put("/login", express.json(), login);
@@ -11,6 +12,10 @@ router.put("/logout", logout);
 router.get("/login", loginPage);
 router.get("/createAccount", createAccount);
 router.put("/clearNotifications", clear);
+
+function getCookie(req, res){
+    res.status(200).send(req.session);
+}
 
 function toggle(req, res, next){
     if(!req.session.loggedin){
