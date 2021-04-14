@@ -18,4 +18,23 @@ let movieSchema = Schema({
     similarMovies: {type: [Schema.Types.ObjectId], ref: "Movie"}
 });
 
+movieSchema.query.searchMovie = function(act,dir,wri,title,gen) { 
+
+    return this.where("title").equals(new RegExp(title,"i"))  
+    .where("genre").equals(new RegExp(gen,"i"))
+    .populate({ 
+        path: 'actors',  
+        match: {'name': new RegExp(act,'i')}
+
+    }) 
+    .populate({  
+        path: 'director', 
+        match: {'name': new RegExp(dir,'i')}
+    }) 
+    .populate({ 
+        path: 'writer', 
+        match: {'name': new RegExp(wri,'i')}
+    }); 
+}
+
 module.exports = mongoose.model("Movie", movieSchema);
