@@ -2,17 +2,17 @@ body{
     margin-left: 5%;
     margin-right: 5%;
     font-family: sans-serif;
-    background-color: cfd2cd;
+    background-color: rgba(158, 158, 158, 0.288);
 }
 
 #navbar{
     display: flex;
     justify-content: space-between;
-    background-color: rgb(70, 70, 70);
+    background-color: rgb(73, 73, 73);
     padding: 20px 0 20px 0;
 }
 
-#navbar ul{
+ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -31,7 +31,7 @@ body{
     display: none;
 }
 
-li a{
+#navigation li a, #accountManagement li a{
     text-decoration: none;
     font-size: medium;
     color: white;
@@ -39,7 +39,7 @@ li a{
     padding: 20px 20px;
 }
 
-li a:hover{
+#navigation li a:hover, #accountManagement li a:hover{
     background-color: rgb(32, 32, 32);
 } 
 
