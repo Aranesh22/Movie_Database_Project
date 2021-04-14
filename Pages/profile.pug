@@ -2,7 +2,7 @@ html
     head 
         style
             include ../public/styles/homeStyles.css   
-            include ../public/styles/pageStyles.css
+            include ../public/styles/profile.css
             
         title Profile  
         
@@ -13,43 +13,53 @@ html
             div.profile
 
                 div.AccountType 
-                    h2 Account Type   
+                    h1 #{user.username}   
                     if user.contributingAccount
                         button(type="button" id="toggle") Regular  
                     else 
                         button(type="button" id="toggle") Contributor  
+                br
 
-                div.PplFll
-                    p1 People You Follow 
-                        ul 
-                            each person in people
-                                ul
-                                    a(href='/people/'+ person._id) #{person.name} 
-                                            
-                        
-                div.UserFll
-                    p1 Users You Follow   
-                        ul 
-                            each user in users
+                div.grid
+                
+                    div.section   
+                        h3(style="display: inline;") Notifications 
+                        button(type="button" id="clear") Clear
+                            ul 
+                                each notification in user.userNotifications 
+                                    li= notification 
+                    div.info
+                        div.section
+                            h3 People You Follow 
                                 ul 
-                                    a(href='/users/'+ user._id) #{user.username} 
-                                    
-                div.MovieWatch
-                    p1 Movies You Watched  
-                        ul 
-                            each movie in watchedMovies
-                                a(href='/movies/'+val id=val) #{val} 
-                                ul= val
+                                    each person in people
+                                        li
+                                            a(href='/people/'+ person._id) #{person.name} 
+                            br
+                                                    
+                                
+                        div.section
+                            h3 Users You Follow   
+                                ul 
+                                    each user in users
+                                        li 
+                                            a(href='/users/'+ user._id) #{user.username} 
+                            br
+                                            
+                        div.section
+                            h3 Movies You Watched  
+                                ul 
+                                    each movie in watchedMovies
+                                        li
+                                            a(href='/movies/'+movie id=movie._id) #{movie.title} 
+                            br
 
-                div.RecMovies
-                    p1 Recomended Movies 
-                        ul 
-                            each movie in recMovies 
-                                ul= val  
+                        div.section
+                            h3 Recommended Movies 
+                                ul 
+                                    each movie in recMovies 
+                                        li
+                                            a(href='/movies/'+movie id=movie._id) #{movie.title}                             
+                            br
 
-                div.Noti   
-                    p1 Notfication 
-                        ul 
-                            each notification in user.userNotifications 
-                                ul= notification 
     script(src="/js/profile.js") 
