@@ -3,24 +3,24 @@ html
         title Movies 
         style 
             include ../public/styles/homeStyles.css
-            include ../public/styles/search.css
+            include ../public/styles/search.css 
     body 
 
         include navbar
         div.search
             h Search for Movies...
             br
-            input(type="text" placeholder="Title")
-            input(type="text" placeholder="Actor")
-            input(type="text" placeholder="Writer")
-            input(type="text" placeholder="Director")
-            input(type="text" placeholder="Genre")
-            button(id="search") Search
+            input(type="text" placeholder="Title" id="title")
+            input(type="text" placeholder="Actor" id="actor")
+            input(type="text" placeholder="Writer" id="writer")
+            input(type="text" placeholder="Director" id="dir")
+            input(type="text" placeholder="Genre" id="genre")
+            button(id="searchButton") Search
 
-        div.results
-            each movie in movies 
+        div.results 
+            each movie in movies  
                 div.link
-                    a(href="/movies/" + movie.id) #{movie.title}
+                    a(href="/movies/" + movie._id) #{movie.title}
                 
         div.pagination
             if current > 1
@@ -30,4 +30,6 @@ html
                 | 
             - url = "http://localhost:3000/movies?page=" + (current+1)
             - if(qstring.length > 0){ url += "&" + qstring; }
-            a#next(href=url) Next
+            a#next(href=url) Next 
+
+    script(src="./js/movies.js") 
