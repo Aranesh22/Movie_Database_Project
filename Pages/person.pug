@@ -4,6 +4,7 @@ html
         title people    
         style
             include ../public/styles/homeStyles.css 
+            include ../public/styles/person.css
         
     body 
 
@@ -11,37 +12,45 @@ html
         
         div.people    
         
-            p #{person.name} 
-            if !following
-                button(id="follow") Follow
-            else 
-                button(id="unfollow") Unfollow
-            if written.length > 0
-                div.Wri
+            div.name
+                h1 #{person.name} 
+                if !following
+                    button(id="follow") Follow
+                else 
+                    button(id="unfollow") Unfollow
 
-                    p Writer: 
-                        each val in written
-                                
-                            ul
-                                a(href='/movies/'+val*_id) #{val.title}  
-            if directed.length > 0
-                div.Dir
-                    p Director: 
-                        each val in directed
-                            ul
-                                a(href='/movies/'+val._id) #{val.title}     
-            if acted.length > 0
-                div.Act
-                    p Actor: 
-                        each val in acted
-                            ul
-                                a(href='/movies/'+val._id) #{val.title}
-            if freqCollab.length > 0
-                div.freqCollab
-                    p Frequent Collaborators: 
-                        each collab in freqCollab
-                            ul
-                                a(href='/people/'+collab._id) #{collab.name}
+            div.grid
+                div.info
+                    if directed.length > 0
+                        div.section
+                            h3 Director: 
+                                ul
+                                    each val in directed
+                                        li
+                                            a(href='/movies/'+val._id) #{val.title}  
+
+                    if written.length > 0
+                        div.section
+                            h3 Writer: 
+                                ul
+                                    each val in written
+                                        li
+                                            a(href='/movies/'+val*_id) #{val.title} 
+
+                    if acted.length > 0
+                        div.section
+                            h3 Actor: 
+                                ul
+                                    each val in acted
+                                        li
+                                            a(href='/movies/'+val._id) #{val.title}
+                if freqCollab.length > 0
+                    div.section
+                        h3 Frequent Collaborators:
+                            ul 
+                                each collab in freqCollab
+                                    li
+                                        a(href='/people/'+collab._id) #{collab.name}
 
 
     script(src="/js/person.js") 
