@@ -19,28 +19,35 @@ html
                 p Runtime: #{mData.Runtime}  
 
                 p Genre:
-                each val in mData.Genre.gen  
+                each val in mData.genre
                     a(href='/movies') #{val}   
                     br
 
-            
-            div.smlMovies 
-                p Similar Movies:   
-                each val in mData.similarMovies   
-                    ul  
-                        a(href='/movies/'+val.id) #{val.title} 
-                    
             div.Dir
-                P Director:  
-                    a(href='/people/'+mData.Director) #{mData.Director} 
+                P Director:   
+                    each val in directors  
+                        ul
+                            a(href='/people/'+val._id) #{val.name} 
             
             div.Writ
                 p Writers: 
-                each val in mData.Writer.writersArr  
+                each val in writers
                     ul
-                        a(href='/people/'+val) #{val} 
+                        a(href='/people/'+val._id) #{val.name} 
 
-            div.Rev
+            div.Act 
+                p Actors: 
+                each val in actors  
+                    ul 
+                        a(href= '/people/'+val._id) #{val.name} 
+            
+            div.simillarMovies 
+                p Simillar Movies 
+                each val in similarMovies 
+                    ul 
+                        a(href='/movies/'+val._id) #{val.title}
+
+            //div.Rev
                 p Reviews: 
                 each val in mData.Reviews.reviewsArr 
                     ul= val 
