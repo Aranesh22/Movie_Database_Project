@@ -1,0 +1,44 @@
+a {
+    text-decoration: none;
+}
+
+.profile{
+    margin-top: 10px;
+    background-color: rgb(202, 202, 202);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.profile > .AccountType{
+    border-bottom-style: solid;
+    width: 1300px;
+    margin: 0 auto;
+    border-width: 2px;
+    padding-bottom: 20px;
+}
+
+.profile > .grid{
+    display: grid;
+    grid-template-columns: 500px 500px;
+    grid-template-rows: auto;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.profile > .grid > .info{
+    display: grid;
+    grid-template-columns: 400px 400px;
+    grid-template-rows: auto auto;
+    margin: 0 auto;
+}
+
+.section{
+    width: 250px;
+    border-radius: 5px;
+    background-color: rgba(143, 143, 143, 0.514);
+    margin: 10px;
+}
+
+.section > *{
+    margin: 10px;
+}
