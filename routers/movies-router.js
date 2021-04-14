@@ -6,7 +6,8 @@ router.get("/moviePeople",queryParser,moviePeopleLoad,sendMoviePeople);
 router.get("/", queryParser);
 router.get("/", loadMovies);
 router.get("/", sendMovies); 
-router.post("/", express.json(), createMovie);
+router.post("/", express.json(), createMovie); 
+router.post("/addReview",express.json(),)
 const Movie = require("../database-init/movieModel.js"); 
 const Person = require("../database-init/personModel");
 mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true}); 
@@ -16,7 +17,6 @@ router.get("/:mid", getMovie, sendMovie);
  
 function createMovie(req,res,next)  {  
 
-    console.log("Oiyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
     if(!req.session.loggedin){
         res.status(401).send("Not logged in");
         return;
