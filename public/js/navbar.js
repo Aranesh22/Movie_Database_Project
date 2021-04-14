@@ -17,7 +17,7 @@ function updateNavbar(){
             }
         }
     }
-    req.open("GET", "http://localhost:3000/session");
+    req.open("GET", "http://localhost:3000/account/session");
     req.send();
 }
 
