@@ -27,7 +27,7 @@ html
                         button(type="button" id="clear") Clear
                         ul 
                             each notification in user.userNotifications 
-                                li= notification 
+                                li notification 
                     div.info
                         div.section
                             h3 People You Follow 
@@ -51,7 +51,7 @@ html
                                 ul 
                                     each movie in watchedMovies
                                         li
-                                            a(href='/movies/'+movie id=movie._id) #{movie.title} 
+                                            a(href='/movies/'+movie._id) #{movie.title} 
                             br
 
                         div.section
@@ -59,7 +59,7 @@ html
                                 ul 
                                     each movie in recMovies 
                                         li
-                                            a(href='/movies/'+movie id=movie._id) #{movie.title}                             
+                                            a(href='/movies/'+movie._id) #{movie.title}                             
                             br
 
     script(src="/js/profile.js") 
