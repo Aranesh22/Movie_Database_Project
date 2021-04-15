@@ -1,3 +1,4 @@
+const { Double } = require("bson");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -14,7 +15,8 @@ let movieSchema = Schema({
     plot: String,
     awards: [String],
     poster: String,
-    reviews: [Schema.Types.ObjectId],
+    reviews: [{username: String, rating: Double, 
+        reviewSummary: String, reviewText: String, movieTitle: String}],
     similarMovies: {type: [Schema.Types.ObjectId], ref: "Movie"}
 });
 
