@@ -15,8 +15,7 @@ let movieSchema = Schema({
     plot: String,
     awards: [String],
     poster: String,
-    reviews: [{username: String, rating: Double, 
-        reviewSummary: String, reviewText: String, movieTitle: String}],
+    reviews: [],
     similarMovies: {type: [Schema.Types.ObjectId], ref: "Movie"}
 });
 
