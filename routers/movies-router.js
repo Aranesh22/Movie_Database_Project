@@ -16,7 +16,7 @@ db.on("error", console.error.bind(console, "connection error"));
 router.get("/:mid", getMovie, sendMovie);  
  
 function createMovie(req,res,next)  {  
-
+    
     if(!req.session.loggedin){
         res.status(401).send("Not logged in");
         return;
@@ -169,7 +169,8 @@ function loadMovies(req, res, next){
                 return (x.actors.length != 0) && (x.director.length !==0) && (x.writer.length !==0); 
             }); 
 
-            res.movies = fil; 
+            res.movies = fil;  
+            console.log(res.movies);
             next(); 
             return; 
 
