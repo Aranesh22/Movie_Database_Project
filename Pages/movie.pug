@@ -1,7 +1,9 @@
 html 
     head
         style 
-            include ../public/styles/homeStyles.css            
+            include ../public/styles/homeStyles.css  
+            include ../public/styles/pageStyles.css 
+          
           
             
         title Movies
@@ -12,8 +14,11 @@ html
 
         div.Content 
 
+        
+          
             div.info 
-                h4 #{mData.title} 
+                h4#movName #{mData.title}  
+                button#watchedMovie(type=button) Watched Movie
                 p Runtime: #{mData.Runtime}  
 
                 p Genre:
@@ -45,12 +50,7 @@ html
                     ul 
                         a(href='/movies/'+val._id) #{val.title}
 
-            //div.Rev
-                p Reviews: 
-                each val in mData.Reviews 
-                    ul= val 
-
-
+            div.AddReviews
                 p Add A review:  
                 p Review Score 
                 input#score(type="text" placeholder="") 
@@ -59,3 +59,9 @@ html
                 p Review Summary: 
                 input#rSummary(type="text" placeholder="")   
                 button#submitB(type=button) submit 
+
+            div.Reviews 
+                p Reviews  
+                    each val in reviews 
+                        p #{val.reviewText} Score: #{val.rating}
+            script(src="/js/movie.js") 
