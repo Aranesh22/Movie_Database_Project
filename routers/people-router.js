@@ -131,7 +131,7 @@ function getPerson(req, res, next){
                         console.log(err);
                         res.status(500).send("Database error");
                         return;
-                    }
+                    } 
                     res.person = person;
                     res.directed = directed;
                     res.written = written;
@@ -191,7 +191,7 @@ function findFreqCollab(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
-            console.log(result);
+            //console.log(result);
             res.freqCollab = result;
             next();
         });
@@ -233,7 +233,7 @@ function sendPerson(req, res){
                 }
                 else{
                     res.following = false;
-                }
+                }  
                 res.status(200).render("person.pug", {
                     person: res.person, 
                     directed: res.directed,
