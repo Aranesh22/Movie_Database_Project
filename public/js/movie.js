@@ -33,7 +33,11 @@ function addReview() {
     let score = document.getElementById("score").value; 
     let rText = document.getElementById("rText").value;   
     let rSummary = document.getElementById("rSummary").value; 
-    let movName = document.getElementById("movName").textContent;  
+    let movName = document.getElementById("movName").textContent; 
+    if(rText == "" && rSummary != "" || rText != "" && rSummary == ""){
+        alert("Please either fill both fields or neither fields to leave review");
+        return;
+    }
     let newMovName = String(movName);
     console.log(newMovName);
     let req = new XMLHttpRequest()
