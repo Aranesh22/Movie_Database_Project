@@ -2,19 +2,92 @@ const express = require("express");
 let router = express.Router();
 const mongoose = require("mongoose"); 
 router.get("/newMovie",sendNewMovie); 
-router.get("/moviePeople",queryParser,moviePeopleLoad,sendMoviePeople);
+router.get("/moviePeople",queryParser,moviePeopleLoad,sendMoviePeople); 
 router.get("/", queryParser);
 router.get("/", loadMovies);
 router.get("/", sendMovies); 
 router.post("/", express.json(), createMovie); 
-router.post("/addReview",express.json(),)
+router.put("/newReview",express.json(),createReview); 
+router.put("/addWatchedList",express.json(),addWatchedMovie)
 const Movie = require("../database-init/movieModel.js"); 
-const Person = require("../database-init/personModel");
+const Person = require("../database-init/personModel"); 
+const User = require("../database-init/userModel.js")
 mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true}); 
 let db = mongoose.connection; 
 db.on("error", console.error.bind(console, "connection error"));
 router.get("/:mid", getMovie, sendMovie);  
+
+function addWatchedMovie(req,res,next) { 
+
+    let temp = req.body.movName.trimEnd();  
+    Movie.find({title: temp}).exec(function(err,movie) {    
+
+        User.find({username:req.session.username}).exec(function(err,user) { 
+            
+            user[0].watchList.push(movie[0]._id);   
+            console.log(user[0].watchList);
+            user[0].save(function(err, result){
+                if(err){
+                    console.log(err.message);
+                    return;
+                } 
+            });  
+            
+            res.status(204).send("Success");
+            next();
+
+
+        });
+        
  
+    });
+}
+function createReview(req,res,next) { 
+    let r = {}; 
+    r.username = req.session.username; 
+    r.reviewText = req.body.rText; 
+    r.rating = req.body.score; 
+    r.reviewSummary = req.body.rSummary;  
+    let temp = req.body.movName.trimEnd();  
+    r.movieName = temp;  
+
+    Movie.find({title: temp}).exec(function(err,movie) {   
+
+        
+        movie[0].reviews.push(r); 
+      
+
+        User.find({username: r.username}).exec(function(err,user) { 
+
+            user[0].userReviews.push(r); 
+
+            movie[0].save(function(err, result){
+                if(err){
+                    console.log(err.message);
+                    return;
+                }  
+
+        
+            });  
+            
+            user[0].save(function(err, result){
+                if(err){
+                    console.log(err.message);
+                    return;
+                } 
+            });    
+            
+
+            res.status(204).send(r);
+            next();
+
+        });
+
+
+    });
+
+
+}
 function createMovie(req,res,next)  {  
     
     if(!req.session.loggedin){
@@ -53,7 +126,6 @@ function createMovie(req,res,next)  {
         addPersonToMovie(act, m, "acted");  
  
       });  
-    console.log(m);
     m.save(function(err, result){
         if(err){
             console.log(err.message);
@@ -63,6 +135,7 @@ function createMovie(req,res,next)  {
         next()
     });
 
+   
 
 }
 function queryParser(req, res, next){
@@ -127,9 +200,7 @@ function moviePeopleLoad(req,res,next) {
             return;
         }  
         console.log("results"); 
-        console.log(result);
-        res.people = (result.slice(1, 5));
-        ;
+        res.people = result;
         next();
         return;
     });
@@ -164,20 +235,16 @@ function loadMovies(req, res, next){
     }
         Movie.find().searchMovie(req.query.actor,req.query.dir,req.query.writ,req.query.title,req.query.gen).limit(amt).skip(sInd).exec(function(err,result) { 
 
-            let fil = result.filter(function(x) { 
+            let fil = result.filter(function(x) {  
 
                 return (x.actors.length != 0) && (x.director.length !==0) && (x.writer.length !==0); 
             }); 
 
             res.movies = fil;  
-            console.log(res.movies);
             next(); 
             return; 
 
         });
-            
-
-    
 }
 
 function checkQuery(query, movie){
@@ -237,7 +304,7 @@ function getMovie(req, res, next){
                         return;
                     }  
 
-                    Movie.find({_id: {$in: mov.similarMovies}}, function (err,smlMovies) { 
+                    Movie.find({}, function (err,smlMovies) {  
 
                         if(err) {  
                             console.log(err);
@@ -245,14 +312,38 @@ function getMovie(req, res, next){
                             return;
                         }  
                         
-                        console.log(smlMovies); 
-                        res.similarMovies = smlMovies;
+                        let val = false;
+                        for(let y =0; y < smlMovies.length; y++ ) {  
+            
+                            val = false;
+                            for(let j =0; j < mov.genre.length;j++) { 
+            
+                                for(let i =0; i < smlMovies[y].genre.length; i++) { 
+            
+                                    if(mov.genre[j] === smlMovies[y].genre[i] && mov.similarMovies.includes(smlMovies[y]._id) === false) {    
+
+                                        console.log("Yessssssssssssssssssssssssssssssss");
+                                        console.log(smlMovies[y]);
+                                        mov.similarMovies.push(smlMovies[y]);  
+                                        val = true;      
+                                        break;           
+                                    }
+                                } 
+                                if(val === true) { 
+                                    break;
+                                }
+            
+                            } 
+                        }  
+                        res.similarMovies = mov.similarMovies.slice(1,6); 
+                        console.log(res.similarMovies);
+                        res.reviews = mov.reviews;
                         res.movie = mov; 
                         res.director = director; 
                         res.writer = writer; 
                         res.actors = actors;
                         next();
-                        
+                    
                     });
         
                 });
@@ -262,12 +353,15 @@ function getMovie(req, res, next){
 } 
 
 
-function sendMovie(req, res, next){ 
+function sendMovie(req, res, next){  
+
+    console.log(res.similarMovies);
     res.format({
         "text/html": () => {res.status(200).render("movie.pug", {mData:res.movie,
             directors: res.director, 
             writers: res.writer,  
             actors: res.actors,
+            reviews : res.reviews,
             similarMovies: res.similarMovies
         })},
         "application/json": () => {res.status(200).json(res.movie)}
@@ -311,15 +405,27 @@ function addPersonToMovie(pID, movie, role){
  
         }  
 
+       for(let x = 0; x < person.followers.length; x++ ) { 
+
+            User.findById(person.followers[x], function(err,user) { 
+
+                user.userNotifications.push( person.name + "is in the new movie called"+movie.title ); 
+                user.save(function(err, result){
+                    if(err){
+                        console.log(err.message);
+                        return;
+                    } 
+                });
+
+            });
+       }
+       
         person.save(function(err, result){
             if(err){
                 console.log(err.message);
                 return;
             } 
-            console.log(result);
         });
-
-       
 
 
     });
