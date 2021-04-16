@@ -1,18 +1,33 @@
 document.getElementById("submitB").onclick = addReview; 
-document.getElementById("watchedMovie").onclick = watchMovie; 
-
+if(document.getElementById("watched")) document.getElementById("watched").onclick =  watchMovie;
+if(document.getElementById("unwatched")) document.getElementById("unwatched").onclick = removeWatchMovie;
 function watchMovie() { 
 
     let movName = document.getElementById("movName").textContent; 
     let req = new XMLHttpRequest()
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 204){
+            console.log(this.responseText); 
+            window.location.replace(window.location.href);
+        }
+    } 
+    console.log(window.location.href);
+    req.open("PUT", window.location.href + "/addWatchedMovie");
+    req.send();
+} 
+
+function removeWatchMovie() { 
+
+    let req = new XMLHttpRequest();
+    req.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 204){
             console.log(this.responseText);
+            window.location.replace(window.location.href);
         }
     }
-    req.open("PUT", "http://localhost:3000/movies/addWatchedList");
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(JSON.stringify({"movName": movName }));
+    req.open("PUT", window.location.href + "/removeWatchedMovie");
+    req.send();
+
 }
 function addReview() { 
     let score = document.getElementById("score").value; 
