@@ -26,7 +26,7 @@ html
             if current > 1
                 - let url = "http://localhost:3000/movies?page=" + (current-1)
                 - if(qstring.length > 0){ url += "&" + qstring; }
-                a#prev(href=url style="margin-right: 439px") Previous
+                a#prev(href=url style="margin-right: 575px") Previous
                 | 
             - url = "http://localhost:3000/movies?page=" + (current+1)
             - if(qstring.length > 0){ url += "&" + qstring; }
