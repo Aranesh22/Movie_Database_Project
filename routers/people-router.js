@@ -179,6 +179,7 @@ function findFreqCollab(req, res, next){
                 }            
             });
         });
+        console.log(collab);
         let sortable = []
         for(let key in collab){
             if(key !== id) sortable.push([key, collab[key]]);
@@ -187,8 +188,11 @@ function findFreqCollab(req, res, next){
             return b[1] - a[1];
         });
         let freqCollab = [];
-        for(let i = 0; i < 5; ++i){
+        let count = 0;
+        for(let i = 0; i < sortable.length; ++i){
+            if(count == 5) break;
             freqCollab[i] = sortable[i][0];
+            ++count;
         }
         Person.find({_id: {$in: freqCollab}}, function(err, result){
             if(err){
