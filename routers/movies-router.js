@@ -94,12 +94,13 @@ function createReview(req,res,next) {
 
     Movie.find({title: temp}).exec(function(err,movie) {   
 
-        
+        r.mId = movie._id;
         movie[0].reviews.push(r); 
       
 
         User.find({username: r.username}).exec(function(err,user) { 
 
+            r.mId = movie._id;
             user[0].userReviews.push(r); 
 
             movie[0].save(function(err, result){
