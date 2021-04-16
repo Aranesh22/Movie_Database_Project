@@ -36,7 +36,10 @@ html
                 div.section
                     h3 Reviews: 
                         each val in user.userReviews 
-                            h #{val.title + "\n" + val.rating + "\n" + val.reviewSummary + "\n" + val.reviewText}  
+                            br
+                            h4  #{val.movieName + " " + val.rating} 
+                            h5 #{val.reviewSummary} 
+                            h5 #{val.reviewText}  
     script(src="/js/user.js") 
                 
             
