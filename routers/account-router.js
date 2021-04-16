@@ -94,7 +94,7 @@ function getProfile(req, res, next){
                         return;
                     }
                         console.log("reviessssssss");
-                        console.log(user.userReviews);  
+                        console.log(user);  
                         
                         let gen = []; 
 
@@ -116,7 +116,8 @@ function getProfile(req, res, next){
                                         Movie.find({genre: gen[x]}).exec(function(err,genMovies) {    
                                             
                                             //console.log(genMovies.slice(1,3));
-    
+                                            
+                                            console.log(genMovies);
                                             res.user = user;
                                             res.people = people;
                                             res.users = users;
