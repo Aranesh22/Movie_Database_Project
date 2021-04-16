@@ -9,7 +9,8 @@ router.get("/", loadMovies);
 router.get("/", sendMovies); 
 router.post("/", express.json(), createMovie); 
 router.put("/newReview",express.json(),createReview); 
-router.put("/addWatchedList",express.json(),addWatchedMovie)
+router.put("/addWatchedList",express.json(),addWatchedMovie); 
+router.put("removeWatchedMovie",express.json,removeWatchedMovie);
 const Movie = require("../database-init/movieModel.js"); 
 const Person = require("../database-init/personModel"); 
 const User = require("../database-init/userModel.js")
@@ -67,25 +68,14 @@ function removeWatchedMovie(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }
+            user.watchList.pull(movie._id); 
 
-            person.followers.pull(user._id);
-            user.followingPeople.pull(person._id);
-
-            console.log(person);
-            console.log(user);
-            person.save(function(err){
+            user.save(function(err){
                 if(err){
                     console.log(err.message);
                     res.status(500).send("Database error");
                     return;
                 }
-                user.save(function(err){
-                    if(err){
-                        console.log(err.message);
-                        res.status(500).send("Database error");
-                        return;
-                    }
-                });
             });
             res.status(204).send("Unfollowed successfully");
             next();
@@ -94,12 +84,13 @@ function removeWatchedMovie(req, res, next){
 }
 function createReview(req,res,next) { 
     let r = {}; 
-    r.username = req.session.username; 
+    r.username = req.session.username;  
+    r.usernameId = req.session._id;
     r.reviewText = req.body.rText; 
     r.rating = req.body.score; 
     r.reviewSummary = req.body.rSummary;  
     let temp = req.body.movName.trimEnd();  
-    r.movieName = temp;  
+    r.movieName = temp;   
 
     Movie.find({title: temp}).exec(function(err,movie) {   
 
