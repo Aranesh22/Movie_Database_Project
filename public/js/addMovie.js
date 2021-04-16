@@ -22,6 +22,8 @@ function addMovie() {
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 201){
             console.log(this.responseText);
+            let movie = JSON.parse(this.responseText);
+            window.location.replace("http://localhost:3000/movies/" + movie._id);
         }
     }
     req.open("POST", "http://localhost:3000/movies");
