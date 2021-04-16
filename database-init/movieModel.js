@@ -17,10 +17,13 @@ let movieSchema = Schema({
     poster: String,
     reviews: [{
         username: {type: String, required: true},
-        rating: {type: Number, required: true},
+        rating: {type: Number, required: true}, 
+        usernameId: {type: Number,required: true}, 
+        mId: {type: Number, required:true},
         reviewSummary: String,
         reviewText: String, 
-        movieName: String
+        movieName: String, 
+
     }],
     similarMovies: {type: [Schema.Types.ObjectId], ref: "Movie"}
 });
@@ -32,17 +35,17 @@ movieSchema.query.findByTitle = function(title) {
 movieSchema.query.searchMovie = function(act,dir,wri,title,gen) { 
 
     return this.where("title").equals(new RegExp(title,"i"))  
-    .where("genre").equals(new RegExp(gen,"i"))
+    .where("genre").equals(new RegExp(gen,"i"))  
     .populate({ 
         path: 'actors',  
         match: {'name': new RegExp(act,'i')}
 
     }) 
-    .populate({  
+    .where({  
         path: 'director', 
         match: {'name': new RegExp(dir,'i')}
     }) 
-    .populate({ 
+    .where({ 
         path: 'writer', 
         match: {'name': new RegExp(wri,'i')}
     }); 
