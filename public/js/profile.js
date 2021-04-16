@@ -1,8 +1,20 @@
 document.getElementById("toggle").onclick = toggleAccount;
 document.getElementById("clear").onclick = clearNotifications;
-if(document.getElementById("unfollowPerson")) document.getElementById("unfollowPerson").onclick = unfollowPerson;
-if(document.getElementById("unfollowUser")) document.getElementById("unfollowUser").onclick = unfollowUser;
-if(document.getElementById("remove")) document.getElementById("remove").onclick = remove;
+let people = document.getElementsByClassName("unfollowPerson");
+let users = document.getElementsByClassName("unfollowUser");
+let movies = document.getElementsByClassName("remove");
+
+for(let i = 0; i < people.length; ++i){
+    people[i].addEventListener("click", unfollowPerson);
+}
+
+for(let i = 0; i < users.length; ++i){
+    users[i].addEventListener("click", unfollowUser);
+}
+
+for(let i = 0; i < movies.length; ++i){
+    movies[i].addEventListener("click", remove);
+}
 
 function toggleAccount(){
     let req = new XMLHttpRequest();
@@ -29,7 +41,7 @@ function clearNotifications(){
 }
 
 function unfollowPerson(){
-    let link = document.getElementById("unfollowPerson").previousSibling.href;
+    let link = this.previousSibling.href;
     console.log(link);
     let req = new XMLHttpRequest();
     req.onreadystatechange = function(){
@@ -43,7 +55,7 @@ function unfollowPerson(){
 }
 
 function unfollowUser(){
-    let link = document.getElementById("unfollowUser").previousSibling.href;
+    let link = this.previousSibling.href;
     console.log(link);
     let req = new XMLHttpRequest();
     req.onreadystatechange = function(){
@@ -57,7 +69,7 @@ function unfollowUser(){
 }
 
 function remove(){
-    let link = document.getElementById("remove").previousSibling.href;
+    let link = this.previousSibling.href;
     console.log(link);
     let req = new XMLHttpRequest();
     req.onreadystatechange = function(){
