@@ -11,6 +11,6 @@ function search() {
     let gen = document.getElementById("genre").value; 
     let wri = document.getElementById("writer").value;
     
-    window.location.replace("http://localhost:3000/movies?title="+title+"&actor="+actor+"&dir="+dir+"&wri="+wri+"&gen="+gen);
+    window.location.replace("http://localhost:3000/movies?title="+title+"&act="+actor+"&dir="+dir+"&wri="+wri+"&gen="+gen);
     
 }
