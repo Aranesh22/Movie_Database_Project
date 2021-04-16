@@ -650,7 +650,7 @@ function addPersonToMovie(pID, movie, role){
 
             User.findById(person.followers[x], function(err,user) { 
 
-                user.userNotifications.push( person.name + "is in the new movie called"+movie.title ); 
+                user.userNotifications.push( person.name + " is in the new movie called "+movie.title ); 
                 user.save(function(err, result){
                     if(err){
                         console.log(err.message);
