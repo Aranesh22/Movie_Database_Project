@@ -64,10 +64,11 @@ html
                     div.Reviews 
                         h3 Reviews  
                             each val in reviews  
-                                a(style="display: block;" href="/users/"+ val.usernameId) #{val.username} 
-                                h5 Score: #{val.rating}
-                                h5 #{val.reviewText} 
-                                br 
+                                div.section
+                                    a(style="display: block;" href="/users/"+ val.usernameId) #{val.username} 
+                                    h5 Score: #{val.rating}
+                                    h5 #{val.reviewText} 
+                                    br 
 
             div.similiarMovies
                 div.section 
