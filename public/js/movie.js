@@ -22,7 +22,7 @@ function removeWatchMovie() {
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 204){
             console.log(this.responseText);
-            window.location.replace(window.location.href);
+            location.reload;
         }
     }
     req.open("PUT", window.location.href + "/removeWatchedMovie");
@@ -41,7 +41,7 @@ function addReview() {
         if(this.readyState == 4 && this.status == 204){
             console.log(this.responseText); 
 
-            window.location.reload();
+            location.reload();
         } 
 
     }
