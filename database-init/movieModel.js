@@ -18,8 +18,8 @@ let movieSchema = Schema({
     reviews: [{
         username: {type: String, required: true},
         rating: {type: Number, required: true}, 
-        usernameId: {type: Number,required: true}, 
-        mId: {type: Number, required:true},
+        usernameId: {type: [Schema.Types.ObjectId], ref: "User"}, 
+        mId:{type: [Schema.Types.ObjectId], ref: "Movie"},
         reviewSummary: String,
         reviewText: String, 
         movieName: String, 
