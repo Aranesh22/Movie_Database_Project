@@ -116,6 +116,10 @@ function getUser(req, res, next){
             res.status(404).send("User not found");
             return;
         }
+        if(id == req.session._id){
+            res.status(200).redirect("http://localhost:3000/account/profile");
+            return;
+        }
         Person.find({_id: {$in: user.followingPeople}}, function(err, people){ //find people user follows
             if(err){            
                 res.status(500).send("Database error");
