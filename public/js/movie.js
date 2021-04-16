@@ -26,7 +26,7 @@ function addReview() {
         if(this.readyState == 4 && this.status == 204){
             console.log(this.responseText); 
 
-            location.reload();
+            window.location.replace(window.location.href);
         } 
 
     }
