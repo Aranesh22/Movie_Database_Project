@@ -21,7 +21,9 @@ html
                         else 
                                 button(id="unwatched") Remove From WatchList
 
-                        h3 Runtime: #{mData.runtime}  
+                        h3 Runtime: #{mData.runtime}   
+                        h3 Average Rating: #{avrgRating} 
+                        h3 Rated: #{mData.rating}
                         each val in mData.genre
                             a(id="genre" href='/movies?gen='+val) #{val}   
 
@@ -81,6 +83,7 @@ html
                     ul 
                         each val in similarMovies 
                             li
-                                a(href='/movies/'+val._id) #{val.title}
+                                a(href='/movies/'+val._id) #{val.title} 
+
 
             script(src="/js/movie.js") 
