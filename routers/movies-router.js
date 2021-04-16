@@ -10,7 +10,8 @@ router.get("/", sendMovies);
 router.post("/", express.json(), createMovie); 
 router.put("/newReview",express.json(),createReview); 
 router.put("/:mid/addWatchedMovie",express.json(),addWatchedMovie); 
-router.put("/:mid/removeWatchedMovie",express.json(),removeWatchedMovie);
+router.put("/:mid/removeWatchedMovie",express.json(),removeWatchedMovie); 
+router.get("/:mid/:rid",viewFullReview);
 const Movie = require("../database-init/movieModel.js"); 
 const Person = require("../database-init/personModel"); 
 const User = require("../database-init/userModel.js")
@@ -19,6 +20,53 @@ let db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 router.get("/:mid", getMovie, sendMovie);  
 
+function viewFullReview(req,res,next) { 
+
+    console.log("YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+    console.log(req.params.mid);
+    Movie.findById(req.params.mid).exec(function(err,movie) { 
+        
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!movie){
+            res.status(400).send("Movie does not exist");
+            return;
+        } 
+
+        movie.reviews.forEach(x => { 
+
+            console.log(req.params.rid); 
+            console.log(x._id);
+            if(x._id.toString() === req.params.rid.toString()) { 
+
+                res.format({
+                    "text/html": () => {
+                        if(!req.session.loggedin){
+                            res.status(401).redirect("http://localhost:3000/account/login");
+                            return;
+                        }
+                        res.status(200).render("fullReview.pug", {
+                            review: x
+                        }
+                    )},
+                    "application/json": () => {res.status(200).json(res.people)}
+                }); 
+                
+                next();
+                
+            } 
+
+            else { 
+                console.log("badddddd");
+            }
+        })
+
+
+    });
+}
 function addWatchedMovie(req,res,next) {  
 
     let id = req.params.mid; 
@@ -59,7 +107,7 @@ function removeWatchedMovie(req, res, next){
             return;
         }
         if(!movie){
-            res.status(400).send("Followee does not exist");
+            res.status(400).send("Movie does not exist");
             return;
         }
         User.findById(req.session._id, function(err, user){
@@ -94,11 +142,12 @@ function createReview(req,res,next) {
 
     Movie.find({title: temp}).exec(function(err,movie) {   
 
-        r.mId = movie._id;
+        r.mId = movie[0]._id;
         movie[0].reviews.push(r); 
       
         User.find({username: r.username}).exec(function(err,user) {  
             
+            r.mId = movie[0]._id;
             user[0].userReviews.push(r); 
 
             movie[0].save(function(err, result){
@@ -120,7 +169,9 @@ function createReview(req,res,next) {
                             console.log(err.message);
                             return;
                         } 
-                    });  
+                    });   
+
+                
                     
                     user[0].save(function(err, result){
                         if(err){
@@ -402,6 +453,7 @@ function sendMovies(req, res, next){
 
 function getMovie(req, res, next){ 
     
+    //console.log(req.params.mid);
     let mId = req.params.mid;  
 
     Movie.findById(mId, function(err,mov) {  
@@ -414,7 +466,8 @@ function getMovie(req, res, next){
 
 
         if(!mov){
-            res.status(404).send("Person not found");
+            res.status(404).send("Person not found"); 
+            return;
         } 
         Person.find({_id: {$in: mov.director}}, function(err,director) {  
             
@@ -422,7 +475,9 @@ function getMovie(req, res, next){
                 console.log(err);
                 res.status(500).send("Database error");
                 return;
-            } 
+            }  
+
+        
             
             Person.find({_id: {$in: mov.writer}}, function(err,writer) {   
 
@@ -503,7 +558,8 @@ function getMovie(req, res, next){
 
 function sendMovie(req, res, next){
 
-    console.log(res.similarMovies);
+    console.log(res.similarMovies); 
+    console.log(res.movie.mId)
     res.format({
         "text/html": () => {  
             
@@ -514,7 +570,7 @@ function sendMovie(req, res, next){
                     return;
                 } 
 
-                if(user.watchList.length > 0) { 
+                if(user.watchList.length > 0 &&user.watchList.length!==null ) { 
 
                     if(user.watchList.includes(res.movie._id)){
                         res.watching = true;
@@ -526,7 +582,7 @@ function sendMovie(req, res, next){
 
                 }
                 res.status(200).render("movie.pug", {
-                
+                    
                     watching: res.watching,
                     mData:res.movie,
                     directors: res.director, 
