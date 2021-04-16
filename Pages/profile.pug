@@ -36,7 +36,7 @@ html
                                         li
                                             div.followee
                                                 a(href='/people/'+ person._id) #{person.name} 
-                                                button#unfollowPerson(style="height:20px;") Unfollow
+                                                button.unfollowPerson(style="height:20px;") Unfollow
                             br
                                                     
                                 
@@ -47,7 +47,7 @@ html
                                         li 
                                             div.followee
                                                 a(href='/users/'+ user._id) #{user.username} 
-                                                button#unfollowUser(style="height:20px;") Unfollow
+                                                button.unfollowUser(style="height:20px;") Unfollow
                             br
                                             
                         div.section
@@ -57,7 +57,7 @@ html
                                         li
                                             div.movie
                                                 a(href='/movies/'+movie._id) #{movie.title} 
-                                                button#remove(style="height:20px;") Remove
+                                                button.remove(style="height:20px;") Remove
                             br
 
                         div.section
