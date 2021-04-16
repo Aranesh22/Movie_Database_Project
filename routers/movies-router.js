@@ -26,7 +26,6 @@ function viewFullReview(req,res,next) {
         res.status(401).send("Not logged in");
         return;
     }
-    console.log("YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
     console.log(req.params.mid);
     Movie.findById(req.params.mid).exec(function(err,movie) { 
         
@@ -129,7 +128,6 @@ function removeWatchedMovie(req, res, next){
                 }
             }); 
             res.status(204).send("UnWatched"); 
-            console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
             next();
         });
     });
@@ -303,7 +301,6 @@ function moviePeopleLoad(req,res,next) {
             console.log(err);
             return;
         }  
-        console.log("resultssssssssssssssss");  
         console.log(result);
         res.people = result;
         next();
@@ -425,15 +422,6 @@ function loadMovies(req, res, next){
 
 }
 
-function checkQuery(query, movie){
-    let username = !query.title || movie.title.toLowerCase ().includes(query.title);
-    let actor = !query.actor || movie.Actors.includes(query.actor);
-    let director = !query.director || movie.Director.includes(query.director);
-    let writer = !query.writer || movie.Writer.includes(query.writer);
-    let genre = !query.genre || movie.Genre.includes(query.genre);
-    return username && actor && director && writer && genre;
-}
-
 function sendMovies(req, res, next){  
     res.format({
         "text/html": () => {res.status(200).render("movies.pug", {movies:res.movies, qstring:req.qstring, current:req.query.page})},
@@ -531,7 +519,7 @@ function getMovie(req, res, next){
 
                             newAvrg = Math.round((avrgRating / mov.reviews.length),1); 
 
-                            newAvrg = newAvrg + "out of 10";
+                            newAvrg = newAvrg + "/10";
 
                         }
                           
@@ -570,7 +558,10 @@ function sendMovie(req, res, next){
     console.log(res.movie.mId)
     res.format({
         "text/html": () => {  
-            
+            if(!req.session.loggedin){
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            }
             User.findById(req.session._id, function(err, user){
                 if(err){
                     console.log(err);
