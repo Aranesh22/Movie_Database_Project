@@ -66,7 +66,7 @@ html
                             option(value="9") 9
                             option(value="10") 10
                         textarea#rSummary(placeholder="Summary" cols="50" rows="1" style="display: block;resize: none;")
-                        textarea#rText(placeholder="Review Text" cols="100" rows="10" style="display: block; resize: none;")   
+                        textarea#rText(cols="100" rows="10" style="display: block; resize: none;")
                         button#submitB(type=button) submit 
 
                     div.Reviews 
@@ -75,9 +75,10 @@ html
                                 div.section
                                     a(style="display: block;" href="/users/"+ val.usernameId) #{val.username} 
                                     h5 Score: #{val.rating}
-                                    h5 #{val.reviewSummary}   
-                                    a(style="display: block;" href="/movies/"+ val.mId+"/" + val._id) See Full Review
-                                    br 
+                                    h5 #{val.reviewSummary}  
+                                    if val.reviewSummary != "" 
+                                        a(style="display: block;" href="/movies/"+ val.mId+"/" + val._id) See Full Review
+                                        br 
 
             div.similiarMovies
                 div.section 
