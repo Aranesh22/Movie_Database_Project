@@ -2,66 +2,76 @@ html
     head
         style 
             include ../public/styles/homeStyles.css  
-            include ../public/styles/pageStyles.css 
-          
-          
+            include ../public/styles/movie.css
             
         title Movies
     body 
 
         include navbar  
         
+        div.grid
+            div.Content 
 
-        div.Content 
+                div.movie
+                    div.info 
+                        img(src=mData.poster)
+                        h1#movName #{mData.title}  
+                        button#watchedMovie(type=button) Watched Movie
+                        h3 Runtime: #{mData.runtime}  
+                        each val in mData.genre
+                            a(id="genre" href='/movies?gen='+val) #{val}   
 
-        
-          
-            div.info 
-                h4#movName #{mData.title}  
-                button#watchedMovie(type=button) Watched Movie
-                p Runtime: #{mData.Runtime}  
+                    div.people
+                        div.section
+                            h3 Director:   
+                                ul
+                                    each val in directors  
+                                        li
+                                            a(href='/people/'+val._id) #{val.name} 
+                        
+                        div.section
+                            h3 Writers: 
+                                ul
+                                    each val in writers
+                                        li
+                                            a(href='/people/'+val._id) #{val.name} 
 
-                p Genre:
-                each val in mData.genre
-                    a(href='/movies') #{val}   
-                    br
+                        div.section 
+                            h3 Actors: 
+                                ul 
+                                    each val in actors  
+                                        li
+                                            a(href= '/people/'+val._id) #{val.name} 
+                div.reviewContent
+                    div.AddReviews
+                        h3 Add a review:  
+                        h4(style="display: inline;") Score: 
+                        select#score
+                            option(value="1") 1
+                            option(value="2") 2
+                            option(value="3") 3
+                            option(value="4") 4
+                            option(value="5") 5
+                            option(value="6") 6
+                            option(value="7") 7
+                            option(value="8") 8
+                            option(value="9") 9
+                            option(value="10") 10
+                        textarea(style="display: block;resize: none;")#rSummary(placeholder="Summary", cols="50", rows="1")
+                        textarea(style="display: block; resize: none;")#rText(placeholder="Review Text", cols="100", rows="10")   
+                        button#submitB(type=button) submit 
 
-            div.Dir
-                P Director:   
-                    each val in directors  
-                        ul
-                            a(href='/people/'+val._id) #{val.name} 
-            
-            div.Writ
-                p Writers: 
-                each val in writers
-                    ul
-                        a(href='/people/'+val._id) #{val.name} 
+                    div.Reviews 
+                        h3 Reviews  
+                            each val in reviews 
+                                p #{val.reviewText} Score: #{val.rating}
 
-            div.Act 
-                p Actors: 
-                each val in actors  
+            div.similiarMovies
+                div.section 
+                    h3 Similar Movies 
                     ul 
-                        a(href= '/people/'+val._id) #{val.name} 
-            
-            div.simillarMovies 
-                p Simillar Movies 
-                each val in similarMovies 
-                    ul 
-                        a(href='/movies/'+val._id) #{val.title}
+                        each val in similarMovies 
+                            li
+                                a(href='/movies/'+val._id) #{val.title}
 
-            div.AddReviews
-                p Add A review:  
-                p Review Score 
-                input#score(type="text" placeholder="") 
-                p Review Text: 
-                input#rText(type="text" placeholder="")
-                p Review Summary: 
-                input#rSummary(type="text" placeholder="")   
-                button#submitB(type=button) submit 
-
-            div.Reviews 
-                p Reviews  
-                    each val in reviews 
-                        p #{val.reviewText} Score: #{val.rating}
             script(src="/js/movie.js") 
