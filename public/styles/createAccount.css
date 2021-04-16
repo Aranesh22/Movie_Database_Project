@@ -5,6 +5,7 @@
     text-align: center;
     background-color: grey;
     padding: 30px;
+    border-radius: 5px;
 }
 
 #create > h{
