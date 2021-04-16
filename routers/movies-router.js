@@ -14,11 +14,11 @@ router.put("/:mid/removeWatchedMovie",express.json(),removeWatchedMovie);
 router.get("/:mid/:rid",viewFullReview);
 const Movie = require("../database-init/movieModel.js"); 
 const Person = require("../database-init/personModel"); 
-const User = require("../database-init/userModel.js")
+const User = require("../database-init/userModel.js"); 
+router.get("/:mid", getMovie, sendMovie);  
 mongoose.connect("mongodb://localhost/final", {useNewUrlParser: true}); 
 let db = mongoose.connection; 
 db.on("error", console.error.bind(console, "connection error"));
-router.get("/:mid", getMovie, sendMovie);  
 
 function viewFullReview(req,res,next) { 
 
@@ -517,7 +517,6 @@ function getMovie(req, res, next){
             
                                     if(mov.genre[j] === smlMovies[y].genre[i] && mov.similarMovies.includes(smlMovies[y]._id) === false) {    
 
-                                        console.log("Yessssssssssssssssssssssssssssssss");
                                         console.log(smlMovies[y]);
                                         mov.similarMovies.push(smlMovies[y]);  
                                         val = true;      
@@ -529,10 +528,27 @@ function getMovie(req, res, next){
                                 }
             
                             } 
-                        }   
-                          
-                       
+                        }    
 
+
+                        let newAvrg = 0;
+                        if(mov.reviews.length > 0 && mov.reviews.length!== null) {  
+
+                            let avrgRating = 0;
+                            mov.reviews.forEach(x => { 
+
+                                avrgRating +=(x.rating);
+
+
+                            }); 
+
+                            newAvrg = Math.round((avrgRating / mov.reviews.length),1); 
+
+                            newAvrg = newAvrg + "out of 10";
+
+                        }
+                          
+                
                         let newSimilarMovies = [];
                         mov.similarMovies.forEach(movie => {  
                             
@@ -548,7 +564,8 @@ function getMovie(req, res, next){
                         res.movie = mov; 
                         res.director = director; 
                         res.writer = writer; 
-                        res.actors = actors;
+                        res.actors = actors; 
+                        res.avrgRating = newAvrg;
                         next();
                     
                     });
@@ -593,7 +610,8 @@ function sendMovie(req, res, next){
                     writers: res.writer,  
                     actors: res.actors,
                     reviews : res.reviews,
-                    similarMovies: res.similarMovies
+                    similarMovies: res.similarMovies, 
+                    avrgRating: res.avrgRating
                 }) 
 
         });
