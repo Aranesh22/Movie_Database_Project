@@ -5,18 +5,13 @@ document.getElementById("addDir").onclick = addDirector;
 document.getElementById("addWrit").onclick = addWriter;  
 document.getElementById("submitMovie").onclick = addMovie;
 
-let gens = ["Comedy"];   
+let gens = [];   
 let acts = []; 
 let writs = []; 
 let dir = [];  
-let awds = ["An Oscar"];
-function oiy() { 
-
-    console.log("KEVINNNNNNNNNNNNNNNNNNNNNN");
-}
+let awds = [];
 function addMovie() { 
 
-    console.log("yess");
     let title = document.getElementById("mName").value; 
     let plot = document.getElementById("plot").value;   
     let releaseDate = document.getElementById("rD").value;
@@ -126,7 +121,6 @@ function addActor()  {
 
         }    
 
-
         let r = document.getElementById("addActorActress"); 
         r.innerHTML = req.responseText;  
 
@@ -148,9 +142,10 @@ function addActor()  {
 function addActPerson() { 
     
     acts.push(this.id); 
-    console.log(acts);
+    console.log(acts); 
     let x = document.getElementById(this.id +"s"); 
-    x.remove();
+    x.remove(); 
+
      
 } 
 
