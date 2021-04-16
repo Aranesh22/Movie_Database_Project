@@ -57,14 +57,17 @@ html
                             option(value="8") 8
                             option(value="9") 9
                             option(value="10") 10
-                        textarea(style="display: block;resize: none;")#rSummary(placeholder="Summary", cols="50", rows="1")
-                        textarea(style="display: block; resize: none;")#rText(placeholder="Review Text", cols="100", rows="10")   
+                        textarea#rSummary(placeholder="Summary" cols="50" rows="1" style="display: block;resize: none;")
+                        textarea#rText(placeholder="Review Text" cols="100" rows="10" style="display: block; resize: none;")   
                         button#submitB(type=button) submit 
 
                     div.Reviews 
                         h3 Reviews  
                             each val in reviews 
-                                p #{val.username}: #{val.reviewText} Score: #{val.rating} 
+                                a(style="display: block;" href="/users/"+val.usernameId) #{val.username} 
+                                h5 Score: #{val.rating}
+                                h5 #{val.reviewText} 
+                                br 
 
             div.similiarMovies
                 div.section 
