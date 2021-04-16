@@ -1,0 +1,15 @@
+html 
+    head
+        style 
+            include ../public/styles/homeStyles.css  
+            include ../public/styles/movie.css 
+
+    body   
+        include navbar   
+
+        a(href="/movies/"+review.mId) #{review.movieName}  
+        div.section
+            a(style="display: block;" href="/users/"+ review.usernameId) #{review.username} 
+            h5 Score #{review.rating}
+            h5 Review Text #{review.reviewText}  
+            h5 Review Summary #{review.reviewSummary}
