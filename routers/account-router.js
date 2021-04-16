@@ -49,7 +49,9 @@ function toggle(req, res, next){
     });
 }
 
-function getProfile(req, res, next){
+function getProfile(req, res, next){  
+
+    console.log("YESSSSSSSSSSSSS");
     if(!req.session.loggedin){
         res.status(401).send("Not logged in");
         return;
@@ -82,19 +84,57 @@ function getProfile(req, res, next){
                         res.status(500).send("Database error");
                         return;
                     }
-                    Movie.find({_id: {$in: user.recMovies}}, function(err, recMovies){
-                        if(err){
-                            console.log(err.message);
-                            res.status(500).send("Database error");
-                            return;
+                        console.log("reviessssssss");
+                        console.log(user.userReviews);  
+                        
+                        let gen = []; 
+
+                        if(user.userReviews.length > 0) {  
+
+                            for(let x=0; x < user.userReviews.length; x++) {  
+
+                                Movie.find({title: user.userReviews[x].movieName}).exec(function(err,movie) {    
+                                    
+                                   console.log(movie[0].genre); 
+    
+                                   for(let y =0; y < movie[0].genre.length; y++) { 
+    
+                                        gen.push(movie[0].genre[y]);
+                                   }  
+                                   
+                                   for(let i = 0; i < gen.length; i++) {
+    
+                                        Movie.find({genre: gen[x]}).exec(function(err,genMovies) {    
+                                            
+                                            //console.log(genMovies.slice(1,3));
+    
+                                            res.user = user;
+                                            res.people = people;
+                                            res.users = users;
+                                            res.watchedMovies = watchedMovies;
+                                            res.recMovies = genMovies.slice(1,5); 
+                                            next(); 
+                                    
+                                        }); 
+    
+                                   }
+                                   
+                                }); 
+    
+                            }  
+
+
+                        } 
+
+                        else {  
+
+                            res.user = user;
+                            res.people = people;
+                            res.users = users;
+                            res.watchedMovies = watchedMovies; 
+                            res.recMovies = [];
+                            next(); 
                         }
-                        res.user = user;
-                        res.people = people;
-                        res.users = users;
-                        res.watchedMovies = watchedMovies;
-                        res.recMovies = recMovies;
-                        next();
-                    });
                 });
             });
         });
