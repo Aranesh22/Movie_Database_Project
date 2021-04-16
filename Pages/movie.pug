@@ -24,6 +24,8 @@ html
                         h3 Runtime: #{mData.runtime}   
                         h3 Average Rating: #{avrgRating} 
                         h3 Rated: #{mData.rating}
+                        h3 Released: #{mData.released}
+                        h5 #{mData.plot}
                         each val in mData.genre
                             a(id="genre" href='/movies?gen='+val) #{val}   
 
@@ -73,8 +75,8 @@ html
                                 div.section
                                     a(style="display: block;" href="/users/"+ val.usernameId) #{val.username} 
                                     h5 Score: #{val.rating}
-                                    h5 #{val.reviewText}   
-                                    a(style="display: block;" href="/movies/"+ val.mId+"/" + val._id) Full Review
+                                    h5 #{val.reviewSummary}   
+                                    a(style="display: block;" href="/movies/"+ val.mId+"/" + val._id) See Full Review
                                     br 
 
             div.similiarMovies
