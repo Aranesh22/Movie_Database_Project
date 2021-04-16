@@ -4,66 +4,67 @@ html
         title Add Movie
     style 
         include ../public/styles/homeStyles.css
+        include ../public/styles/addMovie.css
         
     body 
 
         include navbar
-
-        p Add Actor/Actress:  
-            input#actorName(type="text" placeholder="Insert Actor/Actress")   
-            button#addActor(type="button") Add 
-        div#addActorActress    
-
-        div#addedActorActress  
-            p addedActorActress
-            
-
-        p Add Director:  
-            input#dirName(type="text" placeholder="Insert Director") 
-            button#addDir(type="button") Add 
-        div#addDirectors   
         
-        div#addedDirectors   
-            p Added Directors
+        div.add
+            div.section
+                p Movie Name:   
+                    input#mName(type="text" placeholder="Insert Movie Name") 
 
+                p Add Plot:   
+                    input#plot(type="text" placeholder="Insert Plot") 
 
-        p Add Writer:   
-            input#writName(type="text" placeholder="Insert Writer") 
-            button#addWrit(type="button") Add 
-        div#addWriters 
-                p Added Writers 
-        
-        div#addedWriters  
-            p Added Writers
+                p Add Release Date:  
+                    input#rD(type="text" placeholder="Insert Release Date") 
 
-        p Movie Name:   
-            input#mName(type="text" placeholder="Insert Movie Name") 
+                p Add Rating: 
+                    input#rating(type="text" placeholder="Insert Rating")  
+                p Add Runtime:  
+                    input#runtime(type="text" placeholder="Insert Runtime") 
+            div.bottom
+                div.section
+                    P Add Genre: 
+                        input#genre(type="text" placeholder="Insert Genre")  
+                        button#addGenre(type="button") Add 
+                        div#addGenres 
+                            p Added Genres 
 
-        p Add Plot:   
-            input#plot(type="text" placeholder="Insert Plot") 
+                div.section
+                    p Add Actor/Actress:  
+                        input#actorName(type="text" placeholder="Insert Actor/Actress")   
+                        button#addActor(type="button") Add 
+                    div#addActorActress    
 
-        p Add Release Date:  
-            input#rD(type="text" placeholder="Insert Release Date") 
+                    div#addedActorActress  
+                        p addedActorActress
+                    
+                div.section
+                    p Add Director:  
+                        input#dirName(type="text" placeholder="Insert Director") 
+                        button#addDir(type="button") Add 
+                    div#addDirectors   
+                    
+                    div#addedDirectors   
+                        p Added Directors
 
-        p Add Rating: 
-            input#rating(type="text" placeholder="Insert Rating")  
+                div.section
+                    p Add Writer:   
+                        input#writName(type="text" placeholder="Insert Writer") 
+                        button#addWrit(type="button") Add 
+                    div#addWriters 
+                            p Added Writers 
 
-        P Add Genre: 
-            input#genre(type="text" placeholder="Insert Genre")  
-            button#addGenre(type="button") Add 
-            div#addGenres 
-                p Added Genres 
-
-
-        p Add Runtime:  
-            input#runtime(type="text" placeholder="Insert Runtime") 
-            
-        p Add Awards: 
-            input#awards(type="text" placeholder="Insert Awards") 
-            button#awardButton(type="button") Add 
-            div#addAwards
-                p Added Awards
-
-        p SUBMIT MOVIE 
-        button#submitMovie(type="button") Add 
+                div.section
+                    p Add Awards: 
+                        input#awards(type="text" placeholder="Insert Awards") 
+                        button#awardButton(type="button") Add 
+                        div#addAwards
+                            p Added Awards
+                div.section
+                    p SUBMIT MOVIE 
+                    button#submitMovie(type="button") Add 
         script(src="/js/addMovie.js") 
