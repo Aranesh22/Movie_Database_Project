@@ -92,55 +92,30 @@ function getProfile(req, res, next){
                         res.status(500).send("Database error");
                         return;
                     }
-                        
-                        let gen = []; 
-
-                        if(user.userReviews.length > 0) {  
-
-                            for(let x=0; x < user.userReviews.length; x++) {  
-
-                                Movie.find({title: user.userReviews[x].movieName}).exec(function(err,movie) {    
-                                    
-                                   console.log(movie[0].genre); 
-    
-                                   for(let y =0; y < movie[0].genre.length; y++) { 
-    
-                                        gen.push(movie[0].genre[y]);
-                                   }  
-                                   
-                                   for(let i = 0; i < gen.length; i++) {
-    
-                                        Movie.find({genre: gen[x]}).exec(function(err,genMovies) {    
-                                            
-                                            //console.log(genMovies.slice(1,3));
-                                            
-                                            res.user = user;
-                                            res.people = people;
-                                            res.users = users;
-                                            res.watchedMovies = watchedMovies;
-                                            res.recMovies = genMovies.slice(1,5); 
-                                            next(); 
-                                    
-                                        }); 
-    
-                                   }
-                                   
-                                }); 
-    
-                            }  
-
-
-                        } 
-
-                        else {  
-
-                            res.user = user;
-                            res.people = people;
-                            res.users = users;
-                            res.watchedMovies = watchedMovies; 
-                            res.recMovies = [];
-                            next(); 
+                    
+                    let gen = []; 
+                    for(let i = 0; i < watchedMovies.length; ++i){
+                        let genres = watchedMovies[i].genre;
+                        for(let j = 0; j < genres.length; ++j){
+                            if(!gen.includes(genres[i])){
+                                gen.push(genres[i]);
+                            }
                         }
+                    }
+
+                    Movie.find({genre: {$in: gen}, _id: {$nin: watchedMovies}}).limit(5).exec(function(err, recMovies){
+                        if(err){
+                            console.log(err.message);
+                            res.status(500).send("Database error");
+                            return;
+                        }
+                        res.recMovies = recMovies;
+                        res.user = user;
+                        res.people = people;
+                        res.users = users
+                        res.watchedMovies = watchedMovies;
+                        next();
+                    }); 
                 });
             });
         });
