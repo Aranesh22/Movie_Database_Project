@@ -58,7 +58,7 @@ db.once("open", function(){
         Person.insertMany(allPeople, function(err){
             if(err) console.log(err.message);
         }); 
-
+        console.log("Finished");
     });
 });
 
