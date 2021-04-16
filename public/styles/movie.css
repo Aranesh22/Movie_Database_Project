@@ -1,0 +1,64 @@
+a {
+    text-decoration: none;
+}
+
+.content{
+    margin-top: 10px;
+    background-color: rgb(202, 202, 202);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#genre{
+    background-color: rgb(73, 73, 73);
+    padding: 5px;
+    margin: 1px;
+    color: white;
+    text-align: center;
+    border-radius: 20px;
+}
+
+#genre:hover{
+    background-color: rgb(32, 32, 32);
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: auto;
+}
+
+.content{
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+.content > .movie{
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+.content > .movie > .info{
+    border-bottom-style: solid;
+    width: 95%;
+    margin: 20px;
+    border-width: 2px;
+    padding-bottom: 20px;
+}
+
+.content > .movie > .people{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: auto;
+}
+
+.section{
+    width: 90%;
+    border-radius: 5px;
+    background-color: rgba(143, 143, 143, 0.514);
+    margin: 10px;
+}
+
+.section > *{
+    margin: 10px;
+}
