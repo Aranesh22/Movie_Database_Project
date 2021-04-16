@@ -127,7 +127,32 @@ function getUser(req, res, next){
                     res.status(500).send("Database error");
                     console.log(err.message);
                     return;
+                } 
+                for(let x=0; x < user[0].userReviews.length; x++) {  
+
+                    Movie.find({title: user[0].userReviews[x].movieName}).exec(function(err,movie) {    
+
+                        console.log(movie);
+                        
+
+                    
+                    });
+
                 }
+
+                /*
+                for (let x = 0; x  < movies.length;x++) { 
+                    
+                    for(let y =0; y < movies[x].genre.length; y++) { 
+
+                        gen.push(y)
+                    }
+                
+                }  
+
+                */
+
+                
                 res.user = user;
                 res.people = people;
                 res.movies = movies;
