@@ -115,7 +115,7 @@ function getUser(req, res, next){
         if(!user){
             res.status(404).send("User not found");
             return;
-        }
+        } 
         if(id == req.session._id){
             res.status(200).redirect("http://localhost:3000/account/profile");
             return;
