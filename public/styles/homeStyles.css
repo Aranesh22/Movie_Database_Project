@@ -66,3 +66,23 @@ ul{
     padding-bottom: 20px;
     text-align: center;
 }
+
+.section{
+    width: 90%;
+    border-radius: 5px;
+    background-color: rgb(145, 145, 145);
+    margin: 10px;
+    color: rgb(0, 0, 0);
+}
+
+.section a{
+    color: rgb(255, 255, 255);
+}
+
+.section a:hover{
+    color: rgb(99, 79, 189);
+}
+
+.section > *{
+    margin: 10px;
+}
