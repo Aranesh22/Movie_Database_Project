@@ -1,9 +1,9 @@
-//document.getElementById("addMovie").addEventListener("click",oiy); 
 document.getElementById("addGenre").onclick = addGenre; 
 document.getElementById("addActor").onclick = addActor;  
 document.getElementById("addDir").onclick = addDirector;  
 document.getElementById("addWrit").onclick = addWriter;  
-document.getElementById("submitMovie").onclick = addMovie;
+document.getElementById("submitMovie").onclick = addMovie; 
+document.getElementById("awardButton").onclick = addAward;
 
 let gens = [];   
 let acts = []; 
@@ -12,21 +12,26 @@ let dir = [];
 let awds = [];
 function addMovie() { 
 
-    let title = document.getElementById("mName").value; 
-    let plot = document.getElementById("plot").value;   
-    let releaseDate = document.getElementById("rD").value;
-    let rating = document.getElementById("rating").value;
-    let runTime = document.getElementById("runtime").value
+    if(document.getElementById("mName").value.length != 0 &&  document.getElementById("plot").value != 0 && document.getElementById("rD").value != 0 && document.getElementById("rating").value != 0 && document.getElementById("runtime").value !=0 &&
+        gens.length != 0   && acts.length !=0 && dir.length!= 0 && awds.length !=0 && writs.length !=0) { 
 
-    let req = new XMLHttpRequest()
-    req.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 201){
-            console.log(this.responseText);
-        }
-    }
-    req.open("POST", "http://localhost:3000/movies");
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(JSON.stringify({"title": title,  
+
+            let title = document.getElementById("mName").value; 
+            let plot = document.getElementById("plot").value;   
+            let releaseDate = document.getElementById("rD").value;
+            let rating = document.getElementById("rating").value;
+            let runTime = document.getElementById("runtime").value;
+
+            let req = new XMLHttpRequest();
+            req.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 201){
+                    console.log(this.responseText); 
+                    window.location.reload();
+                }
+            }
+            req.open("POST", "http://localhost:3000/movies");
+            req.setRequestHeader("Content-Type", "application/json");
+            req.send(JSON.stringify({"title": title,  
                             "plot": plot, 
                             "rDate": releaseDate, 
                             "rating" : rating, 
@@ -38,6 +43,11 @@ function addMovie() {
                             "awards": awds
                                         }));
    
+    } 
+    else { 
+
+        alert("All Fields Must Be Filled!");
+    }
     
 }
 
@@ -139,6 +149,7 @@ function addActor()  {
 
 } 
 
+
 function addActPerson() { 
     
     acts.push(this.id); 
@@ -186,9 +197,36 @@ function addGenre() {
 
     });
 
-
-
     let orgGens = document.getElementById("addGenres");
 	orgGens.parentNode.replaceChild(newGen, orgGens);
+    
+} 
+
+function addAward() {  
+
+    
+    let val = document.getElementById("awards").value;   
+    awds.push(val);
+    console.log("yesss"); 
+    console.log(awds); 
+
+    let newAwd = document.createElement("div");
+	newAwd.id = "addedAwards";  
+
+    awds.forEach(x => {  
+
+        let newDiv = document.createElement("div"); 
+        let text = document.createTextNode(x); 
+	    newDiv.appendChild(text); 
+        newAwd.appendChild(newDiv);
+
+    });
+
+    let orgAwds = document.getElementById("addedAwards");
+	orgAwds.parentNode.replaceChild(newAwd , orgAwds);
+
+
+}
+function name(params) {
     
 }
