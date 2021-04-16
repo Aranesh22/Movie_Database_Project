@@ -149,10 +149,15 @@ function createReview(req,res,next) {
         r.mId = movie[0]._id;
         movie[0].reviews.push(r); 
       
-        User.find({username: r.username}).exec(function(err,user) {  
+        User.findById(req.session._id,function(err,user) {  
             
-            r.mId = movie[0]._id;
-            user[0].userReviews.push(r); 
+            user.userReviews.push(r); 
+            user.save(function(err, result){
+                if(err){
+                    console.log(err.message);
+                    return;
+                } 
+            });   
 
             movie[0].save(function(err, result){
                 if(err){
@@ -163,29 +168,20 @@ function createReview(req,res,next) {
         
             });  
 
-            for(let x = 0; x < user[0].followers.length; x++ ) { 
+            for(let x = 0; x < user.followers.length; x++ ) { 
 
-                User.findById(user[0].followers[x], function(err,userNew) { 
+                User.findById(user.followers[x], function(err,userNew) { 
     
-                    userNew.userNotifications.push( user[0].username + "Made A review for "+ movie[0].title ); 
+                    userNew.userNotifications.push( user.username + "Made A review for "+ movie[0].title ); 
                     userNew.save(function(err, result){
                         if(err){
                             console.log(err.message);
                             return;
                         } 
                     });   
-
-                
                     
-                    user[0].save(function(err, result){
-                        if(err){
-                            console.log(err.message);
-                            return;
-                        } 
-                         });   
-                    
-                        res.status(204).send(r);
-                        next();
+                    res.status(204).send(r);
+                    next();
     
                 });
            }
@@ -298,10 +294,10 @@ function queryParser(req, res, next){
 
 function moviePeopleLoad(req,res,next) { 
 
-    let startIndex = (req.query.page - 1) * req.query.limit;
-    let amount = req.query.limit;
+    //let startIndex = (req.query.page - 1) * req.query.limit;
+    //let amount = req.query.limit;
     
-    Person.find().byName(req.query.name).limit(amount).skip(startIndex).exec(function(err, result){
+    Person.find().byName(req.query.name).exec(function(err, result){
         if(err){
             res.status(500).send("Database error");
             console.log(err);
@@ -420,22 +416,13 @@ function loadMovies(req, res, next){
                         return; 
 
                     });
-    
-    
-    
 
-                }); 
+                });     
 
-
-    
-
-            });
-
-        
+            });        
 
         });  
 
-       
 }
 
 function checkQuery(query, movie){
@@ -603,7 +590,6 @@ function sendMovie(req, res, next){
 
                 }
                 res.status(200).render("movie.pug", {
-                    
                     watching: res.watching,
                     mData:res.movie,
                     directors: res.director, 
