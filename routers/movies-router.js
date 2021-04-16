@@ -9,8 +9,8 @@ router.get("/", loadMovies);
 router.get("/", sendMovies); 
 router.post("/", express.json(), createMovie); 
 router.put("/newReview",express.json(),createReview); 
-router.put("/addWatchedList",express.json(),addWatchedMovie); 
-router.put("removeWatchedMovie",express.json,removeWatchedMovie);
+router.put("/:mid/addWatchedMovie",express.json(),addWatchedMovie); 
+router.put("/:mid/removeWatchedMovie",express.json(),removeWatchedMovie);
 const Movie = require("../database-init/movieModel.js"); 
 const Person = require("../database-init/personModel"); 
 const User = require("../database-init/userModel.js")
@@ -19,26 +19,25 @@ let db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 router.get("/:mid", getMovie, sendMovie);  
 
-function addWatchedMovie(req,res,next) { 
+function addWatchedMovie(req,res,next) {  
 
-    let temp = req.body.movName.trimEnd();  
-    Movie.find({title: temp}).exec(function(err,movie) {    
+    let id = req.params.mid; 
+    console.log(id);
+    Movie.findById(id).exec(function(err,movie) {    
 
         User.find({username:req.session.username}).exec(function(err,user) { 
             
-            user[0].watchList.push(movie[0]._id);   
+            user[0].watchList.push(movie._id);   
             console.log(user[0].watchList);
             user[0].save(function(err, result){
                 if(err){
                     console.log(err.message);
                     return;
                 } 
-            });  
-            
+            });   
+
             res.status(204).send("Success");
             next();
-
-
         });
         
  
@@ -51,7 +50,8 @@ function removeWatchedMovie(req, res, next){
         res.status(401).send("Not logged in");
         return;
     }
-    let id = req.params.pID;
+    let id = req.params.mid; 
+    console.log(id);
     Movie.findById(id, function(err, movie){
         if(err){
             console.log(err.message);
@@ -69,15 +69,15 @@ function removeWatchedMovie(req, res, next){
                 return;
             }
             user.watchList.pull(movie._id); 
-
             user.save(function(err){
                 if(err){
                     console.log(err.message);
                     res.status(500).send("Database error");
                     return;
                 }
-            });
-            res.status(204).send("Unfollowed successfully");
+            }); 
+            res.status(204).send("UnWatched"); 
+            console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
             next();
         });
     });
@@ -380,24 +380,7 @@ function loadMovies(req, res, next){
 
         });  
 
-        /*
-        Movie.find().searchMovie(req.query.actor,req.query.dir,req.query.wri,req.query.title,req.query.gen).limit(amt).skip(sInd).exec(function(err,result) { 
-
-            console.log(result);
-            let fill = result.filter(function(x) {  
-
-                return (x.actors.length !== 0) && (x.director.length !==0) && (x.writer.length !==0); 
-            }); 
-
-            console.log("```````````````````````````````````````````````````````````````");
-            console.log(fill);
-            res.movies = fill;  
-            next(); 
-            return; 
-
-        }); 
-
-        */
+       
 }
 
 function checkQuery(query, movie){
@@ -518,21 +501,55 @@ function getMovie(req, res, next){
 } 
  
 
-function sendMovie(req, res, next){  
+function sendMovie(req, res, next){
 
     console.log(res.similarMovies);
     res.format({
-        "text/html": () => {res.status(200).render("movie.pug", {mData:res.movie,
-            directors: res.director, 
-            writers: res.writer,  
-            actors: res.actors,
-            reviews : res.reviews,
-            similarMovies: res.similarMovies
-        })},
-        "application/json": () => {res.status(200).json(res.movie)}
-    }); 
-    next();
-}  
+        "text/html": () => {  
+            
+            User.findById(req.session._id, function(err, user){
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Database error");
+                    return;
+                } 
+
+                if(user.watchList.length > 0) { 
+
+                    if(user.watchList.includes(res.movie._id)){
+                        res.watching = true;
+                    }
+                    else{
+                        res.watching = false;
+                
+                    }
+
+                }
+                res.status(200).render("movie.pug", {
+                
+                    watching: res.watching,
+                    mData:res.movie,
+                    directors: res.director, 
+                    writers: res.writer,  
+                    actors: res.actors,
+                    reviews : res.reviews,
+                    similarMovies: res.similarMovies
+                }) 
+
+        });
+    },  
+
+    "application/json": () => {
+        if(!req.session.loggedin){
+            res.status(401).send(null);
+            return;
+        }
+        res.status(200).json(res.user)
+    } 
+
+});
+
+} 
 
 function sendNewMovie(req,res) { 
 
