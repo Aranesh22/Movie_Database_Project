@@ -9,9 +9,8 @@ function search() {
     let actor = document.getElementById("actor").value; 
     let dir = document.getElementById("dir").value; 
     let gen = document.getElementById("genre").value; 
-    let writ = document.getElementById("writer").value;
+    let wri = document.getElementById("writer").value;
     
-    console.log("JS");
-    window.location.replace("http://localhost:3000/movies?title="+title+"&actor="+actor+"&dir="+dir+"&wri="+writ+"&genre="+gen);
+    window.location.replace("http://localhost:3000/movies?title="+title+"&actor="+actor+"&dir="+dir+"&wri="+wri+"&gen="+gen);
     
 }
