@@ -22,7 +22,7 @@ function removeWatchMovie() {
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 204){
             console.log(this.responseText);
-            location.reload;
+            location.reload();
         }
     }
     req.open("PUT", window.location.href + "/removeWatchedMovie");
