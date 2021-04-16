@@ -34,7 +34,9 @@ html
                                 ul 
                                     each person in people
                                         li
-                                            a(href='/people/'+ person._id) #{person.name} 
+                                            div.followee
+                                                a(href='/people/'+ person._id) #{person.name} 
+                                                button#unfollowPerson(style="height:20px;") Unfollow
                             br
                                                     
                                 
@@ -43,7 +45,9 @@ html
                                 ul 
                                     each user in users
                                         li 
-                                            a(href='/users/'+ user._id) #{user.username} 
+                                            div.followee
+                                                a(href='/users/'+ user._id) #{user.username} 
+                                                button#unfollowUser(style="height:20px;") Unfollow
                             br
                                             
                         div.section
@@ -51,7 +55,9 @@ html
                                 ul 
                                     each movie in watchedMovies
                                         li
-                                            a(href='/movies/'+movie._id) #{movie.title} 
+                                            div.movie
+                                                a(href='/movies/'+movie._id) #{movie.title} 
+                                                button#remove(style="height:20px;") Remove
                             br
 
                         div.section
