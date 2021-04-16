@@ -1,6 +1,7 @@
 const express = require("express");
 let router = express.Router();
 const mongoose = require("mongoose"); 
+const { remove } = require("../database-init/movieModel.js");
 router.get("/newMovie",sendNewMovie); 
 router.get("/moviePeople",queryParser,moviePeopleLoad,sendMoviePeople); 
 router.get("/", queryParser);
@@ -41,6 +42,55 @@ function addWatchedMovie(req,res,next) {
         
  
     });
+} 
+
+
+function removeWatchedMovie(req, res, next){
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
+    let id = req.params.pID;
+    Movie.findById(id, function(err, movie){
+        if(err){
+            console.log(err.message);
+            res.status(500).send("Database error");
+            return;
+        }
+        if(!movie){
+            res.status(400).send("Followee does not exist");
+            return;
+        }
+        User.findById(req.session._id, function(err, user){
+            if(err){
+                console.log(err.message);
+                res.status(500).send("Database error");
+                return;
+            }
+
+            person.followers.pull(user._id);
+            user.followingPeople.pull(person._id);
+
+            console.log(person);
+            console.log(user);
+            person.save(function(err){
+                if(err){
+                    console.log(err.message);
+                    res.status(500).send("Database error");
+                    return;
+                }
+                user.save(function(err){
+                    if(err){
+                        console.log(err.message);
+                        res.status(500).send("Database error");
+                        return;
+                    }
+                });
+            });
+            res.status(204).send("Unfollowed successfully");
+            next();
+        });
+    });
 }
 function createReview(req,res,next) { 
     let r = {}; 
@@ -69,15 +119,29 @@ function createReview(req,res,next) {
 
         
             });  
-            
-            user[0].save(function(err, result){
-                if(err){
-                    console.log(err.message);
-                    return;
-                } 
-            });    
-            
 
+            for(let x = 0; x < user[0].followers.length; x++ ) { 
+
+                User.findById(user[0].followers[x], function(err,userNew) { 
+    
+                    userNew.userNotifications.push( user[0].username + "Made A review for "+ movie[0].title ); 
+                    userNew.save(function(err, result){
+                        if(err){
+                            console.log(err.message);
+                            return;
+                        } 
+                    });
+    
+                });
+           }
+            
+           user[0].save(function(err, result){
+            if(err){
+                console.log(err.message);
+                return;
+            } 
+             });   
+        
             res.status(204).send(r);
             next();
 
@@ -111,14 +175,12 @@ function createMovie(req,res,next)  {
     req.body.directors.forEach((dir) => { 
         
         addPersonToMovie(dir,m,"directed");
-        
+
         
     });    
 
     req.body.writers.forEach((write) => {
         addPersonToMovie(write, m, "written"); 
-         
-        
      
     });  
 
@@ -199,7 +261,8 @@ function moviePeopleLoad(req,res,next) {
             console.log(err);
             return;
         }  
-        console.log("results"); 
+        console.log("resultssssssssssssssss");  
+        console.log(result);
         res.people = result;
         next();
         return;
@@ -221,7 +284,7 @@ function sendMoviePeople(req,res,next) {
             }
         )},
         "application/json": () => {res.status(200).json(res.people)}
-    });
+    }); 
 
 }
 function loadMovies(req, res, next){
@@ -233,18 +296,117 @@ function loadMovies(req, res, next){
         res.redirect("http://localhost:3000/account/login"); 
         return;
     }
-        Movie.find().searchMovie(req.query.actor,req.query.dir,req.query.writ,req.query.title,req.query.gen).limit(amt).skip(sInd).exec(function(err,result) { 
+        Person.find({name: new RegExp(req.query.act,"i")}, function(err,act) { 
 
-            let fil = result.filter(function(x) {  
+            if(err){
+                console.log(err);
+                res.status(500).send("Database error");
+                return;
+            }  
 
-                return (x.actors.length != 0) && (x.director.length !==0) && (x.writer.length !==0); 
+           // console.log(act);
+
+            
+            Person.find({name: new RegExp(req.query.dir,"i")}, function(err,dir) {  
+
+
+               // console.log(dir);
+                Person.find({name: new RegExp(req.query.wri,"i")}, function(err,wri) {  
+
+                    //console.log(wri); 
+                   
+                    let query = {}; 
+
+                    let actId = []; 
+                    let dirId = []; 
+                    let wriId = [];
+                    act.forEach(x => { 
+
+                        actId.push(x._id);
+
+                    }); 
+
+                    dir.forEach(x => {  
+
+                        dirId.push(x._id);
+
+                    }); 
+ 
+                    wri.forEach(x =>  {  
+
+                        wriId.push(x._id);
+
+ 
+                    });
+
+
+                    query.title = new RegExp(req.query.title,"i"); 
+                    query.genre = new RegExp(req.query.gen,"i");     
+
+                    console.log(act._id);
+                    if(req.query.act && req.query.act !== "") {    
+
+                        query.actors = {$in: actId}; 
+                        
+                    }  
+                    console.log(dir._id);
+                    if(req.query.dir && req.query.dir !== "") { 
+
+                        query.director =  {$in: dirId}; 
+                        
+                    }  
+                    console.log(wri._id);
+                    if(req.query.wri && req.query.wri !== "") { 
+                        query.writer =  {$in: wriId}; 
+                        
+
+                    }
+    
+                    Movie.find(query).limit(amt).skip(sInd).exec(function(err,result) { 
+
+                        if(err){
+                            console.log(err);
+                            res.status(500).send("Database error");
+                            return;
+                        }  
+                        res.movies = result;  
+                        next(); 
+                        return; 
+
+                    });
+    
+    
+    
+
+                }); 
+
+
+    
+
+            });
+
+        
+
+        });  
+
+        /*
+        Movie.find().searchMovie(req.query.actor,req.query.dir,req.query.wri,req.query.title,req.query.gen).limit(amt).skip(sInd).exec(function(err,result) { 
+
+            console.log(result);
+            let fill = result.filter(function(x) {  
+
+                return (x.actors.length !== 0) && (x.director.length !==0) && (x.writer.length !==0); 
             }); 
 
-            res.movies = fil;  
+            console.log("```````````````````````````````````````````````````````````````");
+            console.log(fill);
+            res.movies = fill;  
             next(); 
             return; 
 
-        });
+        }); 
+
+        */
 }
 
 function checkQuery(query, movie){
@@ -334,8 +496,20 @@ function getMovie(req, res, next){
                                 }
             
                             } 
-                        }  
-                        res.similarMovies = mov.similarMovies.slice(1,6); 
+                        }   
+                          
+                       
+
+                        let newSimilarMovies = [];
+                        mov.similarMovies.forEach(movie => {  
+                            
+                            if((mov._id.toString() !== movie._id.toString())) {
+                                newSimilarMovies.push(movie);
+                            } 
+                            
+                        });
+
+                        res.similarMovies = newSimilarMovies.slice(1,6); 
                         console.log(res.similarMovies);
                         res.reviews = mov.reviews;
                         res.movie = mov; 
@@ -351,7 +525,7 @@ function getMovie(req, res, next){
         });
     });
 } 
-
+ 
 
 function sendMovie(req, res, next){  
 
@@ -376,7 +550,6 @@ function sendNewMovie(req,res) {
     else res.status(200).render("addMovie.pug");
 
 } 
-
 
 function addPersonToMovie(pID, movie, role){  
 
