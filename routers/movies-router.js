@@ -483,16 +483,16 @@ function getMovie(req, res, next){
                         }  
                         
                         let val = false;
+                        let count = 0;
                         for(let y =0; y < smlMovies.length; y++ ) {  
-            
+                            if(count == 10) break;
                             val = false;
                             for(let j =0; j < mov.genre.length;j++) { 
             
                                 for(let i =0; i < smlMovies[y].genre.length; i++) { 
-            
+                                    
                                     if(mov.genre[j] === smlMovies[y].genre[i] && mov.similarMovies.includes(smlMovies[y]._id) === false) {    
-
-                                        console.log(smlMovies[y]);
+                                        ++count;
                                         mov.similarMovies.push(smlMovies[y]);  
                                         val = true;      
                                         break;           
@@ -533,7 +533,7 @@ function getMovie(req, res, next){
                             
                         });
 
-                        res.similarMovies = newSimilarMovies.slice(1,6); 
+                        res.similarMovies = newSimilarMovies; 
                         console.log(res.similarMovies);
                         res.reviews = mov.reviews;
                         res.movie = mov; 
