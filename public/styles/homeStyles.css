@@ -43,39 +43,19 @@ ul{
     background-color: rgb(32, 32, 32);
 } 
 
-.item1 { 
-
-    grid-area: trm;
-} 
-
-.item2 { 
-
-    grid-area: nr; 
-} 
-
-.item3 { 
-
-    grid-area: fM;  
+.main{
+    margin-top: 10px;
+    background-color: rgb(202, 202, 202);
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
 }
 
-
-.main { 
-
-    display: grid; 
-    grid-template-areas: 
-        'trm trm trm nr nr nr' 
-        'trm trm trm nr nr nr' 
-        'trm trm trm nr nr nr'
-        'fM fM fM fM fM fM' 
-        'fM fM fM fM fM fM'; 
-    grid-gap: 10px; 
-    background-color: rgb(32, 32, 32); 
-    padding: 20px;
-
-}
-.main > div {   
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;  
-    padding: 20px 0; 
-    font-size: medium;
+.main > .intro{
+    border-bottom-style: solid;
+    width: 100%;
+    margin: 0 auto;
+    border-width: 2px;
+    padding-bottom: 20px;
+    text-align: center;
 }
