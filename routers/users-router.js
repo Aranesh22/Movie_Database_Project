@@ -126,41 +126,18 @@ function getUser(req, res, next){
                 console.log(err.message);
                 return;
             }
-            Movie.find({_id: {$in: user.watchList}}, function(err, movies){ //find movies in users watched list
+            Movie.find({_id: {$in: user.watchList}}, function(err, watchedMovies){ //find movies in users watched list
                 if(err){            
                     res.status(500).send("Database error");
                     console.log(err.message);
                     return;
-                } 
-                for(let x=0; x < user[0].userReviews.length; x++) {  
-
-                    Movie.find({title: user[0].userReviews[x].movieName}).exec(function(err,movie) {    
-
-                        console.log(movie);
-                        
-
-                    
-                    });
-
-                }
-
-                /*
-                for (let x = 0; x  < movies.length;x++) { 
-                    
-                    for(let y =0; y < movies[x].genre.length; y++) { 
-
-                        gen.push(y)
-                    }
-                
                 }  
-
-                */
-
-                
+        
                 res.user = user;
-                res.people = people;
-                res.movies = movies;
-                next();
+                res.people = people; 
+                res.watchedMovies = watchedMovies; 
+                next(); 
+    
             });
         });
     });
@@ -187,7 +164,7 @@ function sendUser(req, res){
                 res.status(200).render("user.pug", {
                     user: res.user,
                     people: res.people,
-                    watchedMovies: res.movies,
+                    watchedMovies:  res.watchedMovies, 
                     following: res.following
                 })
             });
