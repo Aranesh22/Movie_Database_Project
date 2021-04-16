@@ -15,7 +15,6 @@ function watchMovie() {
     req.send(JSON.stringify({"movName": movName }));
 }
 function addReview() { 
-
     let score = document.getElementById("score").value; 
     let rText = document.getElementById("rText").value;   
     let rSummary = document.getElementById("rSummary").value; 
@@ -25,8 +24,11 @@ function addReview() {
     let req = new XMLHttpRequest()
     req.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 204){
-            console.log(this.responseText);
-        }
+            console.log(this.responseText); 
+
+            location.reload();
+        } 
+
     }
     req.open("PUT", "http://localhost:3000/movies/newReview");
     req.setRequestHeader("Content-Type", "application/json");
