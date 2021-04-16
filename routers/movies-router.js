@@ -342,23 +342,29 @@ function loadMovies(req, res, next){
                 res.status(500).send("Database error");
                 return;
             }  
-
-           // console.log(act);
-
             
             Person.find({name: new RegExp(req.query.dir,"i")}, function(err,dir) {  
 
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Database error");
+                    return;
+                }  
 
-               // console.log(dir);
                 Person.find({name: new RegExp(req.query.wri,"i")}, function(err,wri) {  
 
-                    //console.log(wri); 
+                    if(err){
+                        console.log(err);
+                        res.status(500).send("Database error");
+                        return;
+                    }  
                    
                     let query = {}; 
 
                     let actId = []; 
                     let dirId = []; 
                     let wriId = [];
+
                     act.forEach(x => { 
 
                         actId.push(x._id);
@@ -382,7 +388,6 @@ function loadMovies(req, res, next){
                     query.title = new RegExp(req.query.title,"i"); 
                     query.genre = new RegExp(req.query.gen,"i");     
 
-                    console.log(act._id);
                     if(req.query.act && req.query.act !== "") {    
 
                         query.actors = {$in: actId}; 
