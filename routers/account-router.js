@@ -53,7 +53,16 @@ function getProfile(req, res, next){
 
     console.log("YESSSSSSSSSSSSS");
     if(!req.session.loggedin){
-        res.status(401).send("Not logged in");
+        res.format({
+            "text/html" : () => {
+                res.status(401).redirect("http://localhost:3000/account/login");
+                return;
+            },
+            "application/json": () => {
+                res.status(401).send("Not logged in");
+                return;
+            }
+        });
         return;
     }
     User.findById(req.session._id, function(err, user){
@@ -144,10 +153,6 @@ function getProfile(req, res, next){
 function sendProfile(req, res, next){
     res.format({
         "text/html" : () => {
-            if(!req.session.loggedin){
-                res.status(401).redirect("http://localhost:3000/account/login");
-                return;
-            }
             res.status(200).render("profile.pug", {
                 user: res.user,
                 people: res.people,
@@ -157,10 +162,6 @@ function sendProfile(req, res, next){
             });
         },
         "application/json": () => {
-            if(!req.session.loggedin){
-                res.status(401).send("Not logged in");
-                return;
-            }
             let profile = {};
             profile.user = res.user;
             profile.people = res.people;
