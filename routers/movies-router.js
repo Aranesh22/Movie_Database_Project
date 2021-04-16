@@ -22,6 +22,10 @@ router.get("/:mid", getMovie, sendMovie);
 
 function viewFullReview(req,res,next) { 
 
+    if(!req.session.loggedin){
+        res.status(401).send("Not logged in");
+        return;
+    }
     console.log("YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
     console.log(req.params.mid);
     Movie.findById(req.params.mid).exec(function(err,movie) { 
