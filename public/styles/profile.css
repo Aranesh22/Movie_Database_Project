@@ -31,14 +31,3 @@ a {
     grid-template-rows: auto auto;
     margin: 0 auto;
 }
-
-.section{
-    width: 90%;
-    border-radius: 5px;
-    background-color: rgba(143, 143, 143, 0.514);
-    margin: 10px;
-}
-
-.section > *{
-    margin: 10px;
-}
