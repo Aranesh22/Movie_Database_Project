@@ -20,7 +20,7 @@ db.once("open", function(){
         console.log("Dropped final database");
 
         //init movies and people
-        let movies = require("../Json/movie-data-100.json");
+        let movies = require("../Json/movie-data-2500.json");
 
         movies.forEach((movie) => {
 
