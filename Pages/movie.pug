@@ -71,7 +71,8 @@ html
                                 div.section
                                     a(style="display: block;" href="/users/"+ val.usernameId) #{val.username} 
                                     h5 Score: #{val.rating}
-                                    h5 #{val.reviewText} 
+                                    h5 #{val.reviewText}   
+                                    a(style="display: block;" href="/movies/"+ val.mId+"/" + val._id) Full Review
                                     br 
 
             div.similiarMovies
