@@ -14,20 +14,22 @@ html
 
                 div.movie
                     div.info 
-                        img(src=mData.poster)
-                        h1#movName #{mData.title}   
-                        if !watching
-                                button(id="watched") Add To WatchList
-                        else 
-                                button(id="unwatched") Remove From WatchList
+                        div.poster
+                            img(src=mData.poster)
+                        div.text
+                            h1#movName #{mData.title}   
+                            if !watching
+                                    button(id="watched") Add To WatchList
+                            else 
+                                    button(id="unwatched") Remove From WatchList
 
-                        h3 Runtime: #{mData.runtime}   
-                        h3 Average Rating: #{avrgRating} 
-                        h3 Rated: #{mData.rating}
-                        h3 Released: #{mData.released}
-                        h5 #{mData.plot}
-                        each val in mData.genre
-                            a(id="genre" href='/movies?gen='+val) #{val}   
+                            h3 Runtime: #{mData.runtime}   
+                            h3 Average Rating: #{avrgRating} 
+                            h3 Rated: #{mData.rating}
+                            h3 Released: #{mData.released}
+                            h5 #{mData.plot}
+                            each val in mData.genre
+                                a(id="genre" href='/movies?gen='+val) #{val}   
 
                     div.people
                         div.section
