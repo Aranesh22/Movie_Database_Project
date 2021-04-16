@@ -17,6 +17,7 @@ let userSchema = Schema({
         "reviewSummary": String,
         "reviewText": String, 
         "movieName" : String, 
+        
     }]
 });
 
