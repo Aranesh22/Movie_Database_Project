@@ -51,7 +51,6 @@ function toggle(req, res, next){
 
 function getProfile(req, res, next){  
 
-    console.log("YESSSSSSSSSSSSS");
     if(!req.session.loggedin){
         res.format({
             "text/html" : () => {
@@ -93,8 +92,6 @@ function getProfile(req, res, next){
                         res.status(500).send("Database error");
                         return;
                     }
-                        console.log("reviessssssss");
-                        console.log(user);  
                         
                         let gen = []; 
 
@@ -117,7 +114,6 @@ function getProfile(req, res, next){
                                             
                                             //console.log(genMovies.slice(1,3));
                                             
-                                            console.log(genMovies);
                                             res.user = user;
                                             res.people = people;
                                             res.users = users;
