@@ -2,7 +2,8 @@ html
 
     div#all 
         each val in pData 
-                -let x = val.id + "s"
+                -let x = val.id + "s" 
+                -let v = val.id + "v"
                 div(id = x)
-                    a(href="/people/"+val._id) #{val.name} 
+                    a#v(href="/people/"+val._id) #{val.name} 
                     button.addPeople(type ="button", id = val.id) ADD PERSON

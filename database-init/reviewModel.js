@@ -6,9 +6,8 @@ let reviewSchema = Schema({
     rating: {type: Number, required: true},
     reviewSummary: String,
     reviewText: String, 
-    movieTitle: String, 
-    
-    
+    movieTitle: String 
+
 });
 
-module.exports = mongoose.model("Movie", peopleSchema);
+module.exports = mongoose.model("Review", reviewSchema);

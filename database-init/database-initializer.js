@@ -49,36 +49,7 @@ db.once("open", function(){
             });
 
             allMovies.push(m);
-        });
-        let val = false;
-        for(let x =0; x < allMovies.length; x++) { 
-
-          
-            for(let y =1; y < allMovies.length; y++ ) {  
-
-                val = false;
-                for(let j =0; j < allMovies[x].genre.length;j++) { 
-
-                    for(let i =0; i < allMovies[y].genre.length; i++) { 
-
-                        if(allMovies[x].genre[j] === allMovies[y].genre[i] && allMovies[x].similarMovies.includes(allMovies[y]._id) === false) {   
-                            //console.log(allMovies[y].title);
-                            allMovies[x].similarMovies.push(allMovies[y]._id); 
-                            allMovies[y].similarMovies.push(allMovies[x]._id)
-                            //console.log(allMovies[x]);   
-                            //console.log(allMovies[y]);   
-                            val = true;      
-                            break;           
-                        }
-                    } 
-                    if(val === true) { 
-                        break;
-                    }
-
-                } 
-            }
-            
-        }  
+        });  
         
 
         Movie.insertMany(allMovies, function(err){
@@ -88,20 +59,6 @@ db.once("open", function(){
             if(err) console.log(err.message);
         }); 
 
-        /*
-        let tempGen = [];
-        allMovies.forEach(x => {  
-            for(let y =0; y < x.genre.length; y++) { 
-
-                tempGen.push(x.genre[y]);
-            }
-        });  
-        let uniqueAges = tempGen.filter((x, i, a) => a.indexOf(x) == i)
-        //console.log(uniqueAges) 
-        */ 
-        
-        //console.log(allMovies[0].similarMovies);
-        //process.exit();
     });
 });
 
