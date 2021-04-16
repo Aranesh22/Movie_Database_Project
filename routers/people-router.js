@@ -151,6 +151,11 @@ function findFreqCollab(req, res, next){
             res.status(500).send("Database error");
             return;
         }
+        if(result.length == 0){
+            res.freqCollab = [];
+            next();
+            return;
+        }
         console.log(result);
         let collab = {};
         result.forEach(movie => {
