@@ -6,7 +6,6 @@ let personSchema = Schema({
     directed: {type: [Schema.Types.ObjectId], ref: "Movie"},
     written: {type: [Schema.Types.ObjectId], ref: "Movie"},
     acted: {type: [Schema.Types.ObjectId], ref: "Movie"},
-    freqCollaborators: {type: [Schema.Types.ObjectId], ref: "People"},
     followers: {type: [Schema.Types.ObjectId], ref: "User"}
 });
 
